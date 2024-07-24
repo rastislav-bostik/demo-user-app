@@ -7,10 +7,12 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\Uid\Uuid;
+use ApiPlatform\Metadata\ApiResource;
 
 /**
  * User entity class
  */
+#[ApiResource]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 class User
 {
