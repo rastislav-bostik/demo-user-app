@@ -1,16 +1,20 @@
 api_platform:
+
     title: Demo User API Platform
     version: 1.0.0
+
     formats:
-        jsonld: ['application/ld+json']
+        jsonld:   ['application/ld+json']
         jsonhal:  ['application/hal+json']
         jsonapi:  ['application/vnd.api+json']
         json:     ['application/json']
         xml:      ['application/xml', 'text/xml']
+
     docs_formats:
-        jsonld: ['application/ld+json']
+        jsonld:      ['application/ld+json']
         jsonopenapi: ['application/vnd.openapi+json']
-        html: ['text/html']
+        html:        ['text/html']
+
     defaults:
         stateless: true
         cache_headers:
@@ -18,5 +22,27 @@ api_platform:
         extra_properties:
             standard_put: true
             rfc_7807_compliant_errors: true
+
+        # limiting maximal size of items per page globally
+        pagination_maximum_items_per_page: 50
+        # limiting default items count per page
+        pagination_items_per_page: 30
+        # pagination can NOT be disabled by client
+        pagination_client_enabled: false
+        # amount of record per page CAN be changed by client
+        pagination_client_items_per_page: true
+        # partial pagination can NOT be enabled by client
+        pagination_client_partial: false # Disabled by default
+
     keep_legacy_inflector: false
     use_symfony_listeners: true
+
+    collection:
+        # pagination params naming
+        pagination: 
+            page_parameter_name:           'page-number'
+            items_per_page_parameter_name: 'page-size'
+        # ordering parameter name
+        order_parameter_name:              'order-by'
+        # ordering null-values strategy
+        order_nulls_comparison:            'nulls_smallest'
