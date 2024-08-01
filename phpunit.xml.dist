@@ -34,6 +34,8 @@
     </listeners>
 
     <extensions>
+        <!-- extension ensuring that whole test is always run in transaction rolled back at the end of the test case -->
+        <!--      (saving time and resources by avoiding necessity of purging the database after each test case)     -->
         <extension class="DAMA\DoctrineTestBundle\PHPUnit\PHPUnitExtension" />
     </extensions>
 </phpunit>

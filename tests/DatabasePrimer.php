@@ -16,8 +16,16 @@ class DatabasePrimer
      * and apply them to the testing database serving
      * as automated migration tool for testing environment.
      * 
-     * Intended usage of this method is within the setUp() method 
-     * of Symfony's KernelTestCase or WebTestCase extending test classes.
+     * The prime() method of this class is ment to be called 
+     * in the setUp() method of Symfony's KernelTestCase or 
+     * WebTestCase extending test classes.
+     * 
+     * If nature of test class and test suite configuration allows it,
+     * the prime() method can be even called once per given test class only
+     * within the setUpBeforeClass() method saving time and resources in consequence.
+     * (e.g. when DAMA\DoctrineTestBundle\PHPUnit\PHPUnitExtension is used erasing     )
+     * (     data created during the run of the test case through wrapping whole test  )
+     * (     case into transaction being auto rolled back after test case is finished. )
      * 
      * @param \Symfony\Component\HttpKernel\KernelInterface $kernel
      * @throws \LogicException
