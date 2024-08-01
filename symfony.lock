@@ -64,6 +64,9 @@
             "./migrations/.gitignore"
         ]
     },
+    "liip/test-fixtures-bundle": {
+        "version": "3.0.1"
+    },
     "nelmio/cors-bundle": {
         "version": "2.5",
         "recipe": {
