@@ -8,7 +8,9 @@ use App\Entity\Role;
 use App\Entity\User;
 use App\Tests\DatabasePrimer;
 use Doctrine\ORM\EntityManager;
+use App\DataFixtures\Doctrine\UserFixtures;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 
 /**
  * Tests of basic user repository functionality
@@ -46,6 +48,20 @@ class UserRepositoryTest extends KernelTestCase
         static::assertSame($users, []);
     }
 
+    public function testSearchAllRecordsOverPopulatedDataset(): void
+    {
+        // load basic users set fixture
+        $this->loadFixtures();
+
+        // load basic user set fixtures
+        // and try to fetch it
+        $users = $this->entityManager
+            ->getRepository(User::class)
+            ->findAll();
+
+        static::assertSame(count($users), 5);
+    }
+
     protected function tearDown(): void
     {
         parent::tearDown();
@@ -53,5 +69,20 @@ class UserRepositoryTest extends KernelTestCase
         // doing this is recommended to avoid memory leaks
         $this->entityManager->close();
         $this->entityManager = null;
+    }
+
+    /**
+     * Load set of basic user fixtures
+     * usefull mostly for listing, filtering,
+     * sorting and pagination testing purposes.
+     * 
+     * @return void
+     */
+    protected function loadFixtures() : void {
+        // load set of basic fixtures
+        $databaseTool = static::getContainer()->get(DatabaseToolCollection::class)->get();
+        $databaseTool->loadFixtures([
+            UserFixtures::class
+        ]);
     }
 }

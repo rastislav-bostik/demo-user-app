@@ -8,6 +8,7 @@ use App\Entity\Role;
 use App\Entity\User;
 use App\Tests\DatabasePrimer;
 use Doctrine\ORM\EntityManager;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
@@ -57,15 +58,16 @@ class UserTest extends KernelTestCase
             ->getRepository(User::class)
             ->findOneBy(['email' => 'test.user.A@foo.local']);
 
-            static::assertNotNull($fetchedUser);
-            static::assertEquals($fetchedUser->getId(), $userA->getId());
-            static::assertEquals($fetchedUser->getName(), 'Test');
-            static::assertEquals($fetchedUser->getSurname(), 'User');
-            static::assertEquals($fetchedUser->getEmail(), 'test.user.A@foo.local');
-            static::assertEquals($fetchedUser->getRoles(), [Role::ADMIN, Role::WORKER]);
-            static::assertEquals($fetchedUser->getGender(), Gender::FEMALE);
-            static::assertNull($fetchedUser->getNote());
-            static::assertSame($fetchedUser->isActive(), true);
+        static::assertNotNull($fetchedUser);
+        static::assertTrue(Uuid::isValid($fetchedUser->getId()));
+        static::assertEquals($fetchedUser->getId(), $userA->getId());
+        static::assertEquals($fetchedUser->getName(), 'Test');
+        static::assertEquals($fetchedUser->getSurname(), 'User');
+        static::assertEquals($fetchedUser->getEmail(), 'test.user.A@foo.local');
+        static::assertEquals($fetchedUser->getRoles(), [Role::ADMIN, Role::WORKER]);
+        static::assertEquals($fetchedUser->getGender(), Gender::FEMALE);
+        static::assertNull($fetchedUser->getNote());
+        static::assertSame($fetchedUser->isActive(), true);
     }
 
     public function testCreateUserWithNote(): void
@@ -90,6 +92,7 @@ class UserTest extends KernelTestCase
             ->findOneBy(['email' => 'test.user.A@foo.local']);
 
         static::assertNotNull($fetchedUser);
+        static::assertTrue(Uuid::isValid($fetchedUser->getId()));
         static::assertEquals($fetchedUser->getId(), $userA->getId());
         static::assertEquals($fetchedUser->getName(), 'Test');
         static::assertEquals($fetchedUser->getSurname(), 'User');
@@ -98,47 +101,6 @@ class UserTest extends KernelTestCase
         static::assertEquals($fetchedUser->getGender(), Gender::FEMALE);
         static::assertEquals($fetchedUser->getNote(), 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas placerat orci eget sem consectetur faucibus.');
         static::assertSame($fetchedUser->isActive(), true);
-    }
-
-    public function testUpdateUserName()
-    {
-        // TODO
-    }
-
-
-    public function testUpdateUserSurname()
-    {
-        // TODO
-    }
-
-    public function testUpdateUserEmail()
-    {
-        // TODO
-    }
-
-    public function testUpdateUserRoles()
-    {
-        // TODO
-    }
-
-    public function testUpdateUserGender()
-    {
-        // TODO
-    }
-
-    public function testUpdateUserActiveFlag()
-    {
-        // TODO
-    }
-
-    public function testUpdateUserNote()
-    {
-        // TODO
-    }
-
-    public function testDeleteUser()
-    {
-        // TODO
     }
 
     protected function tearDown(): void
