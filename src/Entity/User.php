@@ -2,17 +2,22 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use App\Repository\UserRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\Uid\Uuid;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 
 /**
  * User entity class
  */
 #[ApiResource]
+#[ApiFilter(OrderFilter::class)]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 class User
 {
@@ -34,6 +39,7 @@ class User
      * @var string
      */
     #[ORM\Column(length: 48)]
+    #[ApiFilter(SearchFilter::class)]
     private string $name;
 
     /**
@@ -41,6 +47,7 @@ class User
      * @var string
      */
     #[ORM\Column(length: 255)]
+    #[ApiFilter(SearchFilter::class)]
     private string $surname;
 
     /**
@@ -48,6 +55,7 @@ class User
      * @var string
      */
     #[ORM\Column(length: 255, unique: true)]
+    #[ApiFilter(SearchFilter::class)]
     private string $email;
 
     /**
@@ -55,6 +63,7 @@ class User
      * @var Gender
      */
     #[ORM\Column(enumType: Gender::class)]
+    #[ApiFilter(SearchFilter::class)]
     private Gender $gender;
 
     /**
@@ -62,6 +71,7 @@ class User
      * @var Role[]
      */
     #[ORM\Column(type: Types::SIMPLE_ARRAY, enumType: Role::class)]
+    #[ApiFilter(SearchFilter::class)]
     private array $roles = [];
 
     /**
@@ -69,6 +79,7 @@ class User
      * @var string
      */
     #[ORM\Column(length: 255, nullable: true)]
+    #[ApiFilter(SearchFilter::class)]
     private ?string $note = null;
 
     /**
@@ -77,6 +88,7 @@ class User
      * @var bool
      */
     #[ORM\Column]
+    #[ApiFilter(BooleanFilter::class)]
     private bool $active;
 
     // public function __construct(string $name, string $surname, string $email, Gender $gender, ?string $note = null, bool $active, array $roles) {
