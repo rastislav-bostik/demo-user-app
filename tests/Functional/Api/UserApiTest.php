@@ -30,7 +30,7 @@ class UserApiTest extends ApiTestCase
         $this->cleanDatabase();
 
         // call the list users API endpoint
-        static::createClient()->request('GET', '/api/users', [
+        $response = static::createClient()->request('GET', '/api/users', [
             'headers' => [
                 'Accept' => 'application/ld+json'
             ]
@@ -47,6 +47,8 @@ class UserApiTest extends ApiTestCase
             'hydra:totalItems' => 0,
             'hydra:member'     => [],
         ]);
+        // no record should be returned
+        static::assertCount(0, $response->toArray()['hydra:member']);
     }
 
     public function testGetPopulatedList(): void
@@ -57,7 +59,7 @@ class UserApiTest extends ApiTestCase
         ]);
 
         // call the list users API endpoint
-        static::createClient()->request('GET', '/api/users', [
+        $response = static::createClient()->request('GET', '/api/users', [
             'headers' => [
                 'Accept' => 'application/ld+json'
             ]
@@ -73,6 +75,10 @@ class UserApiTest extends ApiTestCase
             '@type'            => 'hydra:Collection',
             'hydra:totalItems' => 5,
         ]);
+        // implicit pagination of the class is set to 5
+        // so we should get all 5 records of the tiny user
+        // set rendered in the response
+        static::assertCount(5, $response->toArray()['hydra:member']);
     }
 
     public function testGetPopulatedPaginatedList(): void
@@ -83,7 +89,7 @@ class UserApiTest extends ApiTestCase
         ]);
 
         // call the list users API endpoint
-        static::createClient()->request('GET', '/api/users', [
+        $response = static::createClient()->request('GET', '/api/users', [
             'headers' => [
                 'Accept' => 'application/ld+json'
             ],
@@ -134,7 +140,7 @@ class UserApiTest extends ApiTestCase
         ]);
 
         // call the list users API endpoint
-        static::createClient()->request('GET', '/api/users', [
+        $response = static::createClient()->request('GET', '/api/users', [
             'headers' => [
                 'Accept' => 'application/ld+json'
             ],
@@ -187,6 +193,8 @@ class UserApiTest extends ApiTestCase
                 'hydra:next'  => '/api/users?'.urlencode('order-by[surname]').'=asc&page-size=2&page-number=2'
             ],
         ]);
+        // two user records should be returned due to pagination setup
+        static::assertCount(2, $response->toArray()['hydra:member']);
     }
 
     public function testGetPopulatedPaginatedListOrderedBySurnameDescending(): void
@@ -197,7 +205,7 @@ class UserApiTest extends ApiTestCase
         ]);
 
         // call the list users API endpoint
-        static::createClient()->request('GET', '/api/users', [
+        $response = static::createClient()->request('GET', '/api/users', [
             'headers' => [
                 'Accept' => 'application/ld+json'
             ],
@@ -254,6 +262,8 @@ class UserApiTest extends ApiTestCase
                 'hydra:next'  => '/api/users?'.urlencode('order-by[surname]').'=desc&page-size=2&page-number=2'
             ],
         ]);
+        // two user records should be returned due to pagination setup
+        static::assertCount(2, $response->toArray()['hydra:member']);
     }
 
     public function testGetPopulatedListFilteredByGenderOrderedBySurnameAscending(): void 
@@ -264,7 +274,7 @@ class UserApiTest extends ApiTestCase
         ]);
 
         // call the list users API endpoint
-        static::createClient()->request('GET', '/api/users', [
+        $response = static::createClient()->request('GET', '/api/users', [
             'headers' => [
                 'Accept' => 'application/ld+json'
             ],
@@ -312,6 +322,8 @@ class UserApiTest extends ApiTestCase
                 '@type'       => 'hydra:PartialCollectionView'
             ],
         ]);
+        // two user records should be returned due to pagination setup
+        static::assertCount(2, $response->toArray()['hydra:member']);
     }
 
     public function testGetPopulatedPaginatedListFilteredByGenderOrderedBySurnameAscending(): void 
@@ -322,7 +334,7 @@ class UserApiTest extends ApiTestCase
         ]);
 
         // call the list users API endpoint
-        static::createClient()->request('GET', '/api/users', [
+        $response = static::createClient()->request('GET', '/api/users', [
             'headers' => [
                 'Accept' => 'application/ld+json'
             ],
@@ -364,6 +376,8 @@ class UserApiTest extends ApiTestCase
                 'hydra:next'  => '/api/users?gender=MALE&'.urlencode('order-by[surname]').'=asc&page-size=1&page-number=2'
             ],
         ]);
+        // one only user record should be returned due to pagination setup
+        static::assertCount(1, $response->toArray()['hydra:member']);
     }
     
     public function testGetPopulatedPaginatedListFilteredByGenderOrderedBySurnameDescending(): void 
@@ -374,7 +388,7 @@ class UserApiTest extends ApiTestCase
         ]);
 
         // call the list users API endpoint
-        static::createClient()->request('GET', '/api/users', [
+        $response = static::createClient()->request('GET', '/api/users', [
             'headers' => [
                 'Accept' => 'application/ld+json'
             ],
@@ -416,6 +430,8 @@ class UserApiTest extends ApiTestCase
                 'hydra:next'  => '/api/users?gender=MALE&'.urlencode('order-by[surname]').'=desc&page-size=1&page-number=2'
             ],
         ]);
+        // one only user record should be returned due to pagination setup
+        static::assertCount(1, $response->toArray()['hydra:member']);
     }
 
     protected function tearDown(): void
