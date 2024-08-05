@@ -211,6 +211,385 @@ class UserApiTest extends ApiTestCase
         static::assertCount(1, $response->toArray()['hydra:member']);
     }
 
+    public function testGetOutOfRangePageOfPopulatedPaginatedList(): void
+    {
+        // load fixture cotaining tiny basic set of 5 users
+        $this->loadFixtures([
+            UserFixtures::class
+        ]);
+
+        // call the list users API endpoint
+        $response = static::createClient()->request('GET', '/api/users', [
+            'headers' => [
+                'Accept' => 'application/ld+json'
+            ],
+            'query' => [
+                'page-size'   => 2,
+                'page-number' => 4, // there is no page 4 with 5 records counting overall testing set and 2 records per page
+            ],
+        ]);
+
+        static::assertResponseStatusCodeSame(200);
+        static::assertResponseHeaderSame(
+            'content-type', 'application/ld+json; charset=utf-8'
+        );
+        static::assertJsonContains([
+            '@context'         => '/api/contexts/User',
+            '@id'              => '/api/users',
+            '@type'            => 'hydra:Collection',
+            'hydra:totalItems' => 5,
+            'hydra:view'        =>  [
+                '@id'         => '/api/users?page-size=2&page-number=4',
+                '@type'       => 'hydra:PartialCollectionView',
+                'hydra:first' => '/api/users?page-size=2&page-number=1',
+                'hydra:last'  => '/api/users?page-size=2&page-number=3'
+            ],
+            'hydra:member'    => [],
+        ]);
+        // one only user record should be returned due to pagination setup
+        static::assertCount(0, $response->toArray()['hydra:member']);
+    }
+
+    public function testMissingPageSizeAttributeOfPaginationSetup(): void
+    {
+        // load fixture cotaining tiny basic set of 5 users
+        $this->loadFixtures([
+            UserFixtures::class
+        ]);
+
+        // call the list users API endpoint
+        $response = static::createClient()->request('GET', '/api/users', [
+            'headers' => [
+                'Accept' => 'application/ld+json'
+            ],
+            'query' => [
+                // page count is the only one explicitly set
+                'page-number' => 1,
+                // page size is implicitly set to 10 
+                // by default in the User entity class
+                // page-size  => 10,
+            ],
+        ]);
+
+        static::assertResponseStatusCodeSame(200);
+        static::assertResponseHeaderSame(
+            'content-type', 'application/ld+json; charset=utf-8'
+        );
+        static::assertJsonContains([
+            '@context'         => '/api/contexts/User',
+            '@id'              => '/api/users',
+            '@type'            => 'hydra:Collection',
+            'hydra:totalItems' => 5,
+            // 'hydra:view'        =>  [
+            //     '@id'         => '/api/users?page-number=1',
+            //     '@type'       => 'hydra:PartialCollectionView',
+            //     'hydra:first' => '/api/users?page-number=1',
+            //     'hydra:last'  => '/api/users?&page-number=1'
+            // ],
+            'hydra:member'    => [],
+        ]);
+        // all 5 user records should be returned due to pagination setup
+        static::assertCount(5, $response->toArray()['hydra:member']);
+        // as the IMPLICIT PAGE SIZE is BIGGER THAN OVERALL USERS COUNT
+        // the pagination 'hydra:view' entry is should not be rendered
+        static::assertArrayNotHasKey('hydra:view', $response->toArray()['hydra:member']);
+    }
+
+    public function testMissingPageNumberAttributeOfPaginationSetup(): void
+    {
+        // load fixture cotaining tiny basic set of 5 users
+        $this->loadFixtures([
+            UserFixtures::class
+        ]);
+
+        // call the list users API endpoint
+        $response = static::createClient()->request('GET', '/api/users', [
+            'headers' => [
+                'Accept' => 'application/ld+json'
+            ],
+            'query' => [
+                // page size is the only one
+                // set explicitly in this test
+                'page-size' => 10,
+                // the page number is implicitly set to 1
+                // in this test
+                // page-number => 1
+            ],
+        ]);
+
+        static::assertResponseStatusCodeSame(200);
+        static::assertResponseHeaderSame(
+            'content-type', 'application/ld+json; charset=utf-8'
+        );
+        static::assertJsonContains([
+            '@context'         => '/api/contexts/User',
+            '@id'              => '/api/users',
+            '@type'            => 'hydra:Collection',
+            'hydra:totalItems' => 5,
+            // 'hydra:view'        =>  [
+            //     '@id'         => '/api/users?page-number=1',
+            //     '@type'       => 'hydra:PartialCollectionView',
+            //     'hydra:first' => '/api/users?page-number=1',
+            //     'hydra:last'  => '/api/users?&page-number=1'
+            // ],
+            'hydra:member'    => [],
+        ]);
+        // all 5 user records should be returned due to pagination setup
+        static::assertCount(5, $response->toArray()['hydra:member']);
+        // as the IMPLICIT PAGE SIZE is BIGGER THAN OVERALL USERS COUNT
+        // the pagination 'hydra:view' entry is should not be rendered
+        static::assertArrayNotHasKey('hydra:view', $response->toArray()['hydra:member']);
+    }
+
+    public function testAsNegativeIntMalformedPageSizeAttributeOfPaginationSetup(): void
+    {
+        // load fixture cotaining tiny basic set of 5 users
+        $this->loadFixtures([
+            UserFixtures::class
+        ]);
+
+        // expect anticipatable HTTP client exception
+        // (expecting generic exception class to keep test identependent of HTTP client implementation)
+        self::expectException(\Exception::class);
+
+        // call the list users API endpoint
+        $response = static::createClient()->request('GET', '/api/users', [
+            'headers' => [
+                'Accept' => 'application/ld+json'
+            ],
+            'query' => [
+                'page-size'   => -1, // malformed page-size value
+                'page-number' => 123
+            ],
+        ]);
+
+        static::assertResponseStatusCodeSame(400);
+        static::assertResponseHeaderSame(
+            'content-type', 'application/problem+json; charset=utf-8'
+        );
+        // there should be no hydra member field
+        static::assertArrayHasKey('hydra:title', $response->toArray());
+        static::assertArrayHasKey('hydra:description', $response->toArray());
+    }
+
+    public function testAsNegativeIntMalformedPageNumberAttributeOfPaginationSetup(): void
+    {
+        // load fixture cotaining tiny basic set of 5 users
+        $this->loadFixtures([
+            UserFixtures::class
+        ]);
+
+        // expect anticipatable HTTP client exception
+        // (expecting generic exception class to keep test identependent of HTTP client implementation)
+        self::expectException(\Exception::class);
+
+        // call the list users API endpoint
+        $response = static::createClient()->request('GET', '/api/users', [
+            'headers' => [
+                'Accept' => 'application/ld+json'
+            ],
+            'query' => [
+                'page-size'   => 123,
+                'page-number' => -1 // malformed page number value
+            ],
+        ]);
+
+        static::assertResponseStatusCodeSame(400);
+        static::assertResponseHeaderSame(
+            'content-type', 'application/problem+json; charset=utf-8'
+        );
+        // there should be no hydra member field
+        static::assertArrayHasKey('hydra:title', $response->toArray());
+        static::assertArrayHasKey('hydra:description', $response->toArray());
+    }
+
+    public function testAsZeroIntMalformedPageSizeAttributeOfPaginationSetup(): void
+    {
+        // load fixture cotaining tiny basic set of 5 users
+        $this->loadFixtures([
+            UserFixtures::class
+        ]);
+
+        // expect anticipatable HTTP client exception
+        // (expecting generic exception class to keep test identependent of HTTP client implementation)
+        self::expectException(\Exception::class);
+
+        // call the list users API endpoint
+        $response = static::createClient()->request('GET', '/api/users', [
+            'headers' => [
+                'Accept' => 'application/ld+json'
+            ],
+            'query' => [
+                'page-size'   => 0, // malformed page-size value
+                'page-number' => 123
+            ],
+        ]);
+
+        static::assertResponseStatusCodeSame(400);
+        static::assertResponseHeaderSame(
+            'content-type', 'application/problem+json; charset=utf-8'
+        );
+        // there should be no hydra member field
+        static::assertArrayHasKey('hydra:title', $response->toArray());
+        static::assertArrayHasKey('hydra:description', $response->toArray());
+    }
+
+    public function testAsZeroIntMalformedPageNumberAttributeOfPaginationSetup(): void
+    {
+        // load fixture cotaining tiny basic set of 5 users
+        $this->loadFixtures([
+            UserFixtures::class
+        ]);
+
+        // expect anticipatable HTTP client exception
+        // (expecting generic exception class to keep test identependent of HTTP client implementation)
+        self::expectException(\Exception::class);
+
+        // call the list users API endpoint
+        $response = static::createClient()->request('GET', '/api/users', [
+            'headers' => [
+                'Accept' => 'application/ld+json'
+            ],
+            'query' => [
+                'page-size'   => 123,
+                'page-number' => 0 // malformed page number value
+            ],
+        ]);
+
+        static::assertResponseStatusCodeSame(400);
+        static::assertResponseHeaderSame(
+            'content-type', 'application/problem+json; charset=utf-8'
+        );
+        // there should be no hydra member field
+        static::assertArrayHasKey('hydra:title', $response->toArray());
+        static::assertArrayHasKey('hydra:description', $response->toArray());
+    }
+
+    
+    public function testAsFloatMalformedPageSizeAttributeOfPaginationSetup(): void
+    {
+        // load fixture cotaining tiny basic set of 5 users
+        $this->loadFixtures([
+            UserFixtures::class
+        ]);
+
+        // expect anticipatable HTTP client exception
+        // (expecting generic exception class to keep test identependent of HTTP client implementation)
+        self::expectException(\Exception::class);
+
+        // call the list users API endpoint
+        $response = static::createClient()->request('GET', '/api/users', [
+            'headers' => [
+                'Accept' => 'application/ld+json'
+            ],
+            'query' => [
+                'page-size'   => 0.123, // malformed page-size value
+                'page-number' => 123
+            ],
+        ]);
+
+        static::assertResponseStatusCodeSame(400);
+        static::assertResponseHeaderSame(
+            'content-type', 'application/problem+json; charset=utf-8'
+        );
+        // there should be no hydra member field
+        static::assertArrayHasKey('hydra:title', $response->toArray());
+        static::assertArrayHasKey('hydra:description', $response->toArray());
+    }
+
+    public function testAsFloatMalformedPageNumberAttributeOfPaginationSetup(): void
+    {
+        // load fixture cotaining tiny basic set of 5 users
+        $this->loadFixtures([
+            UserFixtures::class
+        ]);
+
+        // expect anticipatable HTTP client exception
+        // (expecting generic exception class to keep test identependent of HTTP client implementation)
+        self::expectException(\Exception::class);
+
+        // call the list users API endpoint
+        $response = static::createClient()->request('GET', '/api/users', [
+            'headers' => [
+                'Accept' => 'application/ld+json'
+            ],
+            'query' => [
+                'page-size'   => 123,
+                'page-number' => 0.123 // malformed page number value
+            ],
+        ]);
+
+        static::assertResponseStatusCodeSame(400);
+        static::assertResponseHeaderSame(
+            'content-type', 'application/problem+json; charset=utf-8'
+        );
+        // there should be no hydra member field
+        static::assertArrayHasKey('hydra:title', $response->toArray());
+        static::assertArrayHasKey('hydra:description', $response->toArray());
+    }
+
+    public function testAsStringMalformedPageSizeAttributeOfPaginationSetup(): void
+    {
+        // load fixture cotaining tiny basic set of 5 users
+        $this->loadFixtures([
+            UserFixtures::class
+        ]);
+
+        // expect anticipatable HTTP client exception
+        // (expecting generic exception class to keep test identependent of HTTP client implementation)
+        self::expectException(\Exception::class);
+
+        // call the list users API endpoint
+        $response = static::createClient()->request('GET', '/api/users', [
+            'headers' => [
+                'Accept' => 'application/ld+json'
+            ],
+            'query' => [
+                'page-size'   => 'null', // malformed page-size value
+                'page-number' => 123
+            ],
+        ]);
+
+        static::assertResponseStatusCodeSame(400);
+        static::assertResponseHeaderSame(
+            'content-type', 'application/problem+json; charset=utf-8'
+        );
+        // there should be no hydra member field
+        static::assertArrayHasKey('hydra:title', $response->toArray());
+        static::assertArrayHasKey('hydra:description', $response->toArray());
+    }
+
+    public function testAsStringMalformedPageNumberAttributeOfPaginationSetup(): void
+    {
+        // load fixture cotaining tiny basic set of 5 users
+        $this->loadFixtures([
+            UserFixtures::class
+        ]);
+
+        // expect anticipatable HTTP client exception
+        // (expecting generic exception class to keep test identependent of HTTP client implementation)
+        self::expectException(\Exception::class);
+
+        // call the list users API endpoint
+        $response = static::createClient()->request('GET', '/api/users', [
+            'headers' => [
+                'Accept' => 'application/ld+json'
+            ],
+            'query' => [
+                'page-size'   => 123,
+                'page-number' => 'null' // malformed page number value
+            ],
+        ]);
+
+        static::assertResponseStatusCodeSame(400);
+        static::assertResponseHeaderSame(
+            'content-type', 'application/problem+json; charset=utf-8'
+        );
+        // there should be no hydra member field
+        static::assertArrayHasKey('hydra:title', $response->toArray());
+        static::assertArrayHasKey('hydra:description', $response->toArray());
+    }
+
     public function testGetPopulatedPaginatedListOrderedBySurnameAscending(): void
     {
         // load fixture cotaining tiny basic set of 5 users
