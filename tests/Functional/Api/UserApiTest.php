@@ -48,7 +48,7 @@ class UserApiTest extends ApiTestCase
             'hydra:member'     => [],
         ]);
         // no record should be returned
-        static::assertCount(0, $response->toArray()['hydra:member']);
+        static::assertCount(0, $response->toArray(throw: false)['hydra:member']);
     }
 
     public function testGetPopulatedList(): void
@@ -78,7 +78,7 @@ class UserApiTest extends ApiTestCase
         // implicit pagination of the class is set to 5
         // so we should get all 5 records of the tiny user
         // set rendered in the response
-        static::assertCount(5, $response->toArray()['hydra:member']);
+        static::assertCount(5, $response->toArray(throw: false)['hydra:member']);
     }
 
     public function testGetPopulatedPaginatedList(): void
@@ -131,7 +131,7 @@ class UserApiTest extends ApiTestCase
             ],
         ]);
         // one only user record should be returned due to pagination setup
-        static::assertCount(1, $response->toArray()['hydra:member']);
+        static::assertCount(1, $response->toArray(throw: false)['hydra:member']);
     }
 
     public function testGetFirstPageOfPopulatedPaginatedList(): void
@@ -170,7 +170,7 @@ class UserApiTest extends ApiTestCase
             ],
         ]);
         // two user records should be returned due to pagination setup
-        static::assertCount(2, $response->toArray()['hydra:member']);
+        static::assertCount(2, $response->toArray(throw: false)['hydra:member']);
     }
 
     public function testGetLastPageOfPopulatedPaginatedList(): void
@@ -208,7 +208,7 @@ class UserApiTest extends ApiTestCase
             ],
         ]);
         // one only user record should be returned due to pagination setup
-        static::assertCount(1, $response->toArray()['hydra:member']);
+        static::assertCount(1, $response->toArray(throw: false)['hydra:member']);
     }
 
     public function testGetOutOfRangePageOfPopulatedPaginatedList(): void
@@ -247,7 +247,7 @@ class UserApiTest extends ApiTestCase
             'hydra:member'    => [],
         ]);
         // one only user record should be returned due to pagination setup
-        static::assertCount(0, $response->toArray()['hydra:member']);
+        static::assertCount(0, $response->toArray(throw: false)['hydra:member']);
     }
 
     public function testMissingPageSizeAttributeOfPaginationSetup(): void
@@ -289,10 +289,10 @@ class UserApiTest extends ApiTestCase
             'hydra:member'    => [],
         ]);
         // all 5 user records should be returned due to pagination setup
-        static::assertCount(5, $response->toArray()['hydra:member']);
+        static::assertCount(5, $response->toArray(throw: false)['hydra:member']);
         // as the IMPLICIT PAGE SIZE is BIGGER THAN OVERALL USERS COUNT
         // the pagination 'hydra:view' entry is should not be rendered
-        static::assertArrayNotHasKey('hydra:view', $response->toArray()['hydra:member']);
+        static::assertArrayNotHasKey('hydra:view', $response->toArray(throw: false)['hydra:member']);
     }
 
     public function testMissingPageNumberAttributeOfPaginationSetup(): void
@@ -335,10 +335,10 @@ class UserApiTest extends ApiTestCase
             'hydra:member'    => [],
         ]);
         // all 5 user records should be returned due to pagination setup
-        static::assertCount(5, $response->toArray()['hydra:member']);
+        static::assertCount(5, $response->toArray(throw: false)['hydra:member']);
         // as the IMPLICIT PAGE SIZE is BIGGER THAN OVERALL USERS COUNT
         // the pagination 'hydra:view' entry is should not be rendered
-        static::assertArrayNotHasKey('hydra:view', $response->toArray()['hydra:member']);
+        static::assertArrayNotHasKey('hydra:view', $response->toArray(throw: false)['hydra:member']);
     }
 
     public function testAsNegativeIntMalformedPageSizeAttributeOfPaginationSetup(): void
@@ -347,10 +347,6 @@ class UserApiTest extends ApiTestCase
         $this->loadFixtures([
             UserFixtures::class
         ]);
-
-        // expect anticipatable HTTP client exception
-        // (expecting generic exception class to keep test identependent of HTTP client implementation)
-        self::expectException(\Exception::class);
 
         // call the list users API endpoint
         $response = static::createClient()->request('GET', '/api/users', [
@@ -368,8 +364,8 @@ class UserApiTest extends ApiTestCase
             'content-type', 'application/problem+json; charset=utf-8'
         );
         // there should be no hydra member field
-        static::assertArrayHasKey('hydra:title', $response->toArray());
-        static::assertArrayHasKey('hydra:description', $response->toArray());
+        static::assertArrayHasKey('hydra:title', $response->toArray(throw: false));
+        static::assertArrayHasKey('hydra:description', $response->toArray(throw: false));
     }
 
     public function testAsNegativeIntMalformedPageNumberAttributeOfPaginationSetup(): void
@@ -378,10 +374,6 @@ class UserApiTest extends ApiTestCase
         $this->loadFixtures([
             UserFixtures::class
         ]);
-
-        // expect anticipatable HTTP client exception
-        // (expecting generic exception class to keep test identependent of HTTP client implementation)
-        self::expectException(\Exception::class);
 
         // call the list users API endpoint
         $response = static::createClient()->request('GET', '/api/users', [
@@ -399,8 +391,8 @@ class UserApiTest extends ApiTestCase
             'content-type', 'application/problem+json; charset=utf-8'
         );
         // there should be no hydra member field
-        static::assertArrayHasKey('hydra:title', $response->toArray());
-        static::assertArrayHasKey('hydra:description', $response->toArray());
+        static::assertArrayHasKey('hydra:title', $response->toArray(throw: false));
+        static::assertArrayHasKey('hydra:description', $response->toArray(throw: false));
     }
 
     public function testAsZeroIntMalformedPageSizeAttributeOfPaginationSetup(): void
@@ -409,10 +401,6 @@ class UserApiTest extends ApiTestCase
         $this->loadFixtures([
             UserFixtures::class
         ]);
-
-        // expect anticipatable HTTP client exception
-        // (expecting generic exception class to keep test identependent of HTTP client implementation)
-        self::expectException(\Exception::class);
 
         // call the list users API endpoint
         $response = static::createClient()->request('GET', '/api/users', [
@@ -430,8 +418,8 @@ class UserApiTest extends ApiTestCase
             'content-type', 'application/problem+json; charset=utf-8'
         );
         // there should be no hydra member field
-        static::assertArrayHasKey('hydra:title', $response->toArray());
-        static::assertArrayHasKey('hydra:description', $response->toArray());
+        static::assertArrayHasKey('hydra:title', $response->toArray(throw: false));
+        static::assertArrayHasKey('hydra:description', $response->toArray(throw: false));
     }
 
     public function testAsZeroIntMalformedPageNumberAttributeOfPaginationSetup(): void
@@ -440,10 +428,6 @@ class UserApiTest extends ApiTestCase
         $this->loadFixtures([
             UserFixtures::class
         ]);
-
-        // expect anticipatable HTTP client exception
-        // (expecting generic exception class to keep test identependent of HTTP client implementation)
-        self::expectException(\Exception::class);
 
         // call the list users API endpoint
         $response = static::createClient()->request('GET', '/api/users', [
@@ -461,8 +445,8 @@ class UserApiTest extends ApiTestCase
             'content-type', 'application/problem+json; charset=utf-8'
         );
         // there should be no hydra member field
-        static::assertArrayHasKey('hydra:title', $response->toArray());
-        static::assertArrayHasKey('hydra:description', $response->toArray());
+        static::assertArrayHasKey('hydra:title', $response->toArray(throw: false));
+        static::assertArrayHasKey('hydra:description', $response->toArray(throw: false));
     }
 
     
@@ -472,10 +456,6 @@ class UserApiTest extends ApiTestCase
         $this->loadFixtures([
             UserFixtures::class
         ]);
-
-        // expect anticipatable HTTP client exception
-        // (expecting generic exception class to keep test identependent of HTTP client implementation)
-        self::expectException(\Exception::class);
 
         // call the list users API endpoint
         $response = static::createClient()->request('GET', '/api/users', [
@@ -493,8 +473,8 @@ class UserApiTest extends ApiTestCase
             'content-type', 'application/problem+json; charset=utf-8'
         );
         // there should be no hydra member field
-        static::assertArrayHasKey('hydra:title', $response->toArray());
-        static::assertArrayHasKey('hydra:description', $response->toArray());
+        static::assertArrayHasKey('hydra:title', $response->toArray(throw: false));
+        static::assertArrayHasKey('hydra:description', $response->toArray(throw: false));
     }
 
     public function testAsFloatMalformedPageNumberAttributeOfPaginationSetup(): void
@@ -503,10 +483,6 @@ class UserApiTest extends ApiTestCase
         $this->loadFixtures([
             UserFixtures::class
         ]);
-
-        // expect anticipatable HTTP client exception
-        // (expecting generic exception class to keep test identependent of HTTP client implementation)
-        self::expectException(\Exception::class);
 
         // call the list users API endpoint
         $response = static::createClient()->request('GET', '/api/users', [
@@ -524,8 +500,8 @@ class UserApiTest extends ApiTestCase
             'content-type', 'application/problem+json; charset=utf-8'
         );
         // there should be no hydra member field
-        static::assertArrayHasKey('hydra:title', $response->toArray());
-        static::assertArrayHasKey('hydra:description', $response->toArray());
+        static::assertArrayHasKey('hydra:title', $response->toArray(throw: false));
+        static::assertArrayHasKey('hydra:description', $response->toArray(throw: false));
     }
 
     public function testAsStringMalformedPageSizeAttributeOfPaginationSetup(): void
@@ -534,10 +510,6 @@ class UserApiTest extends ApiTestCase
         $this->loadFixtures([
             UserFixtures::class
         ]);
-
-        // expect anticipatable HTTP client exception
-        // (expecting generic exception class to keep test identependent of HTTP client implementation)
-        self::expectException(\Exception::class);
 
         // call the list users API endpoint
         $response = static::createClient()->request('GET', '/api/users', [
@@ -555,8 +527,8 @@ class UserApiTest extends ApiTestCase
             'content-type', 'application/problem+json; charset=utf-8'
         );
         // there should be no hydra member field
-        static::assertArrayHasKey('hydra:title', $response->toArray());
-        static::assertArrayHasKey('hydra:description', $response->toArray());
+        static::assertArrayHasKey('hydra:title', $response->toArray(throw: false));
+        static::assertArrayHasKey('hydra:description', $response->toArray(throw: false));
     }
 
     public function testAsStringMalformedPageNumberAttributeOfPaginationSetup(): void
@@ -565,10 +537,6 @@ class UserApiTest extends ApiTestCase
         $this->loadFixtures([
             UserFixtures::class
         ]);
-
-        // expect anticipatable HTTP client exception
-        // (expecting generic exception class to keep test identependent of HTTP client implementation)
-        self::expectException(\Exception::class);
 
         // call the list users API endpoint
         $response = static::createClient()->request('GET', '/api/users', [
@@ -586,8 +554,8 @@ class UserApiTest extends ApiTestCase
             'content-type', 'application/problem+json; charset=utf-8'
         );
         // there should be no hydra member field
-        static::assertArrayHasKey('hydra:title', $response->toArray());
-        static::assertArrayHasKey('hydra:description', $response->toArray());
+        static::assertArrayHasKey('hydra:title', $response->toArray(throw: false));
+        static::assertArrayHasKey('hydra:description', $response->toArray(throw: false));
     }
 
     public function testGetPopulatedPaginatedListOrderedBySurnameAscending(): void
@@ -652,7 +620,7 @@ class UserApiTest extends ApiTestCase
             ],
         ]);
         // two user records should be returned due to pagination setup
-        static::assertCount(2, $response->toArray()['hydra:member']);
+        static::assertCount(2, $response->toArray(throw: false)['hydra:member']);
     }
 
     public function testGetPopulatedPaginatedListOrderedBySurnameDescending(): void
@@ -721,7 +689,7 @@ class UserApiTest extends ApiTestCase
             ],
         ]);
         // two user records should be returned due to pagination setup
-        static::assertCount(2, $response->toArray()['hydra:member']);
+        static::assertCount(2, $response->toArray(throw: false)['hydra:member']);
     }
 
     public function testGetPopulatedListFilteredByGenderOrderedBySurnameAscending(): void 
@@ -781,7 +749,7 @@ class UserApiTest extends ApiTestCase
             ],
         ]);
         // two user records should be returned due to pagination setup
-        static::assertCount(2, $response->toArray()['hydra:member']);
+        static::assertCount(2, $response->toArray(throw: false)['hydra:member']);
     }
 
     public function testGetPopulatedPaginatedListFilteredByGenderOrderedBySurnameAscending(): void 
@@ -835,7 +803,7 @@ class UserApiTest extends ApiTestCase
             ],
         ]);
         // one only user record should be returned due to pagination setup
-        static::assertCount(1, $response->toArray()['hydra:member']);
+        static::assertCount(1, $response->toArray(throw: false)['hydra:member']);
     }
     
     public function testGetPopulatedPaginatedListFilteredByGenderOrderedBySurnameDescending(): void 
@@ -889,7 +857,7 @@ class UserApiTest extends ApiTestCase
             ],
         ]);
         // one only user record should be returned due to pagination setup
-        static::assertCount(1, $response->toArray()['hydra:member']);
+        static::assertCount(1, $response->toArray(throw: false)['hydra:member']);
     }
 
     protected function tearDown(): void
