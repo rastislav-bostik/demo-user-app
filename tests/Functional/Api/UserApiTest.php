@@ -130,6 +130,85 @@ class UserApiTest extends ApiTestCase
                 'hydra:next'  => '/api/users?page-size=1&page-number=2',
             ],
         ]);
+        // one only user record should be returned due to pagination setup
+        static::assertCount(1, $response->toArray()['hydra:member']);
+    }
+
+    public function testGetFirstPageOfPopulatedPaginatedList(): void
+    {
+        // load fixture cotaining tiny basic set of 5 users
+        $this->loadFixtures([
+            UserFixtures::class
+        ]);
+
+        // call the list users API endpoint
+        $response = static::createClient()->request('GET', '/api/users', [
+            'headers' => [
+                'Accept' => 'application/ld+json'
+            ],
+            'query' => [
+                'page-size'   => 2,
+                'page-number' => 1,
+            ],
+        ]);
+
+        static::assertResponseStatusCodeSame(200);
+        static::assertResponseHeaderSame(
+            'content-type', 'application/ld+json; charset=utf-8'
+        );
+        static::assertJsonContains([
+            '@context'         => '/api/contexts/User',
+            '@id'              => '/api/users',
+            '@type'            => 'hydra:Collection',
+            'hydra:totalItems' => 5,
+            'hydra:view'        =>  [
+                '@id'         => '/api/users?page-size=2&page-number=1',
+                '@type'       => 'hydra:PartialCollectionView',
+                'hydra:first' => '/api/users?page-size=2&page-number=1',
+                'hydra:last'  => '/api/users?page-size=2&page-number=3',
+                'hydra:next'  => '/api/users?page-size=2&page-number=2',
+            ],
+        ]);
+        // two user records should be returned due to pagination setup
+        static::assertCount(2, $response->toArray()['hydra:member']);
+    }
+
+    public function testGetLastPageOfPopulatedPaginatedList(): void
+    {
+        // load fixture cotaining tiny basic set of 5 users
+        $this->loadFixtures([
+            UserFixtures::class
+        ]);
+
+        // call the list users API endpoint
+        $response = static::createClient()->request('GET', '/api/users', [
+            'headers' => [
+                'Accept' => 'application/ld+json'
+            ],
+            'query' => [
+                'page-size'   => 2,
+                'page-number' => 3,
+            ],
+        ]);
+
+        static::assertResponseStatusCodeSame(200);
+        static::assertResponseHeaderSame(
+            'content-type', 'application/ld+json; charset=utf-8'
+        );
+        static::assertJsonContains([
+            '@context'         => '/api/contexts/User',
+            '@id'              => '/api/users',
+            '@type'            => 'hydra:Collection',
+            'hydra:totalItems' => 5,
+            'hydra:view'        =>  [
+                '@id'         => '/api/users?page-size=2&page-number=3',
+                '@type'       => 'hydra:PartialCollectionView',
+                'hydra:first' => '/api/users?page-size=2&page-number=1',
+                'hydra:last'  => '/api/users?page-size=2&page-number=3'
+            ],
+        ]);
+        // one only user record should be returned due to pagination setup
+        static::assertCount(1, $response->toArray()['hydra:member']);
     }
 
     public function testGetPopulatedPaginatedListOrderedBySurnameAscending(): void
