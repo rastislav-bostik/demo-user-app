@@ -40,6 +40,9 @@ class UserRepositoryTest extends KernelTestCase
 
     public function testSearchAllRecordsOverEmptyDataset(): void
     {
+        // make sure there are no user records
+        $this->cleanDatabase();
+
         // and try to fetch it
         $users = $this->entityManager
             ->getRepository(User::class)
@@ -51,7 +54,9 @@ class UserRepositoryTest extends KernelTestCase
     public function testSearchAllRecordsOverPopulatedDataset(): void
     {
         // load basic users set fixture
-        $this->loadFixtures();
+        $this->loadFixtures([
+            UserFixtures::class,
+        ]);
 
         // load basic user set fixtures
         // and try to fetch it
@@ -72,17 +77,29 @@ class UserRepositoryTest extends KernelTestCase
     }
 
     /**
-     * Load set of basic user fixtures
+     * Load set of basic testing fixtures
      * usefull mostly for listing, filtering,
      * sorting and pagination testing purposes.
      * 
+     * @param string[] $fixtureClassNames
      * @return void
      */
-    protected function loadFixtures() : void {
+    protected function loadFixtures(array $fixturesClassNames): void
+    {
         // load set of basic fixtures
         $databaseTool = static::getContainer()->get(DatabaseToolCollection::class)->get();
-        $databaseTool->loadFixtures([
-            UserFixtures::class
-        ]);
+        $databaseTool->loadFixtures($fixturesClassNames);
+    }
+
+    /**
+     * Clean the testing database
+     * 
+     * @return void
+     */
+    protected function cleanDatabase(): void
+    {
+        // load set of basic fixtures
+        $databaseTool = static::getContainer()->get(DatabaseToolCollection::class)->get();
+        $databaseTool->loadFixtures([]);
     }
 }

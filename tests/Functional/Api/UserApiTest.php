@@ -22,9 +22,6 @@ class UserApiTest extends ApiTestCase
         // cease to exist as soon as the connection is
         // closead after each test case
         DatabasePrimer::prime($kernel);
-
-        // load basic user data fixtures
-        $this->loadFixtures();
     }
 
     public function testGetEmptyList(): void
@@ -54,6 +51,11 @@ class UserApiTest extends ApiTestCase
 
     public function testGetPopulatedList(): void
     {
+        // load fixture cotaining tiny basic set of 5 users
+        $this->loadFixtures([
+            UserFixtures::class
+        ]);
+
         // call the list users API endpoint
         static::createClient()->request('GET', '/api/users', [
             'headers' => [
@@ -75,6 +77,11 @@ class UserApiTest extends ApiTestCase
 
     public function testGetPopulatedPaginatedList(): void
     {
+        // load fixture cotaining tiny basic set of 5 users
+        $this->loadFixtures([
+            UserFixtures::class
+        ]);
+
         // call the list users API endpoint
         static::createClient()->request('GET', '/api/users', [
             'headers' => [
@@ -121,6 +128,11 @@ class UserApiTest extends ApiTestCase
 
     public function testGetPopulatedPaginatedListOrderedBySurnameAscending(): void
     {
+        // load fixture cotaining tiny basic set of 5 users
+        $this->loadFixtures([
+            UserFixtures::class
+        ]);
+
         // call the list users API endpoint
         static::createClient()->request('GET', '/api/users', [
             'headers' => [
@@ -179,6 +191,11 @@ class UserApiTest extends ApiTestCase
 
     public function testGetPopulatedPaginatedListOrderedBySurnameDescending(): void
     {
+        // load fixture cotaining tiny basic set of 5 users
+        $this->loadFixtures([
+            UserFixtures::class
+        ]);
+
         // call the list users API endpoint
         static::createClient()->request('GET', '/api/users', [
             'headers' => [
@@ -241,6 +258,11 @@ class UserApiTest extends ApiTestCase
 
     public function testGetPopulatedListFilteredByGenderOrderedBySurnameAscending(): void 
     {
+        // load fixture cotaining tiny basic set of 5 users
+        $this->loadFixtures([
+            UserFixtures::class
+        ]);
+
         // call the list users API endpoint
         static::createClient()->request('GET', '/api/users', [
             'headers' => [
@@ -294,6 +316,11 @@ class UserApiTest extends ApiTestCase
 
     public function testGetPopulatedPaginatedListFilteredByGenderOrderedBySurnameAscending(): void 
     {
+        // load fixture cotaining tiny basic set of 5 users
+        $this->loadFixtures([
+            UserFixtures::class
+        ]);
+
         // call the list users API endpoint
         static::createClient()->request('GET', '/api/users', [
             'headers' => [
@@ -341,6 +368,11 @@ class UserApiTest extends ApiTestCase
     
     public function testGetPopulatedPaginatedListFilteredByGenderOrderedBySurnameDescending(): void 
     {
+        // load fixture cotaining tiny basic set of 5 users
+        $this->loadFixtures([
+            UserFixtures::class
+        ]);
+
         // call the list users API endpoint
         static::createClient()->request('GET', '/api/users', [
             'headers' => [
@@ -392,23 +424,22 @@ class UserApiTest extends ApiTestCase
     }
 
     /**
-     * Load set of basic user fixtures
+     * Load set of basic testing fixtures
      * usefull mostly for listing, filtering,
      * sorting and pagination testing purposes.
      * 
+     * @param string[] $fixtureClassNames
      * @return void
      */
-    protected function loadFixtures(): void
+    protected function loadFixtures(array $fixturesClassNames): void
     {
         // load set of basic fixtures
         $databaseTool = static::getContainer()->get(DatabaseToolCollection::class)->get();
-        $databaseTool->loadFixtures([
-            UserFixtures::class
-        ]);
+        $databaseTool->loadFixtures($fixturesClassNames);
     }
 
     /**
-     * Unload all fixtures from the testing database
+     * Clean the testing database
      * 
      * @return void
      */
