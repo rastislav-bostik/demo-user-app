@@ -10,7 +10,7 @@ use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 /**
  * Tests of user API backend functionality
  */
-class UserApiTest extends ApiTestCase
+class UserGetListApiTest extends ApiTestCase
 {
     protected function setUp(): void
     {
