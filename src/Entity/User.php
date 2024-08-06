@@ -2,26 +2,29 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
-use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use App\Repository\UserRepository;
+use Symfony\Component\Uid\Uuid;
+use Symfony\Bridge\Doctrine\Types\UuidType;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Types\UuidType;
-use Symfony\Component\Uid\Uuid;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
+use Symfony\Component\Validator\Constraints as Assert; 
+use Symfony\Polyfill\Mbstring\Mbstring;
 
 /**
  * User entity class
  */
-#[ApiResource]
+#[ApiResource(
+    paginationItemsPerPage: 5,
+)]
 #[ApiFilter(OrderFilter::class)]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 class User
 {
-
     /** 
      * Unique identifier of the user
      * @var \Symfony\Component\Uid\Uuid
@@ -40,6 +43,21 @@ class User
      */
     #[ORM\Column(length: 48)]
     #[ApiFilter(SearchFilter::class)]
+    #[Assert\NotBlank(normalizer: [Mbstring::class, 'mb_trim'])]
+    #[Assert\Length(max: 48)]
+    #[Assert\Regex(
+        // first name validation pattern accepting uppercase letter only starting names separated by single spaces
+        // and consisting of Latin and/or non-Latin letters, apostrophe and dash symbols only.
+        // (e.g. Miguel María, Антон Павлович, יעקב שבתאי)
+        // (not supporting ideographic and other non-alphabetic symbols / writing systems e.g. Chinese, Japanese, ...)
+        // 
+        // @todo ensure that dash and apostrophe can't follow each other
+        // @see https://en.wikipedia.org/wiki/List_of_writing_systems
+        // @see https://www.regular-expressions.info/unicode.html#prop
+        // @see https://www.quora.com/Do-Chinese-characters-have-letter-case-i-e-distinct-upper-and-lower-cases
+        pattern: '/^(\p{Lu}[\p{L}\'-]*)( \p{Lu}[\p{L}\'-]*)*$/u',
+        message: 'The "name" attribute accepts uppercase letter starting forenames containing letters, dash or apostrophe symbols only and separated by single space symbols.'
+    )]
     private string $name;
 
     /**
@@ -48,6 +66,8 @@ class User
      */
     #[ORM\Column(length: 255)]
     #[ApiFilter(SearchFilter::class)]
+    #[Assert\NotBlank(normalizer: [Mbstring::class, 'mb_trim'])]
+    #[Assert\Length(max: 255)]
     private string $surname;
 
     /**
@@ -56,6 +76,9 @@ class User
      */
     #[ORM\Column(length: 255, unique: true)]
     #[ApiFilter(SearchFilter::class)]
+    #[Assert\NotBlank(normalizer: [Mbstring::class, 'mb_trim'])]
+    #[Assert\Length(max: 255)]
+    #[Assert\Email]
     private string $email;
 
     /**
@@ -64,6 +87,7 @@ class User
      */
     #[ORM\Column(enumType: Gender::class)]
     #[ApiFilter(SearchFilter::class)]
+    #[Assert\NotBlank(normalizer: [Mbstring::class, 'mb_trim'])]
     private Gender $gender;
 
     /**
@@ -72,6 +96,7 @@ class User
      */
     #[ORM\Column(type: Types::SIMPLE_ARRAY, enumType: Role::class)]
     #[ApiFilter(SearchFilter::class)]
+    #[Assert\Count(min: 1)]
     private array $roles = [];
 
     /**
@@ -80,6 +105,7 @@ class User
      */
     #[ORM\Column(length: 255, nullable: true)]
     #[ApiFilter(SearchFilter::class)]
+    #[Assert\Length(max: 255)]
     private ?string $note = null;
 
     /**
@@ -89,6 +115,8 @@ class User
      */
     #[ORM\Column]
     #[ApiFilter(BooleanFilter::class)]
+    #[Assert\NotBlank]
+    #[Assert\Type('bool')]
     private bool $active;
 
     // public function __construct(string $name, string $surname, string $email, Gender $gender, ?string $note = null, bool $active, array $roles) {
