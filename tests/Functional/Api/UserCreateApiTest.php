@@ -1,0 +1,931 @@
+<?php
+
+namespace App\Tests\Functional\Api;
+
+use App\Entity\Role;
+use App\Entity\Gender;
+use App\Tests\DatabasePrimer;
+use App\DataFixtures\Doctrine\UserFixtures;
+use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
+use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
+
+/**
+ * Tests of create user backend API functionality
+ */
+class UserCreateApiTest extends ApiTestCase
+{
+    protected function setUp(): void
+    {
+        // boot & pick kernel instance
+        $kernel = self::bootKernel();
+
+        // rebuilding in-memory testing database schema
+        // before every single test as the database
+        // cease to exist as soon as the connection is
+        // closead after each test case
+        DatabasePrimer::prime($kernel);
+    }
+
+    public function testCreateUserWithMissingJsonData(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // call the list users API endpoint
+        $response = static::createClient()->request('POST', '/api/users', [
+            'json'    => [],
+            'headers' => [
+                'Accept' => 'application/ld+json'
+            ]
+        ]);
+
+        static::assertResponseIsUnprocessable(); // expecting HTTP reponse code 422 - Unprocessable
+        static::assertResponseHeaderSame(
+            'content-type',
+            'application/problem+json; charset=utf-8'
+        );
+        static::assertStringContainsString('/api/validation_errors', $response->toArray(throw: false)['@id']);
+        static::assertJsonContains([
+            '@type'      => 'ConstraintViolationList',
+            'status'     => 422,
+            'violations' => [
+                ['propertyPath' => 'name', 'message' => 'This value should not be blank.'],
+                ['propertyPath' => 'surname', 'message' => 'This value should not be blank.'],
+                ['propertyPath' => 'email', 'message' => 'This value should not be blank.'],
+                ['propertyPath' => 'gender', 'message' => 'This value should not be blank.'],
+                ['propertyPath' => 'roles', 'message' => 'This collection should contain 1 element or more.'],
+                ['propertyPath' => 'active', 'message' => 'This value should not be blank.']
+            ],
+        ]);
+
+        // check overall amount of expected constraint violations
+        static::assertCount(6, $response->toArray(throw: false)['violations']);
+    }
+
+    public function testCreateUserWithEmptyJsonData(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // call the list users API endpoint
+        $response = static::createClient()->request('POST', '/api/users', [
+            'json'    => [],
+            'headers' => [
+                'Accept' => 'application/ld+json'
+            ]
+        ]);
+
+        static::assertResponseIsUnprocessable(); // expecting HTTP reponse code 422 - Unprocessable
+        static::assertResponseHeaderSame(
+            'content-type',
+            'application/problem+json; charset=utf-8'
+        );
+        static::assertStringContainsString('/api/validation_errors', $response->toArray(throw: false)['@id']);
+        static::assertJsonContains([
+            '@type'      => 'ConstraintViolationList',
+            'status'     => 422,
+            'violations' => [
+                ['propertyPath' => 'name', 'message' => 'This value should not be blank.'],
+                ['propertyPath' => 'surname', 'message' => 'This value should not be blank.'],
+                ['propertyPath' => 'email', 'message' => 'This value should not be blank.'],
+                ['propertyPath' => 'gender', 'message' => 'This value should not be blank.'],
+                ['propertyPath' => 'roles', 'message' => 'This collection should contain 1 element or more.'],
+                ['propertyPath' => 'active', 'message' => 'This value should not be blank.']
+            ],
+        ]);
+        // check overall amount of expected constraint violations
+        static::assertCount(6, $response->toArray(throw: false)['violations']);
+    }
+
+    // ======================== NAME ATTRIBUTE CHECKING TESTS ======================== //
+
+    public function testCreateUserWithMissingAsNameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // call the list users API endpoint
+        $response = static::createClient()->request('POST', '/api/users', [
+            'json'    => [
+                'surname' => 'User X',
+                'email'   => 'test.user.X@foo.local',
+                'gender'  => Gender::MALE,
+                'roles'   =>  [
+                    Role::USER,
+                    Role::ADMIN,
+                ],
+                'active'   => true 
+
+            ],
+            'headers' => [
+                'Accept' => 'application/ld+json'
+            ]
+        ]);
+
+        static::assertResponseIsUnprocessable(); // expecting HTTP reponse code 422 - Unprocessable
+        static::assertResponseHeaderSame(
+            'content-type',
+            'application/problem+json; charset=utf-8'
+        );
+        static::assertStringContainsString('/api/validation_errors', $response->toArray(throw: false)['@id']);
+        static::assertJsonContains([
+            '@type'      => 'ConstraintViolationList',
+            'status'     => 422,
+            'violations' => [
+                ['propertyPath' => 'name', 'message' => 'This value should not be blank.'],
+            ],
+        ]);
+        // check overall amount of expected constraint violations
+        static::assertCount(1, $response->toArray(throw: false)['violations']);
+    }
+
+    public function testCreateUserWithNullAsNameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // call the list users API endpoint
+        $response = static::createClient()->request('POST', '/api/users', [
+            'json'    => [
+                'name'    => null,
+                'surname' => 'User X',
+                'email'   => 'test.user.X@foo.local',
+                'gender'  => Gender::MALE,
+                'roles'   =>  [
+                    Role::USER,
+                    Role::ADMIN,
+                ],
+                'active'   => true 
+
+            ],
+            'headers' => [
+                'Accept' => 'application/ld+json'
+            ]
+        ]);
+
+        static::assertResponseStatusCodeSame(400);
+        static::assertResponseHeaderSame(
+            'content-type',
+            'application/problem+json; charset=utf-8'
+        );
+        static::assertStringContainsString('/api/errors', $response->toArray(throw: false)['@id']);
+        static::assertJsonContains([
+            '@type'  => 'hydra:Error',
+            'status' => 400,
+            'title'  => 'An error occurred',
+            'detail' => 'The type of the "name" attribute must be "string", "NULL" given.'
+        ]);
+    }
+
+    public function testCreateUserWithEmptyAsNameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // call the list users API endpoint
+        $response = static::createClient()->request('POST', '/api/users', [
+            'json'    => [
+                'name'    => '',
+                'surname' => 'User X',
+                'email'   => 'test.user.X@foo.local',
+                'gender'  => Gender::MALE,
+                'roles'   =>  [
+                    Role::USER,
+                    Role::ADMIN,
+                ],
+                'active'   => true 
+
+            ],
+            'headers' => [
+                'Accept' => 'application/ld+json'
+            ]
+        ]);
+
+        static::assertResponseIsUnprocessable(); // expecting HTTP reponse code 422 - Unprocessable
+        static::assertResponseHeaderSame(
+            'content-type',
+            'application/problem+json; charset=utf-8'
+        );
+        static::assertStringContainsString('/api/validation_errors', $response->toArray(throw: false)['@id']);
+        static::assertJsonContains([
+            '@type'      => 'ConstraintViolationList',
+            'status'     => 422,
+            'violations' => [
+                ['propertyPath' => 'name', 'message' => 'This value should not be blank.']
+            ],
+        ]);
+        // check overall amount of expected constraint violations
+        static::assertCount(1, $response->toArray(throw: false)['violations']);
+    }
+
+    public function testCreateUserWithWhitespaceAsNameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // call the list users API endpoint
+        $response = static::createClient()->request('POST', '/api/users', [
+            'json'    => [
+                'name'    => "\u{0009}\u{000A}\u{000B}\u{000C}\u{000D}\u{0020}\u{0085}\u{00A0}\u{1680}",
+                'surname' => 'User X',
+                'email'   => 'test.user.X@foo.local',
+                'gender'  => Gender::MALE,
+                'roles'   =>  [
+                    Role::USER,
+                    Role::ADMIN,
+                ],
+                'active'   => true 
+
+            ],
+            'headers' => [
+                'Accept' => 'application/ld+json'
+            ]
+        ]);
+
+        static::assertResponseIsUnprocessable(); // expecting HTTP reponse code 422 - Unprocessable
+        static::assertResponseHeaderSame(
+            'content-type',
+            'application/problem+json; charset=utf-8'
+        );
+        static::assertStringContainsString('/api/validation_errors', $response->toArray(throw: false)['@id']);
+        static::assertJsonContains([
+            '@type'      => 'ConstraintViolationList',
+            'status'     => 422,
+            'violations' => [
+                ['propertyPath' => 'name', 'message' => 'This value should not be blank.'],
+                ['propertyPath' => 'name', 'message' => 'The "name" attribute accepts uppercase letter starting forenames containing letters, dash or apostrophe symbols only and separated by single space symbols.'],
+            ],
+        ]);
+        // check overall amount of expected constraint violations
+        static::assertCount(2, $response->toArray(throw: false)['violations']);
+    }
+
+    public function testCreateUserWithFalseBoolAsNameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // call the list users API endpoint
+        $response = static::createClient()->request('POST', '/api/users', [
+            'json'    => [
+                'name'    => false,
+                'surname' => 'User X',
+                'email'   => 'test.user.X@foo.local',
+                'gender'  => Gender::MALE,
+                'roles'   =>  [
+                    Role::USER,
+                    Role::ADMIN,
+                ],
+                'active'   => true 
+
+            ],
+            'headers' => [
+                'Accept' => 'application/ld+json'
+            ]
+        ]);
+
+        static::assertResponseStatusCodeSame(400);
+        static::assertResponseHeaderSame(
+            'content-type',
+            'application/problem+json; charset=utf-8'
+        );
+        static::assertStringContainsString('/api/errors', $response->toArray(throw: false)['@id']);
+        static::assertJsonContains([
+            '@type'  => 'hydra:Error',
+            'status' => 400,
+            'title'  => 'An error occurred',
+            'detail' => 'The type of the "name" attribute must be "string", "boolean" given.'
+        ]);
+    }
+
+    public function testCreateUserWithFalseStringAsNameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // call the list users API endpoint
+        $response = static::createClient()->request('POST', '/api/users', [
+            'json'    => [
+                'name'    => "false",
+                'surname' => 'User X',
+                'email'   => 'test.user.X@foo.local',
+                'gender'  => Gender::MALE,
+                'roles'   =>  [
+                    Role::USER,
+                    Role::ADMIN,
+                ],
+                'active'   => true 
+
+            ],
+            'headers' => [
+                'Accept' => 'application/ld+json'
+            ]
+        ]);
+
+        static::assertResponseIsUnprocessable(); // expecting HTTP reponse code 422 - Unprocessable
+        static::assertResponseHeaderSame(
+            'content-type',
+            'application/problem+json; charset=utf-8'
+        );
+        static::assertStringContainsString('/api/validation_errors', $response->toArray(throw: false)['@id']);
+        static::assertJsonContains([
+            '@type'      => 'ConstraintViolationList',
+            'status'     => 422,
+            'violations' => [
+                ['propertyPath' => 'name', 'message' => 'The "name" attribute accepts uppercase letter starting forenames containing letters, dash or apostrophe symbols only and separated by single space symbols.'],
+            ],
+        ]);
+        // check overall amount of expected constraint violations
+        static::assertCount(1, $response->toArray(throw: false)['violations']);
+    }
+
+    public function testCreateUserWithTrueBoolAsNameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // call the list users API endpoint
+        $response = static::createClient()->request('POST', '/api/users', [
+            'json'    => [
+                'name'    => true,
+                'surname' => 'User X',
+                'email'   => 'test.user.X@foo.local',
+                'gender'  => Gender::MALE,
+                'roles'   =>  [
+                    Role::USER,
+                    Role::ADMIN,
+                ],
+                'active'   => true 
+
+            ],
+            'headers' => [
+                'Accept' => 'application/ld+json'
+            ]
+        ]);
+
+        static::assertResponseStatusCodeSame(400);
+        static::assertResponseHeaderSame(
+            'content-type',
+            'application/problem+json; charset=utf-8'
+        );
+        static::assertStringContainsString('/api/errors', $response->toArray(throw: false)['@id']);
+        static::assertJsonContains([
+            '@type'  => 'hydra:Error',
+            'status' => 400,
+            'title'  => 'An error occurred',
+            'detail' => 'The type of the "name" attribute must be "string", "boolean" given.'
+        ]);
+    }
+
+    public function testCreateUserWithTrueStringAsNameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // call the list users API endpoint
+        $response = static::createClient()->request('POST', '/api/users', [
+            'json'    => [
+                'name'    => "true",
+                'surname' => 'User X',
+                'email'   => 'test.user.X@foo.local',
+                'gender'  => Gender::MALE,
+                'roles'   =>  [
+                    Role::USER,
+                    Role::ADMIN,
+                ],
+                'active'   => true 
+
+            ],
+            'headers' => [
+                'Accept' => 'application/ld+json'
+            ]
+        ]);
+
+        static::assertResponseIsUnprocessable(); // expecting HTTP reponse code 422 - Unprocessable
+        static::assertResponseHeaderSame(
+            'content-type',
+            'application/problem+json; charset=utf-8'
+        );
+        static::assertStringContainsString('/api/validation_errors', $response->toArray(throw: false)['@id']);
+        static::assertJsonContains([
+            '@type'      => 'ConstraintViolationList',
+            'status'     => 422,
+            'violations' => [
+                ['propertyPath' => 'name', 'message' => 'The "name" attribute accepts uppercase letter starting forenames containing letters, dash or apostrophe symbols only and separated by single space symbols.'],
+            ],
+        ]);
+        // check overall amount of expected constraint violations
+        static::assertCount(1, $response->toArray(throw: false)['violations']);
+    }
+
+    public function testCreateUserWithZeroIntAsNameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // call the list users API endpoint
+        $response = static::createClient()->request('POST', '/api/users', [
+            'json'    => [
+                'name'    => 0,
+                'surname' => 'User X',
+                'email'   => 'test.user.X@foo.local',
+                'gender'  => Gender::MALE,
+                'roles'   =>  [
+                    Role::USER,
+                    Role::ADMIN,
+                ],
+                'active'   => true 
+
+            ],
+            'headers' => [
+                'Accept' => 'application/ld+json'
+            ]
+        ]);
+
+        static::assertResponseStatusCodeSame(400);
+        static::assertResponseHeaderSame(
+            'content-type',
+            'application/problem+json; charset=utf-8'
+        );
+        static::assertStringContainsString('/api/errors', $response->toArray(throw: false)['@id']);
+        static::assertJsonContains([
+            '@type'  => 'hydra:Error',
+            'status' => 400,
+            'title'  => 'An error occurred',
+            'detail' => 'The type of the "name" attribute must be "string", "integer" given.'
+        ]);
+    }
+
+    public function testCreateUserWithZeroIntStringAsNameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // call the list users API endpoint
+        $response = static::createClient()->request('POST', '/api/users', [
+            'json'    => [
+                'name'    => "0",
+                'surname' => 'User X',
+                'email'   => 'test.user.X@foo.local',
+                'gender'  => Gender::MALE,
+                'roles'   =>  [
+                    Role::USER,
+                    Role::ADMIN,
+                ],
+                'active'   => true 
+
+            ],
+            'headers' => [
+                'Accept' => 'application/ld+json'
+            ]
+        ]);
+
+        static::assertResponseIsUnprocessable(); // expecting HTTP reponse code 422 - Unprocessable
+        static::assertResponseHeaderSame(
+            'content-type',
+            'application/problem+json; charset=utf-8'
+        );
+        static::assertStringContainsString('/api/validation_errors', $response->toArray(throw: false)['@id']);
+        static::assertJsonContains([
+            '@type'      => 'ConstraintViolationList',
+            'status'     => 422,
+            'violations' => [
+                ['propertyPath' => 'name', 'message' => 'The "name" attribute accepts uppercase letter starting forenames containing letters, dash or apostrophe symbols only and separated by single space symbols.'],
+            ],
+        ]);
+        // check overall amount of expected constraint violations
+        static::assertCount(1, $response->toArray(throw: false)['violations']);
+    }
+
+    public function testCreateUserWithPositiveIntAsNameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // call the list users API endpoint
+        $response = static::createClient()->request('POST', '/api/users', [
+            'json'    => [
+                'name'    => 1,
+                'surname' => 'User X',
+                'email'   => 'test.user.X@foo.local',
+                'gender'  => Gender::MALE,
+                'roles'   =>  [
+                    Role::USER,
+                    Role::ADMIN,
+                ],
+                'active'   => true 
+
+            ],
+            'headers' => [
+                'Accept' => 'application/ld+json'
+            ]
+        ]);
+
+        static::assertResponseStatusCodeSame(400);
+        static::assertResponseHeaderSame(
+            'content-type',
+            'application/problem+json; charset=utf-8'
+        );
+        static::assertStringContainsString('/api/errors', $response->toArray(throw: false)['@id']);
+        static::assertJsonContains([
+            '@type'  => 'hydra:Error',
+            'status' => 400,
+            'title'  => 'An error occurred',
+            'detail' => 'The type of the "name" attribute must be "string", "integer" given.'
+        ]);
+    }
+
+    public function testCreateUserWithPositiveIntStringAsNameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // call the list users API endpoint
+        $response = static::createClient()->request('POST', '/api/users', [
+            'json'    => [
+                'name'    => "1",
+                'surname' => 'User X',
+                'email'   => 'test.user.X@foo.local',
+                'gender'  => Gender::MALE,
+                'roles'   =>  [
+                    Role::USER,
+                    Role::ADMIN,
+                ],
+                'active'   => true 
+
+            ],
+            'headers' => [
+                'Accept' => 'application/ld+json'
+            ]
+        ]);
+
+        static::assertResponseIsUnprocessable(); // expecting HTTP reponse code 422 - Unprocessable
+        static::assertResponseHeaderSame(
+            'content-type',
+            'application/problem+json; charset=utf-8'
+        );
+        static::assertStringContainsString('/api/validation_errors', $response->toArray(throw: false)['@id']);
+        static::assertJsonContains([
+            '@type'      => 'ConstraintViolationList',
+            'status'     => 422,
+            'violations' => [
+                ['propertyPath' => 'name', 'message' => 'The "name" attribute accepts uppercase letter starting forenames containing letters, dash or apostrophe symbols only and separated by single space symbols.'],
+            ],
+        ]);
+        // check overall amount of expected constraint violations
+        static::assertCount(1, $response->toArray(throw: false)['violations']);
+    }
+
+    public function testCreateUserWithZeroDoubleAsNameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // call the list users API endpoint
+        $response = static::createClient()->request('POST', '/api/users', [
+            'json'    => [
+                'name'    => 0.0,
+                'surname' => 'User X',
+                'email'   => 'test.user.X@foo.local',
+                'gender'  => Gender::MALE,
+                'roles'   =>  [
+                    Role::USER,
+                    Role::ADMIN,
+                ],
+                'active'   => true 
+
+            ],
+            'headers' => [
+                'Accept' => 'application/ld+json'
+            ]
+        ]);
+
+        static::assertResponseStatusCodeSame(400);
+        static::assertResponseHeaderSame(
+            'content-type',
+            'application/problem+json; charset=utf-8'
+        );
+        static::assertStringContainsString('/api/errors', $response->toArray(throw: false)['@id']);
+        static::assertJsonContains([
+            '@type'  => 'hydra:Error',
+            'status' => 400,
+            'title'  => 'An error occurred',
+            'detail' => 'The type of the "name" attribute must be "string", "double" given.'
+        ]);
+    }
+
+    public function testCreateUserWithZeroDoubleStringAsNameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // call the list users API endpoint
+        $response = static::createClient()->request('POST', '/api/users', [
+            'json'    => [
+                'name'    => "0.0",
+                'surname' => 'User X',
+                'email'   => 'test.user.X@foo.local',
+                'gender'  => Gender::MALE,
+                'roles'   =>  [
+                    Role::USER,
+                    Role::ADMIN,
+                ],
+                'active'   => true 
+
+            ],
+            'headers' => [
+                'Accept' => 'application/ld+json'
+            ]
+        ]);
+
+        static::assertResponseIsUnprocessable(); // expecting HTTP reponse code 422 - Unprocessable
+        static::assertResponseHeaderSame(
+            'content-type',
+            'application/problem+json; charset=utf-8'
+        );
+        static::assertStringContainsString('/api/validation_errors', $response->toArray(throw: false)['@id']);
+        static::assertJsonContains([
+            '@type'      => 'ConstraintViolationList',
+            'status'     => 422,
+            'violations' => [
+                ['propertyPath' => 'name', 'message' => 'The "name" attribute accepts uppercase letter starting forenames containing letters, dash or apostrophe symbols only and separated by single space symbols.'],
+            ],
+        ]);
+        // check overall amount of expected constraint violations
+        static::assertCount(1, $response->toArray(throw: false)['violations']);
+    }
+
+    public function testCreateUserWithPositiveDoubleAsNameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // call the list users API endpoint
+        $response = static::createClient()->request('POST', '/api/users', [
+            'json'    => [
+                'name'    => 1.0,
+                'surname' => 'User X',
+                'email'   => 'test.user.X@foo.local',
+                'gender'  => Gender::MALE,
+                'roles'   =>  [
+                    Role::USER,
+                    Role::ADMIN,
+                ],
+                'active'   => true 
+
+            ],
+            'headers' => [
+                'Accept' => 'application/ld+json'
+            ]
+        ]);
+
+        static::assertResponseStatusCodeSame(400);
+        static::assertResponseHeaderSame(
+            'content-type',
+            'application/problem+json; charset=utf-8'
+        );
+        static::assertStringContainsString('/api/errors', $response->toArray(throw: false)['@id']);
+        static::assertJsonContains([
+            '@type'  => 'hydra:Error',
+            'status' => 400,
+            'title'  => 'An error occurred',
+            'detail' => 'The type of the "name" attribute must be "string", "double" given.'
+        ]);
+    }
+
+    public function testCreateUserWithPositiveDoubleStringAsNameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // call the list users API endpoint
+        $response = static::createClient()->request('POST', '/api/users', [
+            'json'    => [
+                'name'    => "1.0",
+                'surname' => 'User X',
+                'email'   => 'test.user.X@foo.local',
+                'gender'  => Gender::MALE,
+                'roles'   =>  [
+                    Role::USER,
+                    Role::ADMIN,
+                ],
+                'active'   => true 
+
+            ],
+            'headers' => [
+                'Accept' => 'application/ld+json'
+            ]
+        ]);
+
+        static::assertResponseIsUnprocessable(); // expecting HTTP reponse code 422 - Unprocessable
+        static::assertResponseHeaderSame(
+            'content-type',
+            'application/problem+json; charset=utf-8'
+        );
+        static::assertStringContainsString('/api/validation_errors', $response->toArray(throw: false)['@id']);
+        static::assertJsonContains([
+            '@type'      => 'ConstraintViolationList',
+            'status'     => 422,
+            'violations' => [
+                ['propertyPath' => 'name', 'message' => 'The "name" attribute accepts uppercase letter starting forenames containing letters, dash or apostrophe symbols only and separated by single space symbols.'],
+            ],
+        ]);
+        // check overall amount of expected constraint violations
+        static::assertCount(1, $response->toArray(throw: false)['violations']);
+    }
+
+    public function testCreateUserWithArrayAsNameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // call the list users API endpoint
+        $response = static::createClient()->request('POST', '/api/users', [
+            'json'    => [
+                'name'    => [],
+                'surname' => 'User X',
+                'email'   => 'test.user.X@foo.local',
+                'gender'  => Gender::MALE,
+                'roles'   =>  [
+                    Role::USER,
+                    Role::ADMIN,
+                ],
+                'active'   => true 
+
+            ],
+            'headers' => [
+                'Accept' => 'application/ld+json'
+            ]
+        ]);
+
+        static::assertResponseStatusCodeSame(400);
+        static::assertResponseHeaderSame(
+            'content-type',
+            'application/problem+json; charset=utf-8'
+        );
+        static::assertStringContainsString('/api/errors', $response->toArray(throw: false)['@id']);
+        static::assertJsonContains([
+            '@type'  => 'hydra:Error',
+            'status' => 400,
+            'title'  => 'An error occurred',
+            'detail' => 'The type of the "name" attribute must be "string", "array" given.'
+        ]);
+    }
+
+    public function testCreateUserWithObjectAsNameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // call the list users API endpoint
+        $response = static::createClient()->request('POST', '/api/users', [
+            'json'    => [
+                'name'    => json_decode('{"attributeX": "valueX"}',false),
+                'surname' => 'User X',
+                'email'   => 'test.user.X@foo.local',
+                'gender'  => Gender::MALE,
+                'roles'   =>  [
+                    Role::USER,
+                    Role::ADMIN,
+                ],
+                'active'   => true 
+
+            ],
+            'headers' => [
+                'Accept' => 'application/ld+json'
+            ]
+        ]);
+
+        static::assertResponseStatusCodeSame(400);
+        static::assertResponseHeaderSame(
+            'content-type',
+            'application/problem+json; charset=utf-8'
+        );
+        static::assertStringContainsString('/api/errors', $response->toArray(throw: false)['@id']);
+        static::assertJsonContains([
+            '@type'  => 'hydra:Error',
+            'status' => 400,
+            'title'  => 'An error occurred',
+            'detail' => 'The type of the "name" attribute must be "string", "array" given.'
+        ]);
+    }
+
+    // public function testCreateUserWithBinaryAsNameFieldValue(): void
+    // {
+    //     // remove all data from database
+    //     $this->cleanDatabase();
+
+    //     // call the list users API endpoint
+    //     $response = static::createClient()->request('POST', '/api/users', [
+    //         'json'    => [
+    //             'name'    => "\x04\x00\xa0\x00",// \u001A\u001B\u0005\u001B
+    //             'surname' => 'User X',
+    //             'email'   => 'test.user.X@foo.local',
+    //             'gender'  => Gender::MALE,
+    //             'roles'   =>  [
+    //                 Role::USER,
+    //                 Role::ADMIN,
+    //             ],
+    //             'active'   => true 
+
+    //         ],
+    //         'headers' => [
+    //             'Accept' => 'application/ld+json'
+    //         ]
+    //     ]);
+
+    //     static::assertResponseStatusCodeSame(400);
+    //     static::assertResponseHeaderSame(
+    //         'content-type',
+    //         'application/problem+json; charset=utf-8'
+    //     );
+    //     static::assertStringContainsString('/api/errors', $response->toArray(throw: false)['@id']);
+    //     static::assertJsonContains([
+    //         '@type'  => 'hydra:Error',
+    //         'status' => 400,
+    //         'title'  => 'An error occurred',
+    //         'detail' => 'The type of the "name" attribute must be "string", "object" given.'
+    //     ]);
+    // }
+
+    public function testCreateUserWithTooLongStringAsNameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // call the list users API endpoint
+        $response = static::createClient()->request('POST', '/api/users', [
+            'json'    => [
+                'name'    => "Lorem Ipsum Dolor Sit Amet Consectetur Adipiscing Elit",
+                'surname' => 'User X',
+                'email'   => 'test.user.X@foo.local',
+                'gender'  => Gender::MALE,
+                'roles'   =>  [
+                    Role::USER,
+                    Role::ADMIN,
+                ],
+                'active'   => true 
+
+            ],
+            'headers' => [
+                'Accept' => 'application/ld+json'
+            ]
+        ]);
+
+        static::assertResponseIsUnprocessable(); // expecting HTTP reponse code 422 - Unprocessable
+        static::assertResponseHeaderSame(
+            'content-type',
+            'application/problem+json; charset=utf-8'
+        );
+        static::assertStringContainsString('/api/validation_errors', $response->toArray(throw: false)['@id']);
+        static::assertJsonContains([
+            '@type'      => 'ConstraintViolationList',
+            'status'     => 422,
+            'violations' => [
+                ['propertyPath' => 'name', 'message' => 'This value is too long. It should have 48 characters or less.'],
+            ],
+        ]);
+        // check overall amount of expected constraint violations
+        static::assertCount(1, $response->toArray(throw: false)['violations']);
+    }
+
+    // TODO - create user with invalid surname set to <missing attribute at all> | null | '' | '   ' | false | "false" | true | "true" | true | 0 | "0" | 0.0 | "0.0" | array | object | binary data | too long value
+    // TODO - create user with invalid email <missing attribute at all> | null | '' | '   ' | ... | too long value | invalid email pattern | already existing email
+    // TODO - create user with invalid gender <missing attribute at all> | null | '' | '   ' | ... | too long value | value other than supported gender value
+    // TODO - create user with invalid roles <missing attribute at all> | null | '' | '   ' | ... | empty array | too long value | value(s) other than support role value
+    // TODO - create user with invalid note flag <missing attribute at all> | null | '' | '   ' | ... | too long value
+    // TODO - create user with invalid active flag <missing attribute at all> | null | '' | '   ' | false | "false" | true | "true" | true | 0 | "0" | 1 | "1" | -1 | "-1" | 0.0 | "0.0" | 1.0 | "1.0" | -1.0 | "-1.0"
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+    }
+
+    /**
+     * Load set of basic testing fixtures
+     * usefull mostly for listing, filtering,
+     * sorting and pagination testing purposes.
+     * 
+     * @param string[] $fixtureClassNames
+     * @return void
+     */
+    protected function loadFixtures(array $fixturesClassNames): void
+    {
+        // load set of basic fixtures
+        $databaseTool = static::getContainer()->get(DatabaseToolCollection::class)->get();
+        $databaseTool->loadFixtures($fixturesClassNames);
+    }
+
+    /**
+     * Clean the testing database
+     * 
+     * @return void
+     */
+    protected function cleanDatabase(): void
+    {
+        // load set of basic fixtures
+        $databaseTool = static::getContainer()->get(DatabaseToolCollection::class)->get();
+        $databaseTool->loadFixtures([]);
+    }
+
+}
