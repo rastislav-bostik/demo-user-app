@@ -653,6 +653,96 @@ class UserCreateApiTest extends ApiTestCase
         ));
     }
 
+    public function testCreateUserContainingSingleSpaceBeforeNameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testConstraintViolationForAttributeValue(
+            attributeName:  'name',
+            attributeValue: ' Ebony-M\'Lynn',
+            constraintViolations: [
+                ['propertyPath' => 'name', 'message' => 'The "name" attribute accepts uppercase letter starting forenames containing letters, dash or apostrophe symbols only and separated by single space symbols.'],
+            ]
+        );
+    }
+
+    public function testCreateUserContainingSingleSpaceBeforeAndAfterNameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testConstraintViolationForAttributeValue(
+            attributeName:  'name',
+            attributeValue: ' Ebony-M\'Lynn ',
+            constraintViolations: [
+                ['propertyPath' => 'name', 'message' => 'The "name" attribute accepts uppercase letter starting forenames containing letters, dash or apostrophe symbols only and separated by single space symbols.'],
+            ]
+        );
+    }
+
+    public function testCreateUserContainingSingleSpaceAfterNameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testConstraintViolationForAttributeValue(
+            attributeName:  'name',
+            attributeValue: 'Ebony-M\'Lynn ',
+            constraintViolations: [
+                ['propertyPath' => 'name', 'message' => 'The "name" attribute accepts uppercase letter starting forenames containing letters, dash or apostrophe symbols only and separated by single space symbols.'],
+            ]
+        );
+    }
+
+    public function testCreateUserContainingDoubleSpaceBeforeNameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testConstraintViolationForAttributeValue(
+            attributeName:  'name',
+            attributeValue: '  Ebony-M\'Lynn',
+            constraintViolations: [
+                ['propertyPath' => 'name', 'message' => 'The "name" attribute accepts uppercase letter starting forenames containing letters, dash or apostrophe symbols only and separated by single space symbols.'],
+            ]
+        );
+    }
+
+    public function testCreateUserContainingDoubleSpaceBeforeAndAfterNameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testConstraintViolationForAttributeValue(
+            attributeName:  'name',
+            attributeValue: '  Ebony-M\'Lynn  ',
+            constraintViolations: [
+                ['propertyPath' => 'name', 'message' => 'The "name" attribute accepts uppercase letter starting forenames containing letters, dash or apostrophe symbols only and separated by single space symbols.'],
+            ]
+        );
+    }
+
+    public function testCreateUserContainingDoubleSpaceAfterNameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testConstraintViolationForAttributeValue(
+            attributeName:  'name',
+            attributeValue: 'Ebony-M\'Lynn  ',
+            constraintViolations: [
+                ['propertyPath' => 'name', 'message' => 'The "name" attribute accepts uppercase letter starting forenames containing letters, dash or apostrophe symbols only and separated by single space symbols.'],
+            ]
+        );
+    }
+
 
     // ======================== NAME ATTRIBUTE FOCUSED TESTS ======================== //
     // ============================================================================== //
@@ -1153,6 +1243,97 @@ class UserCreateApiTest extends ApiTestCase
                 'surname' => 'd\'Bosco-Dolor'
             ]
         ));
+    }
+
+    public function testCreateUserContainingSingleSpaceBeforeSurnameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testConstraintViolationForAttributeValue(
+            attributeName:  'surname',
+            attributeValue: ' d\'Bosco-Dolor',
+            constraintViolations: [
+                ['propertyPath' => 'surname', 'message' => 'The "surname" attribute accepts letters, dash and apostrophe symbols containing surnames separated by single space symbols only.'],
+            ]
+        );
+    }
+
+    public function testCreateUserContainingSingleSpaceBeforeAndAfterSurnameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testConstraintViolationForAttributeValue(
+            attributeName:  'surname',
+            attributeValue: ' d\'Bosco-Dolor ',
+            constraintViolations: [
+                ['propertyPath' => 'surname', 'message' => 'The "surname" attribute accepts letters, dash and apostrophe symbols containing surnames separated by single space symbols only.'],
+            ]
+        );
+    }
+
+    public function testCreateUserContainingSingleSpaceAfterSurnameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testConstraintViolationForAttributeValue(
+            attributeName:  'surname',
+            attributeValue: 'd\'Bosco-Dolor ',
+            constraintViolations: [
+                ['propertyPath' => 'surname', 'message' => 'The "surname" attribute accepts letters, dash and apostrophe symbols containing surnames separated by single space symbols only.'],
+            ]
+        );
+    }
+
+    
+    public function testCreateUserContainingDoubleSpaceBeforeSurnameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testConstraintViolationForAttributeValue(
+            attributeName:  'surname',
+            attributeValue: '  d\'Bosco-Dolor',
+            constraintViolations: [
+                ['propertyPath' => 'surname', 'message' => 'The "surname" attribute accepts letters, dash and apostrophe symbols containing surnames separated by single space symbols only.'],
+            ]
+        );
+    }
+
+    public function testCreateUserContainingDoubleSpaceBeforeAndAfterSurnameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testConstraintViolationForAttributeValue(
+            attributeName:  'surname',
+            attributeValue: '  d\'Bosco-Dolor  ',
+            constraintViolations: [
+                ['propertyPath' => 'surname', 'message' => 'The "surname" attribute accepts letters, dash and apostrophe symbols containing surnames separated by single space symbols only.'],
+            ]
+        );
+    }
+
+    public function testCreateUserContainingDoubleSpaceAfterSurnameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testConstraintViolationForAttributeValue(
+            attributeName:  'surname',
+            attributeValue: 'd\'Bosco-Dolor  ',
+            constraintViolations: [
+                ['propertyPath' => 'surname', 'message' => 'The "surname" attribute accepts letters, dash and apostrophe symbols containing surnames separated by single space symbols only.'],
+            ]
+        );
     }
 
     // TODO - create user with invalid surname set to <missing attribute at all> | null | '' | '   ' | false | "false" | true | "true" | true | 0 | "0" | 0.0 | "0.0" | array | object | binary data | too long value
