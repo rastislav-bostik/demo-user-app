@@ -522,6 +522,131 @@ class UserCreateApiTest extends ApiTestCase
         );
     }
 
+    public function testCreateUserWithLowercaseOnlyStringAsNameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testConstraintViolationForAttributeValue(
+            attributeName:  'name',
+            attributeValue: 'lorem ipsum dolor sit',
+            constraintViolations: [
+                ['propertyPath' => 'name', 'message' => 'The "name" attribute accepts uppercase letter starting forenames containing letters, dash or apostrophe symbols only and separated by single space symbols.'],
+            ]
+        );
+    }
+
+    public function testCreateUserWithUpperCaseOnlyStringAsNameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // call the list users API endpoint
+        $response = static::createClient()->request('POST', '/api/users', [
+            'json'    => array_merge(
+                self::DEFAULT_USER_DATA,
+                [
+                    'name' => 'LOREM IPSUM DOLOR SIT'
+                ]
+            ),
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/ld+json'
+            ]
+        ]);
+
+        static::assertResponseStatusCodeSame(201); // expecting HTTP reponse code 201 - Created
+        static::assertResponseHeaderSame(
+            'content-type',
+            'application/ld+json; charset=utf-8'
+        );
+        static::assertStringContainsString('/api/users', $response->toArray(throw: false)['@id']);
+        static::assertJsonContains(array_merge(
+            [
+                '@context' => '/api/contexts/User', 
+                '@type'    => 'User'
+            ],
+            // converting backend enums contained within
+            // default user data array into strings
+            json_decode(json_encode(array_merge(
+                self::DEFAULT_USER_DATA,
+                [
+                    'name' => 'LOREM IPSUM DOLOR SIT'
+                ]
+            )),true)
+        ));
+
+        // check that user ID is valid UUID
+        static::assertTrue(Uuid::isValid($response->toArray(throw: false)['id']));
+        // check that JSON-LD @id is pointing
+        // to the just created resource
+        static::assertSame(
+            $response->toArray(throw: false)['@id'],
+            '/api/users/' . $response->toArray(throw: false)['id']
+        );
+    }
+ 
+    public function testCreateUserContainingWordStartingWithApostropheInNameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testConstraintViolationForAttributeValue(
+            attributeName:  'name',
+            attributeValue: 'Lorem \'Ipsum Dolor Sit',
+            constraintViolations: [
+                ['propertyPath' => 'name', 'message' => 'The "name" attribute accepts uppercase letter starting forenames containing letters, dash or apostrophe symbols only and separated by single space symbols.'],
+            ]
+        );
+    }
+
+    public function testCreateUserContainingWordEndingWithApostropheInNameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testConstraintViolationForAttributeValue(
+            attributeName:  'name',
+            attributeValue: 'Lorem Ipsum\' Dolor Sit',
+            constraintViolations: [
+                ['propertyPath' => 'name', 'message' => 'The "name" attribute accepts uppercase letter starting forenames containing letters, dash or apostrophe symbols only and separated by single space symbols.'],
+            ]
+        );
+    }
+
+    public function testCreateUserContainingWordStartingWithHyphenInNameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testConstraintViolationForAttributeValue(
+            attributeName:  'name',
+            attributeValue: 'Lorem -Ipsum Dolor Sit',
+            constraintViolations: [
+                ['propertyPath' => 'name', 'message' => 'The "name" attribute accepts uppercase letter starting forenames containing letters, dash or apostrophe symbols only and separated by single space symbols.'],
+            ]
+        );
+    }
+
+    public function testCreateUserContainingWordEndingWithHyphenInNameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testConstraintViolationForAttributeValue(
+            attributeName:  'name',
+            attributeValue: 'Lorem Ipsum- Dolor Sit',
+            constraintViolations: [
+                ['propertyPath' => 'name', 'message' => 'The "name" attribute accepts uppercase letter starting forenames containing letters, dash or apostrophe symbols only and separated by single space symbols.'],
+            ]
+        );
+    }
+
     // ======================== NAME ATTRIBUTE FOCUSED TESTS ======================== //
     // ============================================================================== //
 
