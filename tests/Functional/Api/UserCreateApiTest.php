@@ -521,6 +521,501 @@ class UserCreateApiTest extends ApiTestCase
         );
     }
 
+    // ======================== NAME ATTRIBUTE FOCUSED TESTS ======================== //
+    // ============================================================================== //
+
+
+
+    // ============================================================================== //
+    // ====================== SURNAME ATTRIBUTE FOCUSED TESTS ======================= //
+
+
+    public function testCreateUserWithMissingSurnameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        $this->_testConstraintViolationForMissingAttribute(
+            attributeName: 'surname'
+        );
+    }
+
+    public function testCreateUserWithNullAsSurnameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'surname',
+            attributeValue:   null,
+            expectedTypeName: 'string'
+        );
+    }
+
+    public function testCreateUserWithEmptyAsSurnameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testConstraintViolationForAttributeValue(
+            attributeName:  'surname',
+            attributeValue: '',
+            constraintViolations: [
+                ['propertyPath' => 'surname', 'message' => 'This value should not be blank.'],
+            ]
+        );
+    }
+
+    public function testCreateUserWithWhitespaceAsSurnameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testConstraintViolationForAttributeValue(
+            attributeName:  'surname',
+            attributeValue: "\u{0009}\u{000A}\u{000B}\u{000C}\u{000D}\u{0020}\u{0085}\u{00A0}\u{1680}",
+            constraintViolations: [
+                ['propertyPath' => 'surname', 'message' => 'This value should not be blank.'],
+                ['propertyPath' => 'surname', 'message' => 'The "surname" attribute accepts letters, dash and apostrophe symbols containing surnames separated by single space symbols only.'],
+            ]
+        );
+    }
+
+    public function testCreateUserWithFalseBoolAsSurnameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'surname',
+            attributeValue:   false,
+            expectedTypeName: 'string'
+        );
+    }
+
+    public function testCreateUserWithFalseStringAsSurnameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testConstraintViolationForAttributeValue(
+            attributeName:  'surname',
+            attributeValue: 'false',
+            constraintViolations: [
+                ['propertyPath' => 'surname', 'message' => 'The "surname" has to contain at least one uppercase letter.'],
+            ]
+        );
+    }
+
+    public function testCreateUserWithTrueBoolAsSurnameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'surname',
+            attributeValue:   true,
+            expectedTypeName: 'string'
+        );
+    }
+
+    public function testCreateUserWithTrueStringAsSurnameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testConstraintViolationForAttributeValue(
+            attributeName:  'surname',
+            attributeValue: 'true',
+            constraintViolations: [
+                ['propertyPath' => 'surname', 'message' => 'The "surname" has to contain at least one uppercase letter.'],
+            ]
+        );
+    }
+
+    public function testCreateUserWithZeroIntAsSurnameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'surname',
+            attributeValue:   0,
+            expectedTypeName: 'string'
+        );
+    }
+
+    public function testCreateUserWithZeroIntStringAsSurnameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testConstraintViolationForAttributeValue(
+            attributeName:  'surname',
+            attributeValue: '0',
+            constraintViolations: [
+                ['propertyPath' => 'surname', 'message' => 'The "surname" attribute accepts letters, dash and apostrophe symbols containing surnames separated by single space symbols only.'],
+            ]
+        );
+    }
+
+    public function testCreateUserWithPositiveIntAsSurnameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'surname',
+            attributeValue:   1,
+            expectedTypeName: 'string'
+        );
+    }
+
+    public function testCreateUserWithPositiveIntStringAsSurnameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testConstraintViolationForAttributeValue(
+            attributeName:  'surname',
+            attributeValue: '1',
+            constraintViolations: [
+                ['propertyPath' => 'surname', 'message' => 'The "surname" attribute accepts letters, dash and apostrophe symbols containing surnames separated by single space symbols only.'],
+            ]
+        );
+    }
+
+    public function testCreateUserWithNegativeIntAsSurnameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'surname',
+            attributeValue:   -1,
+            expectedTypeName: 'string'
+        );
+    }
+
+    public function testCreateUserWithNegativeIntStringAsSurnameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testConstraintViolationForAttributeValue(
+            attributeName:  'surname',
+            attributeValue: '-1',
+            constraintViolations: [
+                ['propertyPath' => 'surname', 'message' => 'The "surname" attribute accepts letters, dash and apostrophe symbols containing surnames separated by single space symbols only.'],
+            ]
+        );
+    }
+
+    public function testCreateUserWithZeroDoubleAsSurnameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'surname',
+            attributeValue:   0.0,
+            expectedTypeName: 'string'
+        );
+    }
+
+    public function testCreateUserWithZeroDoubleStringAsSurnameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testConstraintViolationForAttributeValue(
+            attributeName:  'surname',
+            attributeValue: '0.0',
+            constraintViolations: [
+                ['propertyPath' => 'surname', 'message' => 'The "surname" attribute accepts letters, dash and apostrophe symbols containing surnames separated by single space symbols only.'],
+            ]
+        );
+    }
+
+    public function testCreateUserWithPositiveDoubleAsSurnameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'surname',
+            attributeValue:   1.0,
+            expectedTypeName: 'string'
+        );
+    }
+
+    public function testCreateUserWithPositiveDoubleStringAsSurnameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testConstraintViolationForAttributeValue(
+            attributeName:  'surname',
+            attributeValue: '1.0',
+            constraintViolations: [
+                ['propertyPath' => 'surname', 'message' => 'The "surname" attribute accepts letters, dash and apostrophe symbols containing surnames separated by single space symbols only.'],
+            ]
+        );
+    }
+
+    public function testCreateUserWithNegativeDoubleAsSurnameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'surname',
+            attributeValue:   -1.0,
+            expectedTypeName: 'string'
+        );
+    }
+
+    public function testCreateUserWithNegativeDoubleStringAsSurnameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testConstraintViolationForAttributeValue(
+            attributeName:  'surname',
+            attributeValue: '-1.0',
+            constraintViolations: [
+                ['propertyPath' => 'surname', 'message' => 'The "surname" attribute accepts letters, dash and apostrophe symbols containing surnames separated by single space symbols only.'],
+            ]
+        );
+    }
+
+    public function testCreateUserWithArrayAsSurnameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'surname',
+            attributeValue:   [],
+            expectedTypeName: 'string'
+        );
+    }
+
+    public function testCreateUserWithObjectAsSurnameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'surname',
+            attributeValue:   ["attributeX" => "valueX"],
+            expectedTypeName: 'string'
+        );
+    }
+
+    // public function testCreateUserWithBinaryAsSurnameFieldValue(): void
+    // {
+    //     // remove all data from database
+    //     $this->cleanDatabase();
+
+    //     // call the list users API endpoint
+    //     $response = static::createClient()->request('POST', '/api/users', [
+    //         'json'    => [
+    //             'surname'    => "\x04\x00\xa0\x00",// \u001A\u001B\u0005\u001B
+    //             'surname' => 'User X',
+    //             'email'   => 'test.user.X@foo.local',
+    //             'gender'  => Gender::MALE,
+    //             'roles'   =>  [
+    //                 Role::USER,
+    //                 Role::ADMIN,
+    //             ],
+    //             'active'   => true 
+
+    //         ],
+    //         'headers' => [
+    //             'Accept' => 'application/ld+json'
+    //         ]
+    //     ]);
+
+    //     static::assertResponseStatusCodeSame(400);
+    //     static::assertResponseHeaderSame(
+    //         'content-type',
+    //         'application/problem+json; charset=utf-8'
+    //     );
+    //     static::assertStringContainsString('/api/errors', $response->toArray(throw: false)['@id']);
+    //     static::assertJsonContains([
+    //         '@type'  => 'hydra:Error',
+    //         'status' => 400,
+    //         'title'  => 'An error occurred',
+    //         'detail' => 'The type of the "surname" attribute must be "string", "object" given.'
+    //     ]);
+    // }
+
+    public function testCreateUserWithTooLongStringAsSurnameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testConstraintViolationForAttributeValue(
+            attributeName:  'surname',
+            attributeValue: 'Lorem Ipsum Dolor Sit Amet Consectetur Adipiscing Elit' .
+                'Lorem Ipsum Dolor Sit Amet Consectetur Adipiscing Elit' .
+                'Lorem Ipsum Dolor Sit Amet Consectetur Adipiscing Elit' .
+                'Lorem Ipsum Dolor Sit Amet Consectetur Adipiscing Elit' .
+                'Lorem Ipsum Dolor Sit Amet Consectetur Adipiscing Elit',
+            constraintViolations: [
+                ['propertyPath' => 'surname', 'message' => 'This value is too long. It should have 255 characters or less.'],
+            ]
+        );
+    }
+
+    public function testCreateUserWithLowercaseOnlyStringAsSurnameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testConstraintViolationForAttributeValue(
+            attributeName:  'surname',
+            attributeValue: 'lorem ipsum dolor sit amet consectetur adipiscing elit',
+            constraintViolations: [
+                ['propertyPath' => 'surname', 'message' => 'The "surname" has to contain at least one uppercase letter.'],
+            ]
+        );
+    }
+
+    public function testCreateUserWithUpperCaseOnlyStringAsSurnameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // call the list users API endpoint
+        $response = static::createClient()->request('POST', '/api/users', [
+            'json'    => array_merge(
+                self::DEFAULT_USER_DATA,
+                [
+                    'surname' => 'LOREM IPSUM DOLOR SIT AMET CONSECTETUR ADIPISCING ELIT'
+                ]
+            ),
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/ld+json'
+            ]
+        ]);
+
+        static::assertResponseStatusCodeSame(201); // expecting HTTP reponse code 201 - Created
+        static::assertResponseHeaderSame(
+            'content-type',
+            'application/ld+json; charset=utf-8'
+        );
+        static::assertStringContainsString('/api/users', $response->toArray(throw: false)['@id']);
+        static::assertJsonContains(array_merge(
+            [
+                '@context' => '/api/contexts/User', 
+                '@type'    => 'User'
+            ],
+            // converting backend enums contained within
+            // default user data array into strings
+            json_decode(json_encode(array_merge(
+                self::DEFAULT_USER_DATA,
+                [
+                    'surname' => 'LOREM IPSUM DOLOR SIT AMET CONSECTETUR ADIPISCING ELIT'
+                ]
+            )),true)
+        ));
+
+        // check that user ID is valid UUID
+        static::assertTrue(Uuid::isValid($response->toArray(throw: false)['id']));
+        // check that JSON-LD @id is pointing
+        // to the just created resource
+        static::assertSame(
+            $response->toArray(throw: false)['@id'],
+            '/api/users/' . $response->toArray(throw: false)['id']
+        );
+    }
+ 
+    public function testCreateUserContainingWordStartingWithApostropheInSurnameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testConstraintViolationForAttributeValue(
+            attributeName:  'surname',
+            attributeValue: 'lorem \'Ipsum dolor sit amet consectetur adipiscing elit',
+            constraintViolations: [
+                ['propertyPath' => 'surname', 'message' => 'The "surname" attribute accepts letters, dash and apostrophe symbols containing surnames separated by single space symbols only.'],
+            ]
+        );
+    }
+
+    public function testCreateUserContainingWordEndingWithApostropheInSurnameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testConstraintViolationForAttributeValue(
+            attributeName:  'surname',
+            attributeValue: 'lorem Ipsum\' dolor sit amet consectetur adipiscing elit',
+            constraintViolations: [
+                ['propertyPath' => 'surname', 'message' => 'The "surname" attribute accepts letters, dash and apostrophe symbols containing surnames separated by single space symbols only.'],
+            ]
+        );
+    }
+
+    public function testCreateUserContainingWordStartingWithHyphenInSurnameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testConstraintViolationForAttributeValue(
+            attributeName:  'surname',
+            attributeValue: 'lorem -Ipsum dolor sit amet consectetur adipiscing elit',
+            constraintViolations: [
+                ['propertyPath' => 'surname', 'message' => 'The "surname" attribute accepts letters, dash and apostrophe symbols containing surnames separated by single space symbols only.'],
+            ]
+        );
+    }
+
+    public function testCreateUserContainingWordEndingWithHyphenInSurnameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testConstraintViolationForAttributeValue(
+            attributeName:  'surname',
+            attributeValue: 'lorem Ipsum- dolor sit amet consectetur adipiscing elit',
+            constraintViolations: [
+                ['propertyPath' => 'surname', 'message' => 'The "surname" attribute accepts letters, dash and apostrophe symbols containing surnames separated by single space symbols only.'],
+            ]
+        );
+    }
+
     // TODO - create user with invalid surname set to <missing attribute at all> | null | '' | '   ' | false | "false" | true | "true" | true | 0 | "0" | 0.0 | "0.0" | array | object | binary data | too long value
     // TODO - create user with invalid email <missing attribute at all> | null | '' | '   ' | ... | too long value | invalid email pattern | already existing email
     // TODO - create user with invalid gender <missing attribute at all> | null | '' | '   ' | ... | too long value | value other than supported gender value
