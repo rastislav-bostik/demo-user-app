@@ -6,6 +6,7 @@ use App\Entity\Role;
 use App\Entity\Gender;
 use App\Tests\DatabasePrimer;
 use App\DataFixtures\Doctrine\UserFixtures;
+use Symfony\Component\Uid\Uuid;
 use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
 use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 
@@ -1022,6 +1023,43 @@ class UserCreateApiTest extends ApiTestCase
     // TODO - create user with invalid roles <missing attribute at all> | null | '' | '   ' | ... | empty array | too long value | value(s) other than support role value
     // TODO - create user with invalid note flag <missing attribute at all> | null | '' | '   ' | ... | too long value
     // TODO - create user with invalid active flag <missing attribute at all> | null | '' | '   ' | false | "false" | true | "true" | true | 0 | "0" | 1 | "1" | -1 | "-1" | 0.0 | "0.0" | 1.0 | "1.0" | -1.0 | "-1.0"
+
+    public function testCreateUserSuccess(): void
+    {
+        // call the list users API endpoint
+        $response = static::createClient()->request('POST', '/api/users', [
+            'json'    => self::DEFAULT_USER_DATA,
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/ld+json'
+            ]
+        ]);
+
+        static::assertResponseStatusCodeSame(201); // expecting HTTP reponse code 201 - Created
+        static::assertResponseHeaderSame(
+            'content-type',
+            'application/ld+json; charset=utf-8'
+        );
+        static::assertStringContainsString('/api/users', $response->toArray(throw: false)['@id']);
+        static::assertJsonContains(array_merge(
+            [
+                '@context' => '/api/contexts/User', 
+                '@type'    => 'User'
+            ],
+            // converting backend enums contained within
+            // default user data array into strings
+            json_decode(json_encode(self::DEFAULT_USER_DATA),true)
+        ));
+
+        // check that user ID is valid UUID
+        static::assertTrue(Uuid::isValid($response->toArray(throw: false)['id']));
+        // check that JSON-LD @id is pointing
+        // to the just created resource
+        static::assertSame(
+            $response->toArray(throw: false)['@id'],
+            '/api/users/' . $response->toArray(throw: false)['id']
+        );
+    }
 
     protected function _testConstraintViolationForMissingAttribute(string $attributeName): void
     {
