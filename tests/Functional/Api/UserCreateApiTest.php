@@ -1131,6 +1131,13 @@ class UserCreateApiTest extends ApiTestCase
         );
     }
 
+    /**
+     * Test expected constraint violations scenario
+     * for given missing attribute
+     *
+     * @param string $attributeName
+     * @return void
+     */
     protected function _testConstraintViolationForMissingAttribute(string $attributeName): void
     {
         // remove an attribute from default user data
