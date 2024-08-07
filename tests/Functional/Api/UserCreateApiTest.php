@@ -544,10 +544,10 @@ class UserCreateApiTest extends ApiTestCase
 
         // run the user creation test body
         $this->_testSuccessfullCreationOfUser(array_merge(
-                self::DEFAULT_USER_DATA,
-                [
-                    'name' => 'LOREM IPSUM DOLOR SIT'
-                ]
+            self::DEFAULT_USER_DATA,
+            [
+                'name' => 'LOREM IPSUM DOLOR SIT'
+            ]
         ));
     }
  
@@ -1003,10 +1003,10 @@ class UserCreateApiTest extends ApiTestCase
 
         // run the user creation test body
         $this->_testSuccessfullCreationOfUser(array_merge(
-                self::DEFAULT_USER_DATA,
-                [
+            self::DEFAULT_USER_DATA,
+            [
                 'surname' => 'LOREM IPSUM DOLOR SIT'
-                ]
+            ]
         ));
     }
  
