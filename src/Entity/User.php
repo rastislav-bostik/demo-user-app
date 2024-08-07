@@ -47,16 +47,16 @@ class User
     #[Assert\Length(max: 48)]
     #[Assert\Regex(
         // first name validation pattern accepting uppercase letter only starting names separated by single spaces
-        // and consisting of Latin and/or non-Latin letters, apostrophe and dash symbols only.
+        // and consisting of Latin and/or non-Latin letters, apostrophe and hyphen symbols only.
         // (e.g. Miguel María, Антон Павлович, יעקב שבתאי)
         // (not supporting ideographic and other non-alphabetic symbols / writing systems e.g. Chinese, Japanese, ...)
         // 
-        // @todo ensure that dash and apostrophe can't follow each other
+        // @todo ensure that hyphen and apostrophe can't follow each other
         // @see https://en.wikipedia.org/wiki/List_of_writing_systems
         // @see https://www.regular-expressions.info/unicode.html#prop
         // @see https://www.quora.com/Do-Chinese-characters-have-letter-case-i-e-distinct-upper-and-lower-cases
         pattern: '/^(\p{Lu}([\p{L}\'\\-]*[\p{L}]|[\p{L}]*))( \p{Lu}([\p{L}\'\\-]*\p{L}|[\p{L}]*))*$/u',
-        message: 'The "name" attribute accepts uppercase letter starting forenames containing letters, dash or apostrophe symbols only and separated by single space symbols.'
+        message: 'The "name" attribute accepts uppercase letter starting forenames containing letters, hyphen or apostrophe symbols only and separated by single space symbols.'
     )]
     private string $name;
 
@@ -77,18 +77,18 @@ class User
         message: 'The "surname" has to contain at least one uppercase letter.'
     )]
     #[Assert\Regex(
-        // surname validation pattern accepting also lower-case letter starting words
-        // separated by single spaces, containing dashes and aphostrophes inside supporting 
-        // apostrophes dashes and Latin as well as non-Latin letters.
+        // surname validation pattern accepting lower- as well as upper-case letter starting surnames
+        // separated by single spaces and consisting of Latin as well as non-Latin characters,
+        // + apostrophe and hypen symbols.
         // (e.g O'Neil, Murinho-Guerera, de Murcía, ...)
         // (not supporting ideographic and other non-alphabetic symbols / writing systems e.g. Chinese, Japanese, ...)
         // 
-        // @todo ensure that dash and apostrophe can't follow each other
+        // @todo ensure that hyphen and apostrophe can't follow each other
         // @see https://en.wikipedia.org/wiki/List_of_writing_systems
         // @see https://www.regular-expressions.info/unicode.html#prop
         // @see https://www.quora.com/Do-Chinese-characters-have-letter-case-i-e-distinct-upper-and-lower-cases
         pattern: '/^(\p{L}([\p{L}\'\\-]*\p{L}|[\p{L}]*))( \p{L}([\p{L}\'\\-]*\p{L}|[\p{L}]*))*$/u',
-        message: 'The "surname" attribute accepts letters, dash and apostrophe symbols containing surnames separated by single space symbols only.'
+        message: 'The "surname" attribute accepts letters, hyphen and apostrophe symbols containing surnames separated by single space symbols only.'
     )]
     private string $surname;
 

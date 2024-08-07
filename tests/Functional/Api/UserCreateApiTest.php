@@ -214,7 +214,7 @@ class UserCreateApiTest extends ApiTestCase
             attributeValue: "\u{0009}\u{000A}\u{000B}\u{000C}\u{000D}\u{0020}\u{0085}\u{00A0}\u{1680}",
             constraintViolations: [
                 ['propertyPath' => 'name', 'message' => 'This value should not be blank.'],
-                ['propertyPath' => 'name', 'message' => 'The "name" attribute accepts uppercase letter starting forenames containing letters, dash or apostrophe symbols only and separated by single space symbols.'],
+                ['propertyPath' => 'name', 'message' => 'The "name" attribute accepts uppercase letter starting forenames containing letters, hyphen or apostrophe symbols only and separated by single space symbols.'],
             ]
         );
     }
@@ -242,7 +242,7 @@ class UserCreateApiTest extends ApiTestCase
             attributeName:  'name',
             attributeValue: 'false',
             constraintViolations: [
-                ['propertyPath' => 'name', 'message' => 'The "name" attribute accepts uppercase letter starting forenames containing letters, dash or apostrophe symbols only and separated by single space symbols.'],
+                ['propertyPath' => 'name', 'message' => 'The "name" attribute accepts uppercase letter starting forenames containing letters, hyphen or apostrophe symbols only and separated by single space symbols.'],
             ]
         );
     }
@@ -270,7 +270,7 @@ class UserCreateApiTest extends ApiTestCase
             attributeName:  'name',
             attributeValue: 'true',
             constraintViolations: [
-                ['propertyPath' => 'name', 'message' => 'The "name" attribute accepts uppercase letter starting forenames containing letters, dash or apostrophe symbols only and separated by single space symbols.'],
+                ['propertyPath' => 'name', 'message' => 'The "name" attribute accepts uppercase letter starting forenames containing letters, hyphen or apostrophe symbols only and separated by single space symbols.'],
             ]
         );
     }
@@ -298,7 +298,7 @@ class UserCreateApiTest extends ApiTestCase
             attributeName:  'name',
             attributeValue: '0',
             constraintViolations: [
-                ['propertyPath' => 'name', 'message' => 'The "name" attribute accepts uppercase letter starting forenames containing letters, dash or apostrophe symbols only and separated by single space symbols.'],
+                ['propertyPath' => 'name', 'message' => 'The "name" attribute accepts uppercase letter starting forenames containing letters, hyphen or apostrophe symbols only and separated by single space symbols.'],
             ]
         );
     }
@@ -326,7 +326,7 @@ class UserCreateApiTest extends ApiTestCase
             attributeName:  'name',
             attributeValue: '1',
             constraintViolations: [
-                ['propertyPath' => 'name', 'message' => 'The "name" attribute accepts uppercase letter starting forenames containing letters, dash or apostrophe symbols only and separated by single space symbols.'],
+                ['propertyPath' => 'name', 'message' => 'The "name" attribute accepts uppercase letter starting forenames containing letters, hyphen or apostrophe symbols only and separated by single space symbols.'],
             ]
         );
     }
@@ -354,7 +354,7 @@ class UserCreateApiTest extends ApiTestCase
             attributeName:  'name',
             attributeValue: '-1',
             constraintViolations: [
-                ['propertyPath' => 'name', 'message' => 'The "name" attribute accepts uppercase letter starting forenames containing letters, dash or apostrophe symbols only and separated by single space symbols.'],
+                ['propertyPath' => 'name', 'message' => 'The "name" attribute accepts uppercase letter starting forenames containing letters, hyphen or apostrophe symbols only and separated by single space symbols.'],
             ]
         );
     }
@@ -382,7 +382,7 @@ class UserCreateApiTest extends ApiTestCase
             attributeName:  'name',
             attributeValue: '0.0',
             constraintViolations: [
-                ['propertyPath' => 'name', 'message' => 'The "name" attribute accepts uppercase letter starting forenames containing letters, dash or apostrophe symbols only and separated by single space symbols.'],
+                ['propertyPath' => 'name', 'message' => 'The "name" attribute accepts uppercase letter starting forenames containing letters, hyphen or apostrophe symbols only and separated by single space symbols.'],
             ]
         );
     }
@@ -410,7 +410,7 @@ class UserCreateApiTest extends ApiTestCase
             attributeName:  'name',
             attributeValue: '1.0',
             constraintViolations: [
-                ['propertyPath' => 'name', 'message' => 'The "name" attribute accepts uppercase letter starting forenames containing letters, dash or apostrophe symbols only and separated by single space symbols.'],
+                ['propertyPath' => 'name', 'message' => 'The "name" attribute accepts uppercase letter starting forenames containing letters, hyphen or apostrophe symbols only and separated by single space symbols.'],
             ]
         );
     }
@@ -438,7 +438,7 @@ class UserCreateApiTest extends ApiTestCase
             attributeName:  'name',
             attributeValue: '-1.0',
             constraintViolations: [
-                ['propertyPath' => 'name', 'message' => 'The "name" attribute accepts uppercase letter starting forenames containing letters, dash or apostrophe symbols only and separated by single space symbols.'],
+                ['propertyPath' => 'name', 'message' => 'The "name" attribute accepts uppercase letter starting forenames containing letters, hyphen or apostrophe symbols only and separated by single space symbols.'],
             ]
         );
     }
@@ -532,7 +532,7 @@ class UserCreateApiTest extends ApiTestCase
             attributeName:  'name',
             attributeValue: 'lorem ipsum dolor sit',
             constraintViolations: [
-                ['propertyPath' => 'name', 'message' => 'The "name" attribute accepts uppercase letter starting forenames containing letters, dash or apostrophe symbols only and separated by single space symbols.'],
+                ['propertyPath' => 'name', 'message' => 'The "name" attribute accepts uppercase letter starting forenames containing letters, hyphen or apostrophe symbols only and separated by single space symbols.'],
             ]
         );
     }
@@ -561,7 +561,7 @@ class UserCreateApiTest extends ApiTestCase
             attributeName:  'name',
             attributeValue: 'Lorem \'Ipsum Dolor Sit',
             constraintViolations: [
-                ['propertyPath' => 'name', 'message' => 'The "name" attribute accepts uppercase letter starting forenames containing letters, dash or apostrophe symbols only and separated by single space symbols.'],
+                ['propertyPath' => 'name', 'message' => 'The "name" attribute accepts uppercase letter starting forenames containing letters, hyphen or apostrophe symbols only and separated by single space symbols.'],
             ]
         );
     }
@@ -590,7 +590,7 @@ class UserCreateApiTest extends ApiTestCase
             attributeName:  'name',
             attributeValue: 'Lorem Ipsum\' Dolor Sit',
             constraintViolations: [
-                ['propertyPath' => 'name', 'message' => 'The "name" attribute accepts uppercase letter starting forenames containing letters, dash or apostrophe symbols only and separated by single space symbols.'],
+                ['propertyPath' => 'name', 'message' => 'The "name" attribute accepts uppercase letter starting forenames containing letters, hyphen or apostrophe symbols only and separated by single space symbols.'],
             ]
         );
     }
@@ -605,7 +605,7 @@ class UserCreateApiTest extends ApiTestCase
             attributeName:  'name',
             attributeValue: 'Lorem -Ipsum Dolor Sit',
             constraintViolations: [
-                ['propertyPath' => 'name', 'message' => 'The "name" attribute accepts uppercase letter starting forenames containing letters, dash or apostrophe symbols only and separated by single space symbols.'],
+                ['propertyPath' => 'name', 'message' => 'The "name" attribute accepts uppercase letter starting forenames containing letters, hyphen or apostrophe symbols only and separated by single space symbols.'],
             ]
         );
     }
@@ -634,7 +634,7 @@ class UserCreateApiTest extends ApiTestCase
             attributeName:  'name',
             attributeValue: 'Lorem Ipsum- Dolor Sit',
             constraintViolations: [
-                ['propertyPath' => 'name', 'message' => 'The "name" attribute accepts uppercase letter starting forenames containing letters, dash or apostrophe symbols only and separated by single space symbols.'],
+                ['propertyPath' => 'name', 'message' => 'The "name" attribute accepts uppercase letter starting forenames containing letters, hyphen or apostrophe symbols only and separated by single space symbols.'],
             ]
         );
     }
@@ -663,7 +663,7 @@ class UserCreateApiTest extends ApiTestCase
             attributeName:  'name',
             attributeValue: ' Ebony-M\'Lynn',
             constraintViolations: [
-                ['propertyPath' => 'name', 'message' => 'The "name" attribute accepts uppercase letter starting forenames containing letters, dash or apostrophe symbols only and separated by single space symbols.'],
+                ['propertyPath' => 'name', 'message' => 'The "name" attribute accepts uppercase letter starting forenames containing letters, hyphen or apostrophe symbols only and separated by single space symbols.'],
             ]
         );
     }
@@ -678,7 +678,7 @@ class UserCreateApiTest extends ApiTestCase
             attributeName:  'name',
             attributeValue: ' Ebony-M\'Lynn ',
             constraintViolations: [
-                ['propertyPath' => 'name', 'message' => 'The "name" attribute accepts uppercase letter starting forenames containing letters, dash or apostrophe symbols only and separated by single space symbols.'],
+                ['propertyPath' => 'name', 'message' => 'The "name" attribute accepts uppercase letter starting forenames containing letters, hyphen or apostrophe symbols only and separated by single space symbols.'],
             ]
         );
     }
@@ -693,7 +693,7 @@ class UserCreateApiTest extends ApiTestCase
             attributeName:  'name',
             attributeValue: 'Ebony-M\'Lynn ',
             constraintViolations: [
-                ['propertyPath' => 'name', 'message' => 'The "name" attribute accepts uppercase letter starting forenames containing letters, dash or apostrophe symbols only and separated by single space symbols.'],
+                ['propertyPath' => 'name', 'message' => 'The "name" attribute accepts uppercase letter starting forenames containing letters, hyphen or apostrophe symbols only and separated by single space symbols.'],
             ]
         );
     }
@@ -708,7 +708,7 @@ class UserCreateApiTest extends ApiTestCase
             attributeName:  'name',
             attributeValue: '  Ebony-M\'Lynn',
             constraintViolations: [
-                ['propertyPath' => 'name', 'message' => 'The "name" attribute accepts uppercase letter starting forenames containing letters, dash or apostrophe symbols only and separated by single space symbols.'],
+                ['propertyPath' => 'name', 'message' => 'The "name" attribute accepts uppercase letter starting forenames containing letters, hyphen or apostrophe symbols only and separated by single space symbols.'],
             ]
         );
     }
@@ -723,7 +723,7 @@ class UserCreateApiTest extends ApiTestCase
             attributeName:  'name',
             attributeValue: '  Ebony-M\'Lynn  ',
             constraintViolations: [
-                ['propertyPath' => 'name', 'message' => 'The "name" attribute accepts uppercase letter starting forenames containing letters, dash or apostrophe symbols only and separated by single space symbols.'],
+                ['propertyPath' => 'name', 'message' => 'The "name" attribute accepts uppercase letter starting forenames containing letters, hyphen or apostrophe symbols only and separated by single space symbols.'],
             ]
         );
     }
@@ -738,7 +738,7 @@ class UserCreateApiTest extends ApiTestCase
             attributeName:  'name',
             attributeValue: 'Ebony-M\'Lynn  ',
             constraintViolations: [
-                ['propertyPath' => 'name', 'message' => 'The "name" attribute accepts uppercase letter starting forenames containing letters, dash or apostrophe symbols only and separated by single space symbols.'],
+                ['propertyPath' => 'name', 'message' => 'The "name" attribute accepts uppercase letter starting forenames containing letters, hyphen or apostrophe symbols only and separated by single space symbols.'],
             ]
         );
     }
@@ -753,7 +753,7 @@ class UserCreateApiTest extends ApiTestCase
             attributeName:  'name',
             attributeValue: 'Ebony-M\'Ly  nn',
             constraintViolations: [
-                ['propertyPath' => 'name', 'message' => 'The "name" attribute accepts uppercase letter starting forenames containing letters, dash or apostrophe symbols only and separated by single space symbols.'],
+                ['propertyPath' => 'name', 'message' => 'The "name" attribute accepts uppercase letter starting forenames containing letters, hyphen or apostrophe symbols only and separated by single space symbols.'],
             ]
         );
     }
@@ -817,7 +817,7 @@ class UserCreateApiTest extends ApiTestCase
             attributeValue: "\u{0009}\u{000A}\u{000B}\u{000C}\u{000D}\u{0020}\u{0085}\u{00A0}\u{1680}",
             constraintViolations: [
                 ['propertyPath' => 'surname', 'message' => 'This value should not be blank.'],
-                ['propertyPath' => 'surname', 'message' => 'The "surname" attribute accepts letters, dash and apostrophe symbols containing surnames separated by single space symbols only.'],
+                ['propertyPath' => 'surname', 'message' => 'The "surname" attribute accepts letters, hyphen and apostrophe symbols containing surnames separated by single space symbols only.'],
             ]
         );
     }
@@ -901,7 +901,7 @@ class UserCreateApiTest extends ApiTestCase
             attributeName:  'surname',
             attributeValue: '0',
             constraintViolations: [
-                ['propertyPath' => 'surname', 'message' => 'The "surname" attribute accepts letters, dash and apostrophe symbols containing surnames separated by single space symbols only.'],
+                ['propertyPath' => 'surname', 'message' => 'The "surname" attribute accepts letters, hyphen and apostrophe symbols containing surnames separated by single space symbols only.'],
             ]
         );
     }
@@ -929,7 +929,7 @@ class UserCreateApiTest extends ApiTestCase
             attributeName:  'surname',
             attributeValue: '1',
             constraintViolations: [
-                ['propertyPath' => 'surname', 'message' => 'The "surname" attribute accepts letters, dash and apostrophe symbols containing surnames separated by single space symbols only.'],
+                ['propertyPath' => 'surname', 'message' => 'The "surname" attribute accepts letters, hyphen and apostrophe symbols containing surnames separated by single space symbols only.'],
             ]
         );
     }
@@ -957,7 +957,7 @@ class UserCreateApiTest extends ApiTestCase
             attributeName:  'surname',
             attributeValue: '-1',
             constraintViolations: [
-                ['propertyPath' => 'surname', 'message' => 'The "surname" attribute accepts letters, dash and apostrophe symbols containing surnames separated by single space symbols only.'],
+                ['propertyPath' => 'surname', 'message' => 'The "surname" attribute accepts letters, hyphen and apostrophe symbols containing surnames separated by single space symbols only.'],
             ]
         );
     }
@@ -985,7 +985,7 @@ class UserCreateApiTest extends ApiTestCase
             attributeName:  'surname',
             attributeValue: '0.0',
             constraintViolations: [
-                ['propertyPath' => 'surname', 'message' => 'The "surname" attribute accepts letters, dash and apostrophe symbols containing surnames separated by single space symbols only.'],
+                ['propertyPath' => 'surname', 'message' => 'The "surname" attribute accepts letters, hyphen and apostrophe symbols containing surnames separated by single space symbols only.'],
             ]
         );
     }
@@ -1013,7 +1013,7 @@ class UserCreateApiTest extends ApiTestCase
             attributeName:  'surname',
             attributeValue: '1.0',
             constraintViolations: [
-                ['propertyPath' => 'surname', 'message' => 'The "surname" attribute accepts letters, dash and apostrophe symbols containing surnames separated by single space symbols only.'],
+                ['propertyPath' => 'surname', 'message' => 'The "surname" attribute accepts letters, hyphen and apostrophe symbols containing surnames separated by single space symbols only.'],
             ]
         );
     }
@@ -1041,7 +1041,7 @@ class UserCreateApiTest extends ApiTestCase
             attributeName:  'surname',
             attributeValue: '-1.0',
             constraintViolations: [
-                ['propertyPath' => 'surname', 'message' => 'The "surname" attribute accepts letters, dash and apostrophe symbols containing surnames separated by single space symbols only.'],
+                ['propertyPath' => 'surname', 'message' => 'The "surname" attribute accepts letters, hyphen and apostrophe symbols containing surnames separated by single space symbols only.'],
             ]
         );
     }
@@ -1168,7 +1168,7 @@ class UserCreateApiTest extends ApiTestCase
             attributeName:  'surname',
             attributeValue: 'lorem \'Ipsum dolor sit amet consectetur adipiscing elit',
             constraintViolations: [
-                ['propertyPath' => 'surname', 'message' => 'The "surname" attribute accepts letters, dash and apostrophe symbols containing surnames separated by single space symbols only.'],
+                ['propertyPath' => 'surname', 'message' => 'The "surname" attribute accepts letters, hyphen and apostrophe symbols containing surnames separated by single space symbols only.'],
             ]
         );
     }
@@ -1197,7 +1197,7 @@ class UserCreateApiTest extends ApiTestCase
             attributeName:  'surname',
             attributeValue: 'lorem Ipsum\' dolor sit amet consectetur adipiscing elit',
             constraintViolations: [
-                ['propertyPath' => 'surname', 'message' => 'The "surname" attribute accepts letters, dash and apostrophe symbols containing surnames separated by single space symbols only.'],
+                ['propertyPath' => 'surname', 'message' => 'The "surname" attribute accepts letters, hyphen and apostrophe symbols containing surnames separated by single space symbols only.'],
             ]
         );
     }
@@ -1212,7 +1212,7 @@ class UserCreateApiTest extends ApiTestCase
             attributeName:  'surname',
             attributeValue: 'lorem -Ipsum dolor sit amet consectetur adipiscing elit',
             constraintViolations: [
-                ['propertyPath' => 'surname', 'message' => 'The "surname" attribute accepts letters, dash and apostrophe symbols containing surnames separated by single space symbols only.'],
+                ['propertyPath' => 'surname', 'message' => 'The "surname" attribute accepts letters, hyphen and apostrophe symbols containing surnames separated by single space symbols only.'],
             ]
         );
     }
@@ -1241,7 +1241,7 @@ class UserCreateApiTest extends ApiTestCase
             attributeName:  'surname',
             attributeValue: 'lorem Ipsum- dolor sit amet consectetur adipiscing elit',
             constraintViolations: [
-                ['propertyPath' => 'surname', 'message' => 'The "surname" attribute accepts letters, dash and apostrophe symbols containing surnames separated by single space symbols only.'],
+                ['propertyPath' => 'surname', 'message' => 'The "surname" attribute accepts letters, hyphen and apostrophe symbols containing surnames separated by single space symbols only.'],
             ]
         );
     }
@@ -1270,7 +1270,7 @@ class UserCreateApiTest extends ApiTestCase
             attributeName:  'surname',
             attributeValue: ' d\'Bosco-Dolor',
             constraintViolations: [
-                ['propertyPath' => 'surname', 'message' => 'The "surname" attribute accepts letters, dash and apostrophe symbols containing surnames separated by single space symbols only.'],
+                ['propertyPath' => 'surname', 'message' => 'The "surname" attribute accepts letters, hyphen and apostrophe symbols containing surnames separated by single space symbols only.'],
             ]
         );
     }
@@ -1285,7 +1285,7 @@ class UserCreateApiTest extends ApiTestCase
             attributeName:  'surname',
             attributeValue: ' d\'Bosco-Dolor ',
             constraintViolations: [
-                ['propertyPath' => 'surname', 'message' => 'The "surname" attribute accepts letters, dash and apostrophe symbols containing surnames separated by single space symbols only.'],
+                ['propertyPath' => 'surname', 'message' => 'The "surname" attribute accepts letters, hyphen and apostrophe symbols containing surnames separated by single space symbols only.'],
             ]
         );
     }
@@ -1300,7 +1300,7 @@ class UserCreateApiTest extends ApiTestCase
             attributeName:  'surname',
             attributeValue: 'd\'Bosco-Dolor ',
             constraintViolations: [
-                ['propertyPath' => 'surname', 'message' => 'The "surname" attribute accepts letters, dash and apostrophe symbols containing surnames separated by single space symbols only.'],
+                ['propertyPath' => 'surname', 'message' => 'The "surname" attribute accepts letters, hyphen and apostrophe symbols containing surnames separated by single space symbols only.'],
             ]
         );
     }
@@ -1316,7 +1316,7 @@ class UserCreateApiTest extends ApiTestCase
             attributeName:  'surname',
             attributeValue: '  d\'Bosco-Dolor',
             constraintViolations: [
-                ['propertyPath' => 'surname', 'message' => 'The "surname" attribute accepts letters, dash and apostrophe symbols containing surnames separated by single space symbols only.'],
+                ['propertyPath' => 'surname', 'message' => 'The "surname" attribute accepts letters, hyphen and apostrophe symbols containing surnames separated by single space symbols only.'],
             ]
         );
     }
@@ -1331,7 +1331,7 @@ class UserCreateApiTest extends ApiTestCase
             attributeName:  'surname',
             attributeValue: '  d\'Bosco-Dolor  ',
             constraintViolations: [
-                ['propertyPath' => 'surname', 'message' => 'The "surname" attribute accepts letters, dash and apostrophe symbols containing surnames separated by single space symbols only.'],
+                ['propertyPath' => 'surname', 'message' => 'The "surname" attribute accepts letters, hyphen and apostrophe symbols containing surnames separated by single space symbols only.'],
             ]
         );
     }
@@ -1346,7 +1346,7 @@ class UserCreateApiTest extends ApiTestCase
             attributeName:  'surname',
             attributeValue: 'd\'Bosco-Dolor  ',
             constraintViolations: [
-                ['propertyPath' => 'surname', 'message' => 'The "surname" attribute accepts letters, dash and apostrophe symbols containing surnames separated by single space symbols only.'],
+                ['propertyPath' => 'surname', 'message' => 'The "surname" attribute accepts letters, hyphen and apostrophe symbols containing surnames separated by single space symbols only.'],
             ]
         );
     }
@@ -1361,7 +1361,7 @@ class UserCreateApiTest extends ApiTestCase
             attributeName:  'surname',
             attributeValue: 'd\'Bos  co-Dolor',
             constraintViolations: [
-                ['propertyPath' => 'surname', 'message' => 'The "surname" attribute accepts letters, dash and apostrophe symbols containing surnames separated by single space symbols only.'],
+                ['propertyPath' => 'surname', 'message' => 'The "surname" attribute accepts letters, hyphen and apostrophe symbols containing surnames separated by single space symbols only.'],
             ]
         );
     }
