@@ -46,33 +46,81 @@ class UserCreateApiTest extends ApiTestCase
 
         // call the list users API endpoint
         $response = static::createClient()->request('POST', '/api/users', [
-            'json'    => [],
             'headers' => [
-                'Accept' => 'application/ld+json'
+                'Content-Type' => 'application/json',
+                'Accept'       => 'application/ld+json'
             ]
         ]);
 
-        static::assertResponseIsUnprocessable(); // expecting HTTP reponse code 422 - Unprocessable
+        static::assertResponseStatusCodeSame(400);
         static::assertResponseHeaderSame(
             'content-type',
             'application/problem+json; charset=utf-8'
         );
-        static::assertStringContainsString('/api/validation_errors', $response->toArray(throw: false)['@id']);
+        static::assertStringContainsString('/api/errors', $response->toArray(throw: false)['@id']);
         static::assertJsonContains([
-            '@type'      => 'ConstraintViolationList',
-            'status'     => 422,
-            'violations' => [
-                ['propertyPath' => 'name', 'message' => 'This value should not be blank.'],
-                ['propertyPath' => 'surname', 'message' => 'This value should not be blank.'],
-                ['propertyPath' => 'email', 'message' => 'This value should not be blank.'],
-                ['propertyPath' => 'gender', 'message' => 'This value should not be blank.'],
-                ['propertyPath' => 'roles', 'message' => 'This collection should contain 1 element or more.'],
-                ['propertyPath' => 'active', 'message' => 'This value should not be blank.']
-            ],
+            '@type'  => 'hydra:Error',
+            'status' => 400,
+            'title'  => 'An error occurred',
+            'detail' => 'Syntax error',
+        ]);
+    }
+
+    public function testCreateUserWithMissingJsonDataAndMissingContentType(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // call the list users API endpoint
+        $response = static::createClient()->request('POST', '/api/users', [
+            'headers' => [
+                'Content-Type' => '',
+                'Accept'       => 'application/ld+json'
+            ]
         ]);
 
-        // check overall amount of expected constraint violations
-        static::assertCount(6, $response->toArray(throw: false)['violations']);
+        static::assertResponseStatusCodeSame(415); // expecting HTTP reponse code 415 - Unsupported Media Type 
+        static::assertResponseHeaderSame(
+            'content-type',
+            'application/problem+json; charset=utf-8'
+        );
+        static::assertStringContainsString('/api/errors', $response->toArray(throw: false)['@id']);
+        static::assertJsonContains([
+            '@type'  => 'hydra:Error',
+            'status' => 415,
+            'title'  => 'An error occurred',
+            'detail' => 'The "Content-Type" header must exist.',
+        ]);
+    }
+
+    public function testCreateUserWithMissingJsonDataAndWrongContentType(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // call the list users API endpoint
+        $response = static::createClient()->request('POST', '/api/users', [
+            'headers' => [
+                'Content-Type' => 'application/x-www-form-urlencoded',
+                'Accept'       => 'application/ld+json'
+            ]
+        ]);
+
+        static::assertResponseStatusCodeSame(415); // expecting HTTP reponse code 415 - Unsupported Media Type 
+        static::assertResponseHeaderSame(
+            'content-type',
+            'application/problem+json; charset=utf-8'
+        );
+        static::assertStringContainsString('/api/errors', $response->toArray(throw: false)['@id']);
+        static::assertJsonContains([
+            '@type'  => 'hydra:Error',
+            'status' => 415,
+            'title'  => 'An error occurred',
+        ]);
+        static::assertStringContainsString(
+            'The content-type "application/x-www-form-urlencoded" is not supported.',
+            $response->toArray(throw: false)['detail']
+        );
     }
 
     public function testCreateUserWithEmptyJsonData(): void
@@ -84,6 +132,7 @@ class UserCreateApiTest extends ApiTestCase
         $response = static::createClient()->request('POST', '/api/users', [
             'json'    => [],
             'headers' => [
+                'Content-Type' => 'application/json',
                 'Accept' => 'application/ld+json'
             ]
         ]);
