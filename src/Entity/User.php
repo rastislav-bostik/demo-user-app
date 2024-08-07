@@ -46,12 +46,18 @@ class User
     #[Assert\NotBlank(normalizer: [Mbstring::class, 'mb_trim'])]
     #[Assert\Length(max: 48)]
     #[Assert\Regex(
+        // ensuring that hyphens and apostrophes are
+        // not sitting side by side
+        match: false,
+        pattern: '/[\'\\-]{2,}/u',
+        message: 'The "name" may contain hyphens and apostrophes wrapped by letters only.'
+    )]
+    #[Assert\Regex(
         // first name validation pattern accepting uppercase letter only starting names separated by single spaces
         // and consisting of Latin and/or non-Latin letters, apostrophe and hyphen symbols only.
         // (e.g. Miguel María, Антон Павлович, יעקב שבתאי)
         // (not supporting ideographic and other non-alphabetic symbols / writing systems e.g. Chinese, Japanese, ...)
         // 
-        // @todo ensure that hyphen and apostrophe can't follow each other
         // @see https://en.wikipedia.org/wiki/List_of_writing_systems
         // @see https://www.regular-expressions.info/unicode.html#prop
         // @see https://www.quora.com/Do-Chinese-characters-have-letter-case-i-e-distinct-upper-and-lower-cases
@@ -69,12 +75,18 @@ class User
     #[Assert\NotBlank(normalizer: [Mbstring::class, 'mb_trim'])]
     #[Assert\Length(max: 255)]
     #[Assert\Regex(
-        // inverting logic to achieve wanted behavior
         // enrusing that surname contains at least 
         // one uppercase letter
         match: false,
         pattern: '/^[\p{Ll}\'\\- ]+$/u',
         message: 'The "surname" has to contain at least one uppercase letter.'
+    )]
+    #[Assert\Regex(
+        // ensuring that hyphens and apostrophes are
+        // not sitting side by side
+        match: false,
+        pattern: '/[\'\\-]{2,}/u',
+        message: 'The "surname" may contain hyphens and apostrophes wrapped by letters only.'
     )]
     #[Assert\Regex(
         // surname validation pattern accepting lower- as well as upper-case letter starting surnames
@@ -83,7 +95,6 @@ class User
         // (e.g O'Neil, Murinho-Guerera, de Murcía, ...)
         // (not supporting ideographic and other non-alphabetic symbols / writing systems e.g. Chinese, Japanese, ...)
         // 
-        // @todo ensure that hyphen and apostrophe can't follow each other
         // @see https://en.wikipedia.org/wiki/List_of_writing_systems
         // @see https://www.regular-expressions.info/unicode.html#prop
         // @see https://www.quora.com/Do-Chinese-characters-have-letter-case-i-e-distinct-upper-and-lower-cases

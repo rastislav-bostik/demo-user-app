@@ -595,6 +595,21 @@ class UserCreateApiTest extends ApiTestCase
         );
     }
 
+    public function testCreateUserContainingWordWithDoubleApostropheInNameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testConstraintViolationForAttributeValue(
+            attributeName:  'name',
+            attributeValue: 'Ebony-M\'\'Lynn',
+            constraintViolations: [
+                ['propertyPath' => 'name', 'message' => 'The "name" may contain hyphens and apostrophes wrapped by letters only.'],
+            ]
+        );
+    }
+
     public function testCreateUserContainingWordStartingWithHyphenInNameFieldValue(): void
     {
         // remove all data from database
@@ -635,6 +650,36 @@ class UserCreateApiTest extends ApiTestCase
             attributeValue: 'Lorem Ipsum- Dolor Sit',
             constraintViolations: [
                 ['propertyPath' => 'name', 'message' => 'The "name" attribute accepts uppercase letter starting forenames containing letters, hyphen or apostrophe symbols only and separated by single space symbols.'],
+            ]
+        );
+    }
+
+    public function testCreateUserContainingWordWithDoubleHyphenInNameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testConstraintViolationForAttributeValue(
+            attributeName:  'name',
+            attributeValue: 'Ebony--M\'Lynn',
+            constraintViolations: [
+                ['propertyPath' => 'name', 'message' => 'The "name" may contain hyphens and apostrophes wrapped by letters only.'],
+            ]
+        );
+    }
+
+    public function testCreateUserContainingWordWithApostropheFollowedByHyphenInNameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testConstraintViolationForAttributeValue(
+            attributeName:  'name',
+            attributeValue: 'Ebony-M\'-Lynn',
+            constraintViolations: [
+                ['propertyPath' => 'name', 'message' => 'The "name" may contain hyphens and apostrophes wrapped by letters only.'],
             ]
         );
     }
@@ -1201,6 +1246,21 @@ class UserCreateApiTest extends ApiTestCase
             ]
         );
     }
+    
+    public function testCreateUserContainingWordWithDoubleApostropheInSurnameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testConstraintViolationForAttributeValue(
+            attributeName:  'surname',
+            attributeValue: 'd\'\'Bosco-Dolor',
+            constraintViolations: [
+                ['propertyPath' => 'surname', 'message' => 'The "surname" may contain hyphens and apostrophes wrapped by letters only.'],
+            ]
+        );
+    }
 
     public function testCreateUserContainingWordStartingWithHyphenInSurnameFieldValue(): void
     {
@@ -1242,6 +1302,36 @@ class UserCreateApiTest extends ApiTestCase
             attributeValue: 'lorem Ipsum- dolor sit amet consectetur adipiscing elit',
             constraintViolations: [
                 ['propertyPath' => 'surname', 'message' => 'The "surname" attribute accepts letters, hyphen and apostrophe symbols containing surnames separated by single space symbols only.'],
+            ]
+        );
+    }
+
+    public function testCreateUserContainingWordWithDoubleHyphenInSurnameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testConstraintViolationForAttributeValue(
+            attributeName:  'surname',
+            attributeValue: 'd\'Bosco--Dolor',
+            constraintViolations: [
+                ['propertyPath' => 'surname', 'message' => 'The "surname" may contain hyphens and apostrophes wrapped by letters only.'],
+            ]
+        );
+    }
+
+    public function testCreateUserContainingWordWithApostropheFollowedByHyphenInSurnameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testConstraintViolationForAttributeValue(
+            attributeName:  'surname',
+            attributeValue: 'd\'-Bosco-Dolor',
+            constraintViolations: [
+                ['propertyPath' => 'surname', 'message' => 'The "surname" may contain hyphens and apostrophes wrapped by letters only.'],
             ]
         );
     }
