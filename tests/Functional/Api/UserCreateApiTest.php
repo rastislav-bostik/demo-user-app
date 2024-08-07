@@ -743,6 +743,21 @@ class UserCreateApiTest extends ApiTestCase
         );
     }
 
+    public function testCreateUserContainingDoubleSpaceInTheMiddleOfNameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testConstraintViolationForAttributeValue(
+            attributeName:  'name',
+            attributeValue: 'Ebony-M\'Ly  nn',
+            constraintViolations: [
+                ['propertyPath' => 'name', 'message' => 'The "name" attribute accepts uppercase letter starting forenames containing letters, dash or apostrophe symbols only and separated by single space symbols.'],
+            ]
+        );
+    }
+
 
     // ======================== NAME ATTRIBUTE FOCUSED TESTS ======================== //
     // ============================================================================== //
@@ -1330,6 +1345,21 @@ class UserCreateApiTest extends ApiTestCase
         $this->_testConstraintViolationForAttributeValue(
             attributeName:  'surname',
             attributeValue: 'd\'Bosco-Dolor  ',
+            constraintViolations: [
+                ['propertyPath' => 'surname', 'message' => 'The "surname" attribute accepts letters, dash and apostrophe symbols containing surnames separated by single space symbols only.'],
+            ]
+        );
+    }
+
+    public function testCreateUserContainingDoubleSpaceInTheMiddleOfSurnameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testConstraintViolationForAttributeValue(
+            attributeName:  'surname',
+            attributeValue: 'd\'Bos  co-Dolor',
             constraintViolations: [
                 ['propertyPath' => 'surname', 'message' => 'The "surname" attribute accepts letters, dash and apostrophe symbols containing surnames separated by single space symbols only.'],
             ]
