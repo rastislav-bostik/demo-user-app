@@ -566,6 +566,20 @@ class UserCreateApiTest extends ApiTestCase
         );
     }
 
+    public function testCreateUserContainingWordWithApostropheInNameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run the user creation test body
+        $this->_testSuccessfullCreationOfUser(array_merge(
+            self::DEFAULT_USER_DATA,
+            [
+                'name' => 'D\'Lisa'
+            ]
+        ));
+    }
+
     public function testCreateUserContainingWordEndingWithApostropheInNameFieldValue(): void
     {
         // remove all data from database
@@ -596,6 +610,20 @@ class UserCreateApiTest extends ApiTestCase
         );
     }
 
+    public function testCreateUserContainingWordWithHyphenInNameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run the user creation test body
+        $this->_testSuccessfullCreationOfUser(array_merge(
+            self::DEFAULT_USER_DATA,
+            [
+                'name' => 'Emily-rose'
+            ]
+        ));
+    }
+
     public function testCreateUserContainingWordEndingWithHyphenInNameFieldValue(): void
     {
         // remove all data from database
@@ -610,6 +638,21 @@ class UserCreateApiTest extends ApiTestCase
             ]
         );
     }
+
+    public function testCreateUserContainingWordWithApostropheAndHyphenInNameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run the user creation test body
+        $this->_testSuccessfullCreationOfUser(array_merge(
+            self::DEFAULT_USER_DATA,
+            [
+                'name' => 'Ebony-M\'Lynn'
+            ]
+        ));
+    }
+
 
     // ======================== NAME ATTRIBUTE FOCUSED TESTS ======================== //
     // ============================================================================== //
@@ -1025,6 +1068,20 @@ class UserCreateApiTest extends ApiTestCase
         );
     }
 
+    public function testCreateUserContainingWordWithApostropheInSurnameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run the user creation test body
+        $this->_testSuccessfullCreationOfUser(array_merge(
+            self::DEFAULT_USER_DATA,
+            [
+                'surname' => 'd\'Bosco Dolor'
+            ]
+        ));
+    }
+
     public function testCreateUserContainingWordEndingWithApostropheInSurnameFieldValue(): void
     {
         // remove all data from database
@@ -1054,6 +1111,20 @@ class UserCreateApiTest extends ApiTestCase
             ]
         );
     }
+    
+    public function testCreateUserContainingWordWithHyphenInSurnameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run the user creation test body
+        $this->_testSuccessfullCreationOfUser(array_merge(
+            self::DEFAULT_USER_DATA,
+            [
+                'surname' => 'de Bosco-Dolor'
+            ]
+        ));
+    }
 
     public function testCreateUserContainingWordEndingWithHyphenInSurnameFieldValue(): void
     {
@@ -1068,6 +1139,20 @@ class UserCreateApiTest extends ApiTestCase
                 ['propertyPath' => 'surname', 'message' => 'The "surname" attribute accepts letters, dash and apostrophe symbols containing surnames separated by single space symbols only.'],
             ]
         );
+    }
+
+    public function testCreateUserContainingWordWithApostropheAndHyphenInSurnameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run the user creation test body
+        $this->_testSuccessfullCreationOfUser(array_merge(
+            self::DEFAULT_USER_DATA,
+            [
+                'surname' => 'd\'Bosco-Dolor'
+            ]
+        ));
     }
 
     // TODO - create user with invalid surname set to <missing attribute at all> | null | '' | '   ' | false | "false" | true | "true" | true | 0 | "0" | 0.0 | "0.0" | array | object | binary data | too long value
