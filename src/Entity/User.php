@@ -68,6 +68,28 @@ class User
     #[ApiFilter(SearchFilter::class)]
     #[Assert\NotBlank(normalizer: [Mbstring::class, 'mb_trim'])]
     #[Assert\Length(max: 255)]
+    #[Assert\Regex(
+        // inverting logic to achieve wanted behavior
+        // enrusing that surname contains at least 
+        // one uppercase letter
+        match: false,
+        pattern: '/^[\p{Ll}\'\\- ]+$/u',
+        message: 'The "surname" has to contain at least one uppercase letter.'
+    )]
+    #[Assert\Regex(
+        // surname validation pattern accepting also lower-case letter starting words
+        // separated by single spaces, containing dashes and aphostrophes inside supporting 
+        // apostrophes dashes and Latin as well as non-Latin letters.
+        // (e.g O'Neil, Murinho-Guerera, de Murcía, ...)
+        // (not supporting ideographic and other non-alphabetic symbols / writing systems e.g. Chinese, Japanese, ...)
+        // 
+        // @todo ensure that dash and apostrophe can't follow each other
+        // @see https://en.wikipedia.org/wiki/List_of_writing_systems
+        // @see https://www.regular-expressions.info/unicode.html#prop
+        // @see https://www.quora.com/Do-Chinese-characters-have-letter-case-i-e-distinct-upper-and-lower-cases
+        pattern: '/^(\p{L}([\p{L}\'\\-]*\p{L}|[\p{L}]*))( \p{L}([\p{L}\'\\-]*\p{L}|[\p{L}]*))*$/u',
+        message: 'The "surname" attribute accepts letters, dash and apostrophe symbols containing surnames separated by single space symbols only.'
+    )]
     private string $surname;
 
     /**
