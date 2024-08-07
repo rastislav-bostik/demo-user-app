@@ -55,7 +55,7 @@ class User
         // @see https://en.wikipedia.org/wiki/List_of_writing_systems
         // @see https://www.regular-expressions.info/unicode.html#prop
         // @see https://www.quora.com/Do-Chinese-characters-have-letter-case-i-e-distinct-upper-and-lower-cases
-        pattern: '/^(\p{Lu}[\p{L}\'-]*)( \p{Lu}[\p{L}\'-]*)*$/u',
+        pattern: '/^(\p{Lu}([\p{L}\'\\-]*[\p{L}]|[\p{L}]*))( \p{Lu}([\p{L}\'\\-]*\p{L}|[\p{L}]*))*$/u',
         message: 'The "name" attribute accepts uppercase letter starting forenames containing letters, dash or apostrophe symbols only and separated by single space symbols.'
     )]
     private string $name;
