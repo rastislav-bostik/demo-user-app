@@ -542,49 +542,13 @@ class UserCreateApiTest extends ApiTestCase
         // remove all data from database
         $this->cleanDatabase();
 
-        // call the list users API endpoint
-        $response = static::createClient()->request('POST', '/api/users', [
-            'json'    => array_merge(
+        // run the user creation test body
+        $this->_testSuccessfullCreationOfUser(array_merge(
                 self::DEFAULT_USER_DATA,
                 [
                     'name' => 'LOREM IPSUM DOLOR SIT'
                 ]
-            ),
-            'headers' => [
-                'Content-Type' => 'application/json',
-                'Accept' => 'application/ld+json'
-            ]
-        ]);
-
-        static::assertResponseStatusCodeSame(201); // expecting HTTP reponse code 201 - Created
-        static::assertResponseHeaderSame(
-            'content-type',
-            'application/ld+json; charset=utf-8'
-        );
-        static::assertStringContainsString('/api/users', $response->toArray(throw: false)['@id']);
-        static::assertJsonContains(array_merge(
-            [
-                '@context' => '/api/contexts/User', 
-                '@type'    => 'User'
-            ],
-            // converting backend enums contained within
-            // default user data array into strings
-            json_decode(json_encode(array_merge(
-                self::DEFAULT_USER_DATA,
-                [
-                    'name' => 'LOREM IPSUM DOLOR SIT'
-                ]
-            )),true)
         ));
-
-        // check that user ID is valid UUID
-        static::assertTrue(Uuid::isValid($response->toArray(throw: false)['id']));
-        // check that JSON-LD @id is pointing
-        // to the just created resource
-        static::assertSame(
-            $response->toArray(throw: false)['@id'],
-            '/api/users/' . $response->toArray(throw: false)['id']
-        );
     }
  
     public function testCreateUserContainingWordStartingWithApostropheInNameFieldValue(): void
@@ -1037,49 +1001,13 @@ class UserCreateApiTest extends ApiTestCase
         // remove all data from database
         $this->cleanDatabase();
 
-        // call the list users API endpoint
-        $response = static::createClient()->request('POST', '/api/users', [
-            'json'    => array_merge(
+        // run the user creation test body
+        $this->_testSuccessfullCreationOfUser(array_merge(
                 self::DEFAULT_USER_DATA,
                 [
-                    'surname' => 'LOREM IPSUM DOLOR SIT AMET CONSECTETUR ADIPISCING ELIT'
+                'surname' => 'LOREM IPSUM DOLOR SIT'
                 ]
-            ),
-            'headers' => [
-                'Content-Type' => 'application/json',
-                'Accept' => 'application/ld+json'
-            ]
-        ]);
-
-        static::assertResponseStatusCodeSame(201); // expecting HTTP reponse code 201 - Created
-        static::assertResponseHeaderSame(
-            'content-type',
-            'application/ld+json; charset=utf-8'
-        );
-        static::assertStringContainsString('/api/users', $response->toArray(throw: false)['@id']);
-        static::assertJsonContains(array_merge(
-            [
-                '@context' => '/api/contexts/User', 
-                '@type'    => 'User'
-            ],
-            // converting backend enums contained within
-            // default user data array into strings
-            json_decode(json_encode(array_merge(
-                self::DEFAULT_USER_DATA,
-                [
-                    'surname' => 'LOREM IPSUM DOLOR SIT AMET CONSECTETUR ADIPISCING ELIT'
-                ]
-            )),true)
         ));
-
-        // check that user ID is valid UUID
-        static::assertTrue(Uuid::isValid($response->toArray(throw: false)['id']));
-        // check that JSON-LD @id is pointing
-        // to the just created resource
-        static::assertSame(
-            $response->toArray(throw: false)['@id'],
-            '/api/users/' . $response->toArray(throw: false)['id']
-        );
     }
  
     public function testCreateUserContainingWordStartingWithApostropheInSurnameFieldValue(): void
@@ -1151,9 +1079,26 @@ class UserCreateApiTest extends ApiTestCase
 
     public function testCreateUserSuccess(): void
     {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run the user creation test body
+        $this->_testSuccessfullCreationOfUser(self::DEFAULT_USER_DATA);
+    }
+
+    /**
+     * Test expected successfull user entity 
+     * creating scenario for given input user
+     * data
+     * 
+     * @param array $userData
+     * @return void
+     */
+    public function _testSuccessfullCreationOfUser(array $userData): void
+    {
         // call the list users API endpoint
         $response = static::createClient()->request('POST', '/api/users', [
-            'json'    => self::DEFAULT_USER_DATA,
+            'json'    => $userData,
             'headers' => [
                 'Content-Type' => 'application/json',
                 'Accept' => 'application/ld+json'
@@ -1173,7 +1118,7 @@ class UserCreateApiTest extends ApiTestCase
             ],
             // converting backend enums contained within
             // default user data array into strings
-            json_decode(json_encode(self::DEFAULT_USER_DATA),true)
+            json_decode(json_encode($userData),true)
         ));
 
         // check that user ID is valid UUID
