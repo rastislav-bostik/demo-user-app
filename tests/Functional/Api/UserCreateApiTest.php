@@ -165,7 +165,7 @@ class UserCreateApiTest extends ApiTestCase
     // ======================== NAME ATTRIBUTE FOCUSED TESTS ======================== //
 
 
-    public function testCreateUserWithMissingAsNameFieldValue(): void
+    public function testCreateUserWithMissingNameFieldValue(): void
     {
         // remove all data from database
         $this->cleanDatabase();
