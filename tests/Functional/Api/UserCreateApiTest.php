@@ -803,6 +803,34 @@ class UserCreateApiTest extends ApiTestCase
         );
     }
 
+    public function testCreateUserContainingWithValidLatinNameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run the user creation test body
+        $this->_testSuccessfullCreationOfUser(array_merge(
+            self::DEFAULT_USER_DATA,
+            [
+                'name' => 'Emily-rose Ebony-M\'Lynn'
+            ]
+        ));
+    }
+
+    public function testCreateUserContainingWithValidCyrilicNameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run the user creation test body
+        $this->_testSuccessfullCreationOfUser(array_merge(
+            self::DEFAULT_USER_DATA,
+            [
+                'name' => 'Ангелюк'
+            ]
+        ));
+    }
+
 
     // ======================== NAME ATTRIBUTE FOCUSED TESTS ======================== //
     // ============================================================================== //
@@ -1454,6 +1482,34 @@ class UserCreateApiTest extends ApiTestCase
                 ['propertyPath' => 'surname', 'message' => 'The "surname" attribute accepts letters, hyphen and apostrophe symbols containing surnames separated by single space symbols only.'],
             ]
         );
+    }
+
+    public function testCreateUserContainingWithValidLatinSurnameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run the user creation test body
+        $this->_testSuccessfullCreationOfUser(array_merge(
+            self::DEFAULT_USER_DATA,
+            [
+                'surname' => 'd\'Bosco-Dolor Vincenze-diAnglia'
+            ]
+        ));
+    }
+
+    public function testCreateUserContainingWithValidCyrilicSurnameFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run the user creation test body
+        $this->_testSuccessfullCreationOfUser(array_merge(
+            self::DEFAULT_USER_DATA,
+            [
+                'surname' => 'Ангелюк'
+            ]
+        ));
     }
 
     // TODO - create user with invalid surname set to <missing attribute at all> | null | '' | '   ' | false | "false" | true | "true" | true | 0 | "0" | 0.0 | "0.0" | array | object | binary data | too long value
