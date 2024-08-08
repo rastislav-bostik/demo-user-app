@@ -1512,6 +1512,472 @@ class UserCreateApiTest extends ApiTestCase
         ));
     }
 
+
+    // ====================== SURNAME ATTRIBUTE FOCUSED TESTS ======================= //
+    // ============================================================================== //
+
+
+
+    // ============================================================================== //
+    // ======================= EMAIL ATTRIBUTE FOCUSED TESTS ======================== //
+
+
+    public function testCreateUserWithMissingEmailFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        $this->_testConstraintViolationForMissingAttribute(
+            attributeName: 'email'
+        );
+    }
+
+    public function testCreateUserWithNullAsEmailFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'email',
+            attributeValue:   null,
+            expectedTypeName: 'string'
+        );
+    }
+
+    public function testCreateUserWithEmptyAsEmailFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testConstraintViolationForAttributeValue(
+            attributeName:  'email',
+            attributeValue: '',
+            constraintViolations: [
+                ['propertyPath' => 'email', 'message' => 'This value should not be blank.'],
+            ]
+        );
+    }
+
+    public function testCreateUserWithWhitespaceAsEmailFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testConstraintViolationForAttributeValue(
+            attributeName:  'email',
+            attributeValue: "\u{0009}\u{000A}\u{000B}\u{000C}\u{000D}\u{0020}\u{0085}\u{00A0}\u{1680}",
+            constraintViolations: [
+                ['propertyPath' => 'email', 'message' => 'This value should not be blank.'],
+                ['propertyPath' => 'email', 'message' => 'This value is not a valid email address.'],
+            ]
+        );
+    }
+
+    public function testCreateUserWithFalseBoolAsEmailFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'email',
+            attributeValue:   false,
+            expectedTypeName: 'string'
+        );
+    }
+
+    public function testCreateUserWithFalseStringAsEmailFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testConstraintViolationForAttributeValue(
+            attributeName:  'email',
+            attributeValue: 'false',
+            constraintViolations: [
+                ['propertyPath' => 'email', 'message' => 'This value is not a valid email address.'],
+            ]
+        );
+    }
+
+    public function testCreateUserWithTrueBoolAsEmailFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'email',
+            attributeValue:   true,
+            expectedTypeName: 'string'
+        );
+    }
+
+    public function testCreateUserWithTrueStringAsEmailFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testConstraintViolationForAttributeValue(
+            attributeName:  'email',
+            attributeValue: 'true',
+            constraintViolations: [
+                ['propertyPath' => 'email', 'message' => 'This value is not a valid email address.'],
+            ]
+        );
+    }
+
+    public function testCreateUserWithZeroIntAsEmailFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'email',
+            attributeValue:   0,
+            expectedTypeName: 'string'
+        );
+    }
+
+    public function testCreateUserWithZeroIntStringAsEmailFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testConstraintViolationForAttributeValue(
+            attributeName:  'email',
+            attributeValue: '0',
+            constraintViolations: [
+                ['propertyPath' => 'email', 'message' => 'This value is not a valid email address.'],
+            ]
+        );
+    }
+
+    public function testCreateUserWithPositiveIntAsEmailFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'email',
+            attributeValue:   1,
+            expectedTypeName: 'string'
+        );
+    }
+
+    public function testCreateUserWithPositiveIntStringAsEmailFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testConstraintViolationForAttributeValue(
+            attributeName:  'email',
+            attributeValue: '1',
+            constraintViolations: [
+                ['propertyPath' => 'email', 'message' => 'This value is not a valid email address.'],
+            ]
+        );
+    }
+
+    public function testCreateUserWithNegativeIntAsEmailFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'email',
+            attributeValue:   -1,
+            expectedTypeName: 'string'
+        );
+    }
+
+    public function testCreateUserWithNegativeIntStringAsEmailFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testConstraintViolationForAttributeValue(
+            attributeName:  'email',
+            attributeValue: '-1',
+            constraintViolations: [
+                ['propertyPath' => 'email', 'message' => 'This value is not a valid email address.'],
+            ]
+        );
+    }
+
+    public function testCreateUserWithZeroDoubleAsEmailFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'email',
+            attributeValue:   0.0,
+            expectedTypeName: 'string'
+        );
+    }
+
+    public function testCreateUserWithZeroDoubleStringAsEmailFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testConstraintViolationForAttributeValue(
+            attributeName:  'email',
+            attributeValue: '0.0',
+            constraintViolations: [
+                ['propertyPath' => 'email', 'message' => 'This value is not a valid email address.'],
+            ]
+        );
+    }
+
+    public function testCreateUserWithPositiveDoubleAsEmailFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'email',
+            attributeValue:   1.0,
+            expectedTypeName: 'string'
+        );
+    }
+
+    public function testCreateUserWithPositiveDoubleStringAsEmailFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testConstraintViolationForAttributeValue(
+            attributeName:  'email',
+            attributeValue: '1.0',
+            constraintViolations: [
+                ['propertyPath' => 'email', 'message' => 'This value is not a valid email address.'],
+            ]
+        );
+    }
+
+    public function testCreateUserWithNegativeDoubleAsEmailFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'email',
+            attributeValue:   -1.0,
+            expectedTypeName: 'string'
+        );
+    }
+
+    public function testCreateUserWithNegativeDoubleStringAsEmailFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testConstraintViolationForAttributeValue(
+            attributeName:  'email',
+            attributeValue: '-1.0',
+            constraintViolations: [
+                ['propertyPath' => 'email', 'message' => 'This value is not a valid email address.'],
+            ]
+        );
+    }
+
+    public function testCreateUserWithArrayAsEmailFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'email',
+            attributeValue:   [],
+            expectedTypeName: 'string'
+        );
+    }
+
+    public function testCreateUserWithObjectAsEmailFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'email',
+            attributeValue:   ["attributeX" => "valueX"],
+            expectedTypeName: 'string'
+        );
+    }
+
+    // public function testCreateUserWithBinaryAsEmailFieldValue(): void
+    // {
+    //     // remove all data from database
+    //     $this->cleanDatabase();
+
+    //     // call the list users API endpoint
+    //     $response = static::createClient()->request('POST', '/api/users', [
+    //         'json'    => [
+    //             'email'    => "\x04\x00\xa0\x00",// \u001A\u001B\u0005\u001B
+    //             'email' => 'User X',
+    //             'email'   => 'test.user.X@foo.local',
+    //             'gender'  => Gender::MALE,
+    //             'roles'   =>  [
+    //                 Role::USER,
+    //                 Role::ADMIN,
+    //             ],
+    //             'active'   => true 
+
+    //         ],
+    //         'headers' => [
+    //             'Accept' => 'application/ld+json'
+    //         ]
+    //     ]);
+
+    //     static::assertResponseStatusCodeSame(400);
+    //     static::assertResponseHeaderSame(
+    //         'content-type',
+    //         'application/problem+json; charset=utf-8'
+    //     );
+    //     static::assertStringContainsString('/api/errors', $response->toArray(throw: false)['@id']);
+    //     static::assertJsonContains([
+    //         '@type'  => 'hydra:Error',
+    //         'status' => 400,
+    //         'title'  => 'An error occurred',
+    //         'detail' => 'The type of the "email" attribute must be "string", "object" given.'
+    //     ]);
+    // }
+
+    public function testCreateUserWithTooLongStringAsEmailFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+            $this->_testConstraintViolationForAttributeValue(
+            attributeName:  'email',
+            attributeValue: 'Lorem Ipsum Dolor Sit Amet Consectetur Adipiscing Elit' .
+                'Lorem Ipsum Dolor Sit Amet Consectetur Adipiscing Elit' .
+                'Lorem Ipsum Dolor Sit Amet Consectetur Adipiscing Elit' .
+                'Lorem Ipsum Dolor Sit Amet Consectetur Adipiscing Elit' .
+                'Lorem Ipsum Dolor Sit Amet Consectetur Adipiscing Elit',
+            constraintViolations: [
+                ['propertyPath' => 'email', 'message' => 'This value is too long. It should have 255 characters or less.'],
+                ['propertyPath' => 'email', 'message' => 'This value is not a valid email address.'],
+            ]
+        );
+    }
+
+    
+    /**
+     * @dataProvider \App\Tests\DataProvider\EmailDataProvider::getInvalidEmails()
+     */
+    public function testCreateUserWithInvalidEmailFieldValue(string $email): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testConstraintViolationForAttributeValue(
+            attributeName:  'email',
+            attributeValue: $email,
+            constraintViolations: [
+                ['propertyPath' => 'email', 'message' => 'This value is not a valid email address.'],
+            ]
+        );
+    }
+
+    /**
+     * @dataProvider \App\Tests\DataProvider\EmailDataProvider::getInvalidHtml5Emails()
+     */
+    public function testCreateUserWithInvalidHtml5EmailFieldValue(string $email): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testConstraintViolationForAttributeValue(
+            attributeName:  'email',
+            attributeValue: $email,
+            constraintViolations: [
+                ['propertyPath' => 'email', 'message' => 'This value is not a valid email address.'],
+            ]
+        );
+    }
+
+    /**
+     * @dataProvider \App\Tests\DataProvider\EmailDataProvider::getValidEmailsWrappedByWhitespaces()
+     */
+    public function testCreateUserWithByWhitespacesWrappedValidEmailFieldValue(string $email): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testConstraintViolationForAttributeValue(
+            attributeName:  'email',
+            attributeValue: $email,
+            constraintViolations: [
+                ['propertyPath' => 'email', 'message' => 'This value is not a valid email address.'],
+            ]
+        );
+    }
+
+    /**
+     * @dataProvider \App\Tests\DataProvider\EmailDataProvider::getValidEmails()
+     */
+    public function testCreateUserWithValidEmailFieldValue(string $email): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run the user creation test body
+        $this->_testSuccessfullCreationOfUser(array_merge(
+            self::DEFAULT_USER_DATA,
+            [
+                'email' => $email,
+            ]
+        ));
+    }
+
+    /**
+     * @dataProvider \App\Tests\DataProvider\EmailDataProvider::getValidHtml5Emails()
+     * @link https://html.spec.whatwg.org/multipage/input.html#valid-e-mail-address
+     */
+    public function testCreateUserWithValidHtml5EmailFieldValue(string $email): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run the user creation test body
+        $this->_testSuccessfullCreationOfUser(array_merge(
+            self::DEFAULT_USER_DATA,
+            [
+                'email' => $email,
+            ]
+        ));
+    }
+
+
+    // ======================= EMAIL ATTRIBUTE FOCUSED TESTS ======================== //
+    // ============================================================================== //
+
     // TODO - create user with invalid surname set to <missing attribute at all> | null | '' | '   ' | false | "false" | true | "true" | true | 0 | "0" | 0.0 | "0.0" | array | object | binary data | too long value
     // TODO - create user with invalid email <missing attribute at all> | null | '' | '   ' | ... | too long value | invalid email pattern | already existing email
     // TODO - create user with invalid gender <missing attribute at all> | null | '' | '   ' | ... | too long value | value other than supported gender value

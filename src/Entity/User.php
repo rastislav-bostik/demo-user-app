@@ -111,7 +111,22 @@ class User
     #[ApiFilter(SearchFilter::class)]
     #[Assert\NotBlank(normalizer: [Mbstring::class, 'mb_trim'])]
     #[Assert\Length(max: 255)]
-    #[Assert\Email]
+    #[Assert\Email(
+        // validation mode HTML5 seems to be the middle ground
+        // between strict and loose email validation setup
+        //
+        // As HTML living standard document linked below 
+        // states on address of email validation:
+        // "RFC 5322, defining a syntax for email addresses is simultaneously:
+        //  - too strict (before the "@" character),
+        //  - too vague (after the "@" character),
+        //  - and too lax (allowing comments, whitespace characters, and quoted strings in manners unfamiliar to most users)
+        // to be of practical use here."
+        // 
+        // @see https://html.spec.whatwg.org/multipage/input.html#valid-e-mail-address
+        // @see https://symfony.com/doc/6.4/reference/constraints/Email.html#mode
+        mode: Assert\Email::VALIDATION_MODE_HTML5
+    )]
     private string $email;
 
     /**
