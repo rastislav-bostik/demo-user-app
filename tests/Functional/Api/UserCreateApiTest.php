@@ -1978,12 +1978,482 @@ class UserCreateApiTest extends ApiTestCase
     // ======================= EMAIL ATTRIBUTE FOCUSED TESTS ======================== //
     // ============================================================================== //
 
+
+
+    // ============================================================================== //
+    // ======================= GENDER ATTRIBUTE FOCUSED TESTS ======================= //
+
+
+    public function testCreateUserWithMissingGenderFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        $this->_testConstraintViolationForMissingAttribute(
+            attributeName: 'gender'
+        );
+    }
+
+    public function testCreateUserWithNullAsGenderFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run type violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:        'gender',
+            attributeValue:       null,
+            expectedTypeName:     'string',
+            expectedErrorMessage: 'The data is neither an integer nor a string, you should pass an integer or a string that can be parsed as an enumeration case of type App\\Entity\\Gender.',
+        );
+    }
+
+    public function testCreateUserWithEmptyAsGenderFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run type violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:        'gender',
+            attributeValue:       '',
+            expectedTypeName:     'string',
+            expectedErrorMessage: 'The data must belong to a backed enumeration of type App\\Entity\\Gender',
+        );
+    }
+
+    public function testCreateUserWithWhitespaceAsGenderFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run type violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:        'gender',
+            attributeValue:       "\u{0009}\u{000A}\u{000B}\u{000C}\u{000D}\u{0020}\u{0085}\u{00A0}\u{1680}",
+            expectedTypeName:     'string',
+            expectedErrorMessage: 'The data must belong to a backed enumeration of type App\\Entity\\Gender',
+        );
+    }
+
+    public function testCreateUserWithFalseBoolAsGenderFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run type violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:        'gender',
+            attributeValue:       false,
+            expectedTypeName:     'string',
+            expectedErrorMessage: 'The data is neither an integer nor a string, you should pass an integer or a string that can be parsed as an enumeration case of type App\\Entity\\Gender.',
+        );
+    }
+
+    public function testCreateUserWithFalseStringAsGenderFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run type violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:        'gender',
+            attributeValue:       'false',
+            expectedTypeName:     'string',
+            expectedErrorMessage: 'The data must belong to a backed enumeration of type App\\Entity\\Gender',
+        );
+    }
+
+    public function testCreateUserWithTrueBoolAsGenderFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run type violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:        'gender',
+            attributeValue:       true,
+            expectedTypeName:     'string',
+            expectedErrorMessage: 'The data is neither an integer nor a string, you should pass an integer or a string that can be parsed as an enumeration case of type App\\Entity\\Gender.',
+        );
+    }
+
+    public function testCreateUserWithTrueStringAsGenderFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run type violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:        'gender',
+            attributeValue:       'true',
+            expectedTypeName:     'string',
+            expectedErrorMessage: 'The data must belong to a backed enumeration of type App\\Entity\\Gender',
+        );
+    }
+
+    public function testCreateUserWithZeroIntAsGenderFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run type violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:        'gender',
+            attributeValue:       0,
+            expectedTypeName:     'string',
+            expectedErrorMessage: 'The data must belong to a backed enumeration of type App\\Entity\\Gender',
+        );
+    }
+
+    public function testCreateUserWithZeroIntStringAsGenderFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run type violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:        'gender',
+            attributeValue:       '0',
+            expectedTypeName:     'string',
+            expectedErrorMessage: 'The data must belong to a backed enumeration of type App\\Entity\\Gender',
+        );
+    }
+
+    public function testCreateUserWithPositiveIntAsGenderFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run type violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:        'gender',
+            attributeValue:       1,
+            expectedTypeName:     'string',
+            expectedErrorMessage: 'The data must belong to a backed enumeration of type App\\Entity\\Gender',
+        );
+    }
+
+    public function testCreateUserWithPositiveIntStringAsGenderFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run type violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:        'gender',
+            attributeValue:       '1',
+            expectedTypeName:     'string',
+            expectedErrorMessage: 'The data must belong to a backed enumeration of type App\\Entity\\Gender',
+        );
+    }
+
+    public function testCreateUserWithNegativeIntAsGenderFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run type violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:        'gender',
+            attributeValue:       -1,
+            expectedTypeName:     'string',
+            expectedErrorMessage: 'The data must belong to a backed enumeration of type App\\Entity\\Gender',
+        );
+    }
+
+    public function testCreateUserWithNegativeIntStringAsGenderFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run type violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:        'gender',
+            attributeValue:       '-1',
+            expectedTypeName:     'string',
+            expectedErrorMessage: 'The data must belong to a backed enumeration of type App\\Entity\\Gender',
+        );
+    }
+
+    public function testCreateUserWithZeroDoubleAsGenderFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run type violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:        'gender',
+            attributeValue:       0.0,
+            expectedTypeName:     'string',
+            expectedErrorMessage: 'The data is neither an integer nor a string, you should pass an integer or a string that can be parsed as an enumeration case of type App\\Entity\\Gender.',
+        );
+    }
+
+    public function testCreateUserWithZeroDoubleStringAsGenderFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run type violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:        'gender',
+            attributeValue:       '0.0',
+            expectedTypeName:     'string',
+            expectedErrorMessage: 'The data must belong to a backed enumeration of type App\\Entity\\Gender',
+        );
+    }
+
+    public function testCreateUserWithPositiveDoubleAsGenderFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run type violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:        'gender',
+            attributeValue:       1.0,
+            expectedTypeName:     'string',
+            expectedErrorMessage: 'The data is neither an integer nor a string, you should pass an integer or a string that can be parsed as an enumeration case of type App\\Entity\\Gender.',
+        );
+    }
+
+    public function testCreateUserWithPositiveDoubleStringAsGenderFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run type violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:        'gender',
+            attributeValue:       '1.0',
+            expectedTypeName:     'string',
+            expectedErrorMessage: 'The data must belong to a backed enumeration of type App\\Entity\\Gender',
+        );
+    }
+
+    public function testCreateUserWithNegativeDoubleAsGenderFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run type violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:        'gender',
+            attributeValue:       -1.0,
+            expectedTypeName:     'string',
+            expectedErrorMessage: 'The data is neither an integer nor a string, you should pass an integer or a string that can be parsed as an enumeration case of type App\\Entity\\Gender.',
+        );
+    }
+
+    public function testCreateUserWithNegativeDoubleStringAsGenderFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run type violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:        'gender',
+            attributeValue:       '-1.0',
+            expectedTypeName:     'string',
+            expectedErrorMessage: 'The data must belong to a backed enumeration of type App\\Entity\\Gender',
+        );
+    }
+
+    public function testCreateUserWithArrayAsGenderFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run type violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:        'gender',
+            attributeValue:       [],
+            expectedTypeName:     'string',
+            expectedErrorMessage: 'The data is neither an integer nor a string, you should pass an integer or a string that can be parsed as an enumeration case of type App\\Entity\\Gender.',
+        );
+    }
+
+    public function testCreateUserWithObjectAsGenderFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run type violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:        'gender',
+            attributeValue:       ["attributeX" => "valueX"],
+            expectedTypeName:     'string',
+            expectedErrorMessage: 'The data is neither an integer nor a string, you should pass an integer or a string that can be parsed as an enumeration case of type App\\Entity\\Gender.',
+        );
+    }
+
+    /**
+     * @dataProvider \App\Tests\DataProvider\GenderDataProvider::getCaseMismatchingGenderEnumValues()
+     */
+    public function testCreateUserWithCaseMismatchingGenderFieldValue(string $invalidGenderValue): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run type violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:        'gender',
+            attributeValue:       $invalidGenderValue,
+            expectedTypeName:     'string',
+            expectedErrorMessage: 'The data must belong to a backed enumeration of type App\\Entity\\Gender',
+        );
+    }
+
+
+
+
+
+
+
+
+    // public function testCreateUserWithBinaryAsGenderFieldValue(): void
+    // {
+    //     // remove all data from database
+    //     $this->cleanDatabase();
+
+    //     // call the list users API endpoint
+    //     $response = static::createClient()->request('POST', '/api/users', [
+    //         'json'    => [
+    //             'gender'    => "\x04\x00\xa0\x00",// \u001A\u001B\u0005\u001B
+    //             'gender' => 'User X',
+    //             'gender'   => 'test.user.X@foo.local',
+    //             'gender'  => Gender::MALE,
+    //             'roles'   =>  [
+    //                 Role::USER,
+    //                 Role::ADMIN,
+    //             ],
+    //             'active'   => true 
+
+    //         ],
+    //         'headers' => [
+    //             'Accept' => 'application/ld+json'
+    //         ]
+    //     ]);
+
+    //     static::assertResponseStatusCodeSame(400);
+    //     static::assertResponseHeaderSame(
+    //         'content-type',
+    //         'application/problem+json; charset=utf-8'
+    //     );
+    //     static::assertStringContainsString('/api/errors', $response->toArray(throw: false)['@id']);
+    //     static::assertJsonContains([
+    //         '@type'  => 'hydra:Error',
+    //         'status' => 400,
+    //         'title'  => 'An error occurred',
+    //         'detail' => 'The type of the "gender" attribute must be "string", "object" given.'
+    //     ]);
+    // }
+
+
+
+    // /**
+    //  * @dataProvider \App\Tests\DataProvider\GenderDataProvider::getInvalidGenders()
+    //  */
+    // public function testCreateUserWithInvalidGenderFieldValue(string $email): void
+    // {
+    //     // remove all data from database
+    //     $this->cleanDatabase();
+
+    //     // run constraint violation test body
+    //     $this->_testConstraintViolationForAttributeValue(
+    //         attributeName:  'gender',
+    //         attributeValue: $email,
+    //         constraintViolations: [
+    //             ['propertyPath' => 'gender', 'message' => 'This value is not a valid email address.'],
+    //         ]
+    //     );
+    // }
+
+    // /**
+    //  * @dataProvider \App\Tests\DataProvider\GenderDataProvider::getInvalidHtml5Genders()
+    //  */
+    // public function testCreateUserWithInvalidHtml5GenderFieldValue(string $email): void
+    // {
+    //     // remove all data from database
+    //     $this->cleanDatabase();
+
+    //     // run constraint violation test body
+    //     $this->_testConstraintViolationForAttributeValue(
+    //         attributeName:  'gender',
+    //         attributeValue: $email,
+    //         constraintViolations: [
+    //             ['propertyPath' => 'gender', 'message' => 'This value is not a valid email address.'],
+    //         ]
+    //     );
+    // }
+
+    // /**
+    //  * @dataProvider \App\Tests\DataProvider\GenderDataProvider::getValidGendersWrappedByWhitespaces()
+    //  */
+    // public function testCreateUserWithByWhitespacesWrappedValidGenderFieldValue(string $email): void
+    // {
+    //     // remove all data from database
+    //     $this->cleanDatabase();
+
+    //     // run constraint violation test body
+    //     $this->_testConstraintViolationForAttributeValue(
+    //         attributeName:  'gender',
+    //         attributeValue: $email,
+    //         constraintViolations: [
+    //             ['propertyPath' => 'gender', 'message' => 'This value is not a valid email address.'],
+    //         ]
+    //     );
+    // }
+
+    // /**
+    //  * @dataProvider \App\Tests\DataProvider\GenderDataProvider::getValidGenders()
+    //  */
+    // public function testCreateUserWithValidGenderFieldValue(string $email): void
+    // {
+    //     // remove all data from database
+    //     $this->cleanDatabase();
+
+    //     // run the user creation test body
+    //     $this->_testSuccessfullCreationOfUser(array_merge(
+    //         self::DEFAULT_USER_DATA,
+    //         [
+    //             'gender' => $email,
+    //         ]
+    //     ));
+    // }
+
+    // /**
+    //  * @dataProvider \App\Tests\DataProvider\GenderDataProvider::getValidHtml5Genders()
+    //  * @link https://html.spec.whatwg.org/multipage/input.html#valid-e-mail-address
+    //  */
+    // public function testCreateUserWithValidHtml5GenderFieldValue(string $email): void
+    // {
+    //     // remove all data from database
+    //     $this->cleanDatabase();
+
+    //     // run the user creation test body
+    //     $this->_testSuccessfullCreationOfUser(array_merge(
+    //         self::DEFAULT_USER_DATA,
+    //         [
+    //             'gender' => $email,
+    //         ]
+    //     ));
+    // }
+
+
+    // ======================= GENDER ATTRIBUTE FOCUSED TESTS ======================= //
+    // ============================================================================== //
+
+
     // TODO - create user with invalid surname set to <missing attribute at all> | null | '' | '   ' | false | "false" | true | "true" | true | 0 | "0" | 0.0 | "0.0" | array | object | binary data | too long value
     // TODO - create user with invalid email <missing attribute at all> | null | '' | '   ' | ... | too long value | invalid email pattern | already existing email
     // TODO - create user with invalid gender <missing attribute at all> | null | '' | '   ' | ... | too long value | value other than supported gender value
     // TODO - create user with invalid roles <missing attribute at all> | null | '' | '   ' | ... | empty array | too long value | value(s) other than support role value
     // TODO - create user with invalid note flag <missing attribute at all> | null | '' | '   ' | ... | too long value
     // TODO - create user with invalid active flag <missing attribute at all> | null | '' | '   ' | false | "false" | true | "true" | true | 0 | "0" | 1 | "1" | -1 | "-1" | 0.0 | "0.0" | 1.0 | "1.0" | -1.0 | "-1.0"
+
+    // TODO - try to create already existing user entity resource
 
     public function testCreateUserSuccess(): void
     {
@@ -2085,12 +2555,14 @@ class UserCreateApiTest extends ApiTestCase
      * @param string $attributeName
      * @param mixed  $attributeValue
      * @param string $expectedTypeName Definition ef expected attribute type name as string
+     * @param string $expectedErrorMessage
      * @return void
      */
     protected function _testTypeViolationForAttributeValue(
         string $attributeName, 
         mixed $attributeValue, 
-        string $expectedTypeName): void 
+        string $expectedTypeName,
+        string $expectedErrorMessage = null): void 
     {
         // call the list users API endpoint
         $response = static::createClient()->request('POST', '/api/users', [
@@ -2106,6 +2578,16 @@ class UserCreateApiTest extends ApiTestCase
             ),
         ]);
 
+        // calculate expected detailed error message
+        // unless provided explicitly
+        $expectedErrorMessage = $expectedErrorMessage ?? sprintf(
+            'The type of the "%s" attribute must be "%s", "%s" given.',
+            $attributeName,
+            $expectedTypeName,
+            gettype($attributeValue)
+        );
+
+        // assert obtained response
         static::assertResponseStatusCodeSame(400);
         static::assertResponseHeaderSame(
             'content-type',
@@ -2116,12 +2598,7 @@ class UserCreateApiTest extends ApiTestCase
             '@type'  => 'hydra:Error',
             'status' => 400,
             'title'  => 'An error occurred',
-            'detail' => sprintf(
-                'The type of the "%s" attribute must be "%s", "%s" given.',
-                $attributeName,
-                $expectedTypeName,
-                gettype($attributeValue)
-            )
+            'detail' => $expectedErrorMessage
         ]);
     }
 

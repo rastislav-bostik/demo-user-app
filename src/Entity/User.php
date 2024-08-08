@@ -136,6 +136,7 @@ class User
     #[ORM\Column(enumType: Gender::class)]
     #[ApiFilter(SearchFilter::class)]
     #[Assert\NotBlank(normalizer: [Mbstring::class, 'mb_trim'])]
+    #[Assert\Choice(callback: [Gender::class, 'cases'])]
     private Gender $gender;
 
     /**

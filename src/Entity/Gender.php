@@ -5,7 +5,7 @@ namespace App\Entity;
 /**
  * Gender enumeration
  */
-enum Gender : string {
+enum Gender: string {
     case MALE = 'MALE';
     case FEMALE = 'FEMALE';
 }
