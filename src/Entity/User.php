@@ -32,7 +32,7 @@ class User
     #[ORM\Id]
     #[ORM\Column(type: UuidType::NAME, unique: true)]
     // using manual UUID v7 token creation workaround
-    // (for more @see https://github.com/symfony/symfony/discussions/53331)
+    // (for more @link https://github.com/symfony/symfony/discussions/53331)
     // #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     // #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
     private ?Uuid $id = null;
@@ -58,9 +58,9 @@ class User
         // (e.g. Miguel María, Антон Павлович, יעקב שבתאי)
         // (not supporting ideographic and other non-alphabetic symbols / writing systems e.g. Chinese, Japanese, ...)
         // 
-        // @see https://en.wikipedia.org/wiki/List_of_writing_systems
-        // @see https://www.regular-expressions.info/unicode.html#prop
-        // @see https://www.quora.com/Do-Chinese-characters-have-letter-case-i-e-distinct-upper-and-lower-cases
+        // @link https://en.wikipedia.org/wiki/List_of_writing_systems
+        // @link https://www.regular-expressions.info/unicode.html#prop
+        // @link https://www.quora.com/Do-Chinese-characters-have-letter-case-i-e-distinct-upper-and-lower-cases
         pattern: '/^(\p{Lu}([\p{L}\'\\-]*[\p{L}]|[\p{L}]*))( \p{Lu}([\p{L}\'\\-]*\p{L}|[\p{L}]*))*$/u',
         message: 'The "name" attribute accepts uppercase letter starting forenames containing letters, hyphen or apostrophe symbols only and separated by single space symbols.'
     )]
@@ -95,9 +95,9 @@ class User
         // (e.g O'Neil, Murinho-Guerera, de Murcía, ...)
         // (not supporting ideographic and other non-alphabetic symbols / writing systems e.g. Chinese, Japanese, ...)
         // 
-        // @see https://en.wikipedia.org/wiki/List_of_writing_systems
-        // @see https://www.regular-expressions.info/unicode.html#prop
-        // @see https://www.quora.com/Do-Chinese-characters-have-letter-case-i-e-distinct-upper-and-lower-cases
+        // @link https://en.wikipedia.org/wiki/List_of_writing_systems
+        // @link https://www.regular-expressions.info/unicode.html#prop
+        // @link https://www.quora.com/Do-Chinese-characters-have-letter-case-i-e-distinct-upper-and-lower-cases
         pattern: '/^(\p{L}([\p{L}\'\\-]*\p{L}|[\p{L}]*))( \p{L}([\p{L}\'\\-]*\p{L}|[\p{L}]*))*$/u',
         message: 'The "surname" attribute accepts letters, hyphen and apostrophe symbols containing surnames separated by single space symbols only.'
     )]
@@ -123,8 +123,8 @@ class User
         //  - and too lax (allowing comments, whitespace characters, and quoted strings in manners unfamiliar to most users)
         // to be of practical use here."
         // 
-        // @see https://html.spec.whatwg.org/multipage/input.html#valid-e-mail-address
-        // @see https://symfony.com/doc/6.4/reference/constraints/Email.html#mode
+        // @link https://html.spec.whatwg.org/multipage/input.html#valid-e-mail-address
+        // @link https://symfony.com/doc/6.4/reference/constraints/Email.html#mode
         mode: Assert\Email::VALIDATION_MODE_HTML5
     )]
     private string $email;
@@ -186,7 +186,7 @@ class User
         // setting the ID explicitly 
         // to UUID v7
         // (due to symfony 6.4 ignores configs requesting usage of v7 and uses v6 instead anyway)
-        // (for more info on this @see https://github.com/symfony/symfony/discussions/53331)
+        // (for more info on this @link https://github.com/symfony/symfony/discussions/53331)
         $this->id = Uuid::v7();
     }
 
