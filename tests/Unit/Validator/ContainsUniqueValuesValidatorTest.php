@@ -76,7 +76,7 @@ class ContainsUniqueValuesValidatorTest extends ConstraintValidatorTestCase
     }
     
     /**
-     * @dataProvider \App\Tests\DataProvider\IterableDataProvider::getEmptyIterables()
+     * @dataProvider \App\Tests\Data\Providers\IterableDataProvider::getEmptyIterables()
      */
     public function testEmptyIterableIsValidInStrictMode(iterable $emptyIterableData): void
     {
@@ -91,7 +91,7 @@ class ContainsUniqueValuesValidatorTest extends ConstraintValidatorTestCase
     }
 
     /**
-     * @dataProvider \App\Tests\DataProvider\IterableDataProvider::getEmptyIterables()
+     * @dataProvider \App\Tests\Data\Providers\IterableDataProvider::getEmptyIterables()
      */
     public function testEmptyIterableIsValidInLooseMode(iterable $emptyIterableData): void
     {
@@ -107,7 +107,7 @@ class ContainsUniqueValuesValidatorTest extends ConstraintValidatorTestCase
 
 
     /**
-     * @dataProvider \App\Tests\DataProvider\IterableDataProvider::getUniqueStringValuesContainingIterables()
+     * @dataProvider \App\Tests\Data\Providers\IterableDataProvider::getUniqueStringValuesContainingIterables()
      */
     public function testUniqueStringValuesIterableIsValidInStrictMode(iterable $uniqueStringValuesIterableData): void
     {
@@ -122,7 +122,7 @@ class ContainsUniqueValuesValidatorTest extends ConstraintValidatorTestCase
     }
 
     /**
-     * @dataProvider \App\Tests\DataProvider\IterableDataProvider::getUniqueStringValuesContainingIterables()
+     * @dataProvider \App\Tests\Data\Providers\IterableDataProvider::getUniqueStringValuesContainingIterables()
      */
     public function testUniqueStringValuesIterableIsValidInLooseMode(iterable $uniqueStringValuesIterableData): void
     {
@@ -137,7 +137,7 @@ class ContainsUniqueValuesValidatorTest extends ConstraintValidatorTestCase
     }
 
     /**
-     * @dataProvider \App\Tests\DataProvider\IterableDataProvider::getUniqueTypeLooseValuesContainingIterables()
+     * @dataProvider \App\Tests\Data\Providers\IterableDataProvider::getUniqueTypeLooseValuesContainingIterables()
      */
     public function testUniqueTypeLooseValuesIterableIsValidInStrictMode(iterable $uniqueTypeLooseValuesIterableData): void
     {
@@ -153,7 +153,7 @@ class ContainsUniqueValuesValidatorTest extends ConstraintValidatorTestCase
 
     
     /**
-     * @dataProvider \App\Tests\DataProvider\IterableDataProvider::getUniqueTypeLooseValuesContainingIterables()
+     * @dataProvider \App\Tests\Data\Providers\IterableDataProvider::getUniqueTypeLooseValuesContainingIterables()
      */
     public function testUniqueTypeLooseValuesIterableIsValidInLooseMode(iterable $uniqueTypeLooseValuesIterableData): void
     {
@@ -168,7 +168,7 @@ class ContainsUniqueValuesValidatorTest extends ConstraintValidatorTestCase
     }
 
     /**
-     * @dataProvider \App\Tests\DataProvider\IterableDataProvider::getUniqueTypeStrictValuesContainingIterables()
+     * @dataProvider \App\Tests\Data\Providers\IterableDataProvider::getUniqueTypeStrictValuesContainingIterables()
      */
     public function testUniqueTypeStrictValuesIterableIsValidInStrictMode(iterable $uniqueTypeStrictValuesIterableData): void
     {
@@ -185,7 +185,7 @@ class ContainsUniqueValuesValidatorTest extends ConstraintValidatorTestCase
     }
 
     /**
-     * @dataProvider \App\Tests\DataProvider\IterableDataProvider::getUniqueTypeStrictValuesContainingIterables()
+     * @dataProvider \App\Tests\Data\Providers\IterableDataProvider::getUniqueTypeStrictValuesContainingIterables()
      */
     public function testUniqueTypeStrictValuesIterableIsInvalidInLooseMode(iterable $uniqueTypeStrictValuesIterableData): void
     {
@@ -201,7 +201,7 @@ class ContainsUniqueValuesValidatorTest extends ConstraintValidatorTestCase
     }
 
     /**
-     * @dataProvider \App\Tests\DataProvider\IterableDataProvider::getUniqueTypeStrictValuesContainingIterables()
+     * @dataProvider \App\Tests\Data\Providers\IterableDataProvider::getUniqueTypeStrictValuesContainingIterables()
      */
     public function testUniqueTypeStrictValuesIterableIsInvalidInLooseModeWithCustomMessage(iterable $uniqueTypeStrictValuesIterableData): void
     {
@@ -218,7 +218,7 @@ class ContainsUniqueValuesValidatorTest extends ConstraintValidatorTestCase
     }
 
     /**
-     * @dataProvider \App\Tests\DataProvider\IterableDataProvider::getUniqueObjectsContainingIterables()
+     * @dataProvider \App\Tests\Data\Providers\IterableDataProvider::getUniqueObjectsContainingIterables()
      */
     public function testUniqueObjectsIterableIsValidInStrictMode(iterable $uniqueObjectsIterableData): void
     {
@@ -233,7 +233,7 @@ class ContainsUniqueValuesValidatorTest extends ConstraintValidatorTestCase
     }
 
         /**
-     * @dataProvider \App\Tests\DataProvider\IterableDataProvider::getUniqueObjectsContainingIterables()
+     * @dataProvider \App\Tests\Data\Providers\IterableDataProvider::getUniqueObjectsContainingIterables()
      */
     public function testUniqueObjectsIterableIsValidInLooseMode(iterable $uniqueObjectsIterableData): void
     {
@@ -248,7 +248,7 @@ class ContainsUniqueValuesValidatorTest extends ConstraintValidatorTestCase
     }
 
     /**
-     * @dataProvider \App\Tests\DataProvider\IterableDataProvider::getDuplicateStringValuesContainingIterables()
+     * @dataProvider \App\Tests\Data\Providers\IterableDataProvider::getDuplicateStringValuesContainingIterables()
      */
     public function testDuplicateStringValuesIterableIsValidInStrictMode(iterable $duplicateStringValuesIterableData): void
     {
@@ -264,7 +264,7 @@ class ContainsUniqueValuesValidatorTest extends ConstraintValidatorTestCase
     }
 
     /**
-     * @dataProvider \App\Tests\DataProvider\IterableDataProvider::getDuplicateStringValuesContainingIterables()
+     * @dataProvider \App\Tests\Data\Providers\IterableDataProvider::getDuplicateStringValuesContainingIterables()
      */
     public function testDuplicateStringValuesIterableIsValidInStrictModeWithCustomMessage(iterable $duplicateStringValuesIterableData): void
     {
@@ -282,7 +282,7 @@ class ContainsUniqueValuesValidatorTest extends ConstraintValidatorTestCase
 
 
     /**
-     * @dataProvider \App\Tests\DataProvider\IterableDataProvider::getDuplicateStringValuesContainingIterables()
+     * @dataProvider \App\Tests\Data\Providers\IterableDataProvider::getDuplicateStringValuesContainingIterables()
      */
     public function testDuplicateStringValuesIterableIsValidInLooseMode(iterable $duplicateStringValuesIterableData): void
     {
@@ -298,7 +298,7 @@ class ContainsUniqueValuesValidatorTest extends ConstraintValidatorTestCase
     }
 
     /**
-     * @dataProvider \App\Tests\DataProvider\IterableDataProvider::getDuplicateStringValuesContainingIterables()
+     * @dataProvider \App\Tests\Data\Providers\IterableDataProvider::getDuplicateStringValuesContainingIterables()
      */
     public function testDuplicateStringValuesIterableIsValidInLooseModeWithCustomMessage(iterable $duplicateStringValuesIterableData): void
     {
@@ -315,7 +315,7 @@ class ContainsUniqueValuesValidatorTest extends ConstraintValidatorTestCase
     }
 
     /**
-     * @dataProvider \App\Tests\DataProvider\IterableDataProvider::getDuplicateTypeLooseValuesContainingIterables()
+     * @dataProvider \App\Tests\Data\Providers\IterableDataProvider::getDuplicateTypeLooseValuesContainingIterables()
      */
     public function testDuplicateTypeLooseValuesIterableIsValidInStrictMode(iterable $duplicateTypeLooseValuesIterableData): void
     {
@@ -332,7 +332,7 @@ class ContainsUniqueValuesValidatorTest extends ConstraintValidatorTestCase
     }
 
     /**
-     * @dataProvider \App\Tests\DataProvider\IterableDataProvider::getDuplicateTypeLooseValuesContainingIterables()
+     * @dataProvider \App\Tests\Data\Providers\IterableDataProvider::getDuplicateTypeLooseValuesContainingIterables()
      */
     public function testDuplicateTypeLooseValuesIterableIsValidInLooseMode(iterable $duplicateTypeLooseValuesIterableData): void
     {
@@ -349,7 +349,7 @@ class ContainsUniqueValuesValidatorTest extends ConstraintValidatorTestCase
 
 
     /**
-     * @dataProvider \App\Tests\DataProvider\IterableDataProvider::getDuplicateTypeLooseValuesContainingIterables()
+     * @dataProvider \App\Tests\Data\Providers\IterableDataProvider::getDuplicateTypeLooseValuesContainingIterables()
      */
     public function testDuplicateTypeLooseValuesIterableIsValidInLooseModeWithCustomMessage(iterable $duplicateTypeLooseValuesIterableData): void
     {
@@ -366,7 +366,7 @@ class ContainsUniqueValuesValidatorTest extends ConstraintValidatorTestCase
     }
 
     /**
-     * @dataProvider \App\Tests\DataProvider\IterableDataProvider::getDuplicateTypeStrictValuesContainingIterables()
+     * @dataProvider \App\Tests\Data\Providers\IterableDataProvider::getDuplicateTypeStrictValuesContainingIterables()
      */
     public function testDuplicateTypeStrictValuesIterableIsInvalidInStrictMode(iterable $duplicateTypeStrictValuesIterableData): void
     {
@@ -382,7 +382,7 @@ class ContainsUniqueValuesValidatorTest extends ConstraintValidatorTestCase
     }
 
     /**
-     * @dataProvider \App\Tests\DataProvider\IterableDataProvider::getDuplicateTypeStrictValuesContainingIterables()
+     * @dataProvider \App\Tests\Data\Providers\IterableDataProvider::getDuplicateTypeStrictValuesContainingIterables()
      */
     public function testDuplicateTypeStrictValuesIterableIsInvalidInStrictModeWithCustomMessage(iterable $duplicateTypeStrictValuesIterableData): void
     {
@@ -399,7 +399,7 @@ class ContainsUniqueValuesValidatorTest extends ConstraintValidatorTestCase
     }
 
     /**
-     * @dataProvider \App\Tests\DataProvider\IterableDataProvider::getDuplicateTypeStrictValuesContainingIterables()
+     * @dataProvider \App\Tests\Data\Providers\IterableDataProvider::getDuplicateTypeStrictValuesContainingIterables()
      */
     public function testDuplicateTypeStrictValuesIterableIsInvalidInLooseMode(iterable $duplicateTypeStrictValuesIterableData): void
     {
@@ -415,7 +415,7 @@ class ContainsUniqueValuesValidatorTest extends ConstraintValidatorTestCase
     }
 
     /**
-     * @dataProvider \App\Tests\DataProvider\IterableDataProvider::getDuplicateTypeStrictValuesContainingIterables()
+     * @dataProvider \App\Tests\Data\Providers\IterableDataProvider::getDuplicateTypeStrictValuesContainingIterables()
      */
     public function testDuplicateTypeStrictValuesIterableIsInvalidInLooseModeWithCustomMessage(iterable $duplicateTypeStrictValuesIterableData): void
     {
@@ -432,7 +432,7 @@ class ContainsUniqueValuesValidatorTest extends ConstraintValidatorTestCase
     }
 
     /**
-     * @dataProvider \App\Tests\DataProvider\IterableDataProvider::getDuplicateObjectsContainingIterables()
+     * @dataProvider \App\Tests\Data\Providers\IterableDataProvider::getDuplicateObjectsContainingIterables()
      */
     public function testDuplicateObjectsIterableIsValidInStrictMode(iterable $duplicateObjectsIterableData): void
     {
@@ -448,7 +448,7 @@ class ContainsUniqueValuesValidatorTest extends ConstraintValidatorTestCase
     }
 
     /**
-     * @dataProvider \App\Tests\DataProvider\IterableDataProvider::getDuplicateObjectsContainingIterables()
+     * @dataProvider \App\Tests\Data\Providers\IterableDataProvider::getDuplicateObjectsContainingIterables()
      */
     public function testDuplicateObjectsIterableIsValidInStrictModeWithCustomMessage(iterable $duplicateObjectsIterableData): void
     {
@@ -465,7 +465,7 @@ class ContainsUniqueValuesValidatorTest extends ConstraintValidatorTestCase
     }
 
         /**
-     * @dataProvider \App\Tests\DataProvider\IterableDataProvider::getDuplicateObjectsContainingIterables()
+     * @dataProvider \App\Tests\Data\Providers\IterableDataProvider::getDuplicateObjectsContainingIterables()
      */
     public function testDuplicateObjectsIterableIsValidInLooseMode(iterable $duplicateObjectsIterableData): void
     {
@@ -481,7 +481,7 @@ class ContainsUniqueValuesValidatorTest extends ConstraintValidatorTestCase
     }
 
     /**
-     * @dataProvider \App\Tests\DataProvider\IterableDataProvider::getDuplicateObjectsContainingIterables()
+     * @dataProvider \App\Tests\Data\Providers\IterableDataProvider::getDuplicateObjectsContainingIterables()
      */
     public function testDuplicateObjectsIterableIsValidInLooseModeWithCustomMessage(iterable $duplicateObjectsIterableData): void
     {

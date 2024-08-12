@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\DataProvider;
+namespace App\Tests\Data\Providers;
 
 /**
  * Source of various iterable data sets for testing

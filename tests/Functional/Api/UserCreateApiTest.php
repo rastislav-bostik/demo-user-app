@@ -1886,7 +1886,7 @@ class UserCreateApiTest extends ApiTestCase
 
     
     /**
-     * @dataProvider \App\Tests\DataProvider\EmailDataProvider::getInvalidEmails()
+     * @dataProvider \App\Tests\Data\Providers\EmailDataProvider::getInvalidEmails()
      */
     public function testCreateUserWithInvalidEmailFieldValue(string $email): void
     {
@@ -1904,7 +1904,7 @@ class UserCreateApiTest extends ApiTestCase
     }
 
     /**
-     * @dataProvider \App\Tests\DataProvider\EmailDataProvider::getInvalidHtml5Emails()
+     * @dataProvider \App\Tests\Data\Providers\EmailDataProvider::getInvalidHtml5Emails()
      */
     public function testCreateUserWithInvalidHtml5EmailFieldValue(string $email): void
     {
@@ -1922,7 +1922,7 @@ class UserCreateApiTest extends ApiTestCase
     }
 
     /**
-     * @dataProvider \App\Tests\DataProvider\EmailDataProvider::getValidEmailsWrappedByWhitespaces()
+     * @dataProvider \App\Tests\Data\Providers\EmailDataProvider::getValidEmailsWrappedByWhitespaces()
      */
     public function testCreateUserWithByWhitespacesWrappedValidEmailFieldValue(string $email): void
     {
@@ -1940,7 +1940,7 @@ class UserCreateApiTest extends ApiTestCase
     }
 
     /**
-     * @dataProvider \App\Tests\DataProvider\EmailDataProvider::getValidEmails()
+     * @dataProvider \App\Tests\Data\Providers\EmailDataProvider::getValidEmails()
      */
     public function testCreateUserWithValidEmailFieldValue(string $email): void
     {
@@ -1957,7 +1957,7 @@ class UserCreateApiTest extends ApiTestCase
     }
 
     /**
-     * @dataProvider \App\Tests\DataProvider\EmailDataProvider::getValidHtml5Emails()
+     * @dataProvider \App\Tests\Data\Providers\EmailDataProvider::getValidHtml5Emails()
      * @link https://html.spec.whatwg.org/multipage/input.html#valid-e-mail-address
      */
     public function testCreateUserWithValidHtml5EmailFieldValue(string $email): void
@@ -2289,7 +2289,7 @@ class UserCreateApiTest extends ApiTestCase
     }
 
     /**
-     * @dataProvider \App\Tests\DataProvider\GenderDataProvider::getCaseMismatchingGenderEnumValues()
+     * @dataProvider \App\Tests\Data\Providers\GenderDataProvider::getCaseMismatchingGenderEnumValues()
      */
     public function testCreateUserWithCaseSensitivityMalformedGenderFieldValue(string $invalidGenderValue): void
     {
@@ -2622,7 +2622,7 @@ class UserCreateApiTest extends ApiTestCase
     }
 
     /**
-     * @dataProvider \App\Tests\DataProvider\RoleDataProvider::getCaseMismatchingRoleEnumValues()
+     * @dataProvider \App\Tests\Data\Providers\RoleDataProvider::getCaseMismatchingRoleEnumValues()
      */
     public function testCreateUserWithCaseSensitivityMalformedRolesFieldValues(string $invalidRoleValue): void
     {

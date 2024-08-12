@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\DataProvider;
+namespace App\Tests\Data\Providers;
 
 use App\Entity\Role;
 
