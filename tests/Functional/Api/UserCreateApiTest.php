@@ -2291,7 +2291,7 @@ class UserCreateApiTest extends ApiTestCase
     /**
      * @dataProvider \App\Tests\DataProvider\GenderDataProvider::getCaseMismatchingGenderEnumValues()
      */
-    public function testCreateUserWithCaseMismatchingGenderFieldValue(string $invalidGenderValue): void
+    public function testCreateUserWithCaseSensitivityMalformedGenderFieldValue(string $invalidGenderValue): void
     {
         // remove all data from database
         $this->cleanDatabase();
@@ -2306,143 +2306,340 @@ class UserCreateApiTest extends ApiTestCase
     }
 
 
-
-
-
-
-
-
-    // public function testCreateUserWithBinaryAsGenderFieldValue(): void
-    // {
-    //     // remove all data from database
-    //     $this->cleanDatabase();
-
-    //     // call the list users API endpoint
-    //     $response = static::createClient()->request('POST', '/api/users', [
-    //         'json'    => [
-    //             'gender'    => "\x04\x00\xa0\x00",// \u001A\u001B\u0005\u001B
-    //             'gender' => 'User X',
-    //             'gender'   => 'test.user.X@foo.local',
-    //             'gender'  => Gender::MALE,
-    //             'roles'   =>  [
-    //                 Role::USER,
-    //                 Role::ADMIN,
-    //             ],
-    //             'active'   => true 
-
-    //         ],
-    //         'headers' => [
-    //             'Accept' => 'application/ld+json'
-    //         ]
-    //     ]);
-
-    //     static::assertResponseStatusCodeSame(400);
-    //     static::assertResponseHeaderSame(
-    //         'content-type',
-    //         'application/problem+json; charset=utf-8'
-    //     );
-    //     static::assertStringContainsString('/api/errors', $response->toArray(throw: false)['@id']);
-    //     static::assertJsonContains([
-    //         '@type'  => 'hydra:Error',
-    //         'status' => 400,
-    //         'title'  => 'An error occurred',
-    //         'detail' => 'The type of the "gender" attribute must be "string", "object" given.'
-    //     ]);
-    // }
-
-
-
-    // /**
-    //  * @dataProvider \App\Tests\DataProvider\GenderDataProvider::getInvalidGenders()
-    //  */
-    // public function testCreateUserWithInvalidGenderFieldValue(string $email): void
-    // {
-    //     // remove all data from database
-    //     $this->cleanDatabase();
-
-    //     // run constraint violation test body
-    //     $this->_testConstraintViolationForAttributeValue(
-    //         attributeName:  'gender',
-    //         attributeValue: $email,
-    //         constraintViolations: [
-    //             ['propertyPath' => 'gender', 'message' => 'This value is not a valid email address.'],
-    //         ]
-    //     );
-    // }
-
-    // /**
-    //  * @dataProvider \App\Tests\DataProvider\GenderDataProvider::getInvalidHtml5Genders()
-    //  */
-    // public function testCreateUserWithInvalidHtml5GenderFieldValue(string $email): void
-    // {
-    //     // remove all data from database
-    //     $this->cleanDatabase();
-
-    //     // run constraint violation test body
-    //     $this->_testConstraintViolationForAttributeValue(
-    //         attributeName:  'gender',
-    //         attributeValue: $email,
-    //         constraintViolations: [
-    //             ['propertyPath' => 'gender', 'message' => 'This value is not a valid email address.'],
-    //         ]
-    //     );
-    // }
-
-    // /**
-    //  * @dataProvider \App\Tests\DataProvider\GenderDataProvider::getValidGendersWrappedByWhitespaces()
-    //  */
-    // public function testCreateUserWithByWhitespacesWrappedValidGenderFieldValue(string $email): void
-    // {
-    //     // remove all data from database
-    //     $this->cleanDatabase();
-
-    //     // run constraint violation test body
-    //     $this->_testConstraintViolationForAttributeValue(
-    //         attributeName:  'gender',
-    //         attributeValue: $email,
-    //         constraintViolations: [
-    //             ['propertyPath' => 'gender', 'message' => 'This value is not a valid email address.'],
-    //         ]
-    //     );
-    // }
-
-    // /**
-    //  * @dataProvider \App\Tests\DataProvider\GenderDataProvider::getValidGenders()
-    //  */
-    // public function testCreateUserWithValidGenderFieldValue(string $email): void
-    // {
-    //     // remove all data from database
-    //     $this->cleanDatabase();
-
-    //     // run the user creation test body
-    //     $this->_testSuccessfullCreationOfUser(array_merge(
-    //         self::DEFAULT_USER_DATA,
-    //         [
-    //             'gender' => $email,
-    //         ]
-    //     ));
-    // }
-
-    // /**
-    //  * @dataProvider \App\Tests\DataProvider\GenderDataProvider::getValidHtml5Genders()
-    //  * @link https://html.spec.whatwg.org/multipage/input.html#valid-e-mail-address
-    //  */
-    // public function testCreateUserWithValidHtml5GenderFieldValue(string $email): void
-    // {
-    //     // remove all data from database
-    //     $this->cleanDatabase();
-
-    //     // run the user creation test body
-    //     $this->_testSuccessfullCreationOfUser(array_merge(
-    //         self::DEFAULT_USER_DATA,
-    //         [
-    //             'gender' => $email,
-    //         ]
-    //     ));
-    // }
-
-
     // ======================= GENDER ATTRIBUTE FOCUSED TESTS ======================= //
+    // ============================================================================== //
+
+
+
+    // ============================================================================== //
+    // ======================= ROLES ATTRIBUTE FOCUSED TESTS ======================== //
+
+
+    public function testCreateUserWithMissingRolesFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        $this->_testConstraintViolationForMissingAttribute(
+            attributeName:        'roles',
+            expectedErrorMessage: 'This collection should contain 1 element or more.'
+        );
+    }
+
+    public function testCreateUserWithNullAsRolesFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run type violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'roles',
+            attributeValue:   null,
+            expectedTypeName: 'array',
+        );
+    }
+
+    public function testCreateUserWithEmptyAsRolesFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run type violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'roles',
+            attributeValue:   '',
+            expectedTypeName: 'array',
+        );
+    }
+
+    public function testCreateUserWithWhitespaceAsRolesFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run type violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'roles',
+            attributeValue:   "\u{0009}\u{000A}\u{000B}\u{000C}\u{000D}\u{0020}\u{0085}\u{00A0}\u{1680}",
+            expectedTypeName: 'array',
+        );
+    }
+
+    public function testCreateUserWithFalseBoolAsRolesFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run type violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'roles',
+            attributeValue:   false,
+            expectedTypeName: 'array',
+        );
+    }
+
+    public function testCreateUserWithFalseStringAsRolesFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run type violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'roles',
+            attributeValue:   'false',
+            expectedTypeName: 'array',
+        );
+    }
+
+    public function testCreateUserWithTrueBoolAsRolesFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run type violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'roles',
+            attributeValue:   true,
+            expectedTypeName: 'array',
+        );
+    }
+
+    public function testCreateUserWithTrueStringAsRolesFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run type violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'roles',
+            attributeValue:   'true',
+            expectedTypeName: 'array',
+        );
+    }
+
+    public function testCreateUserWithZeroIntAsRolesFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run type violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'roles',
+            attributeValue:   0,
+            expectedTypeName: 'array',
+        );
+    }
+
+    public function testCreateUserWithZeroIntStringAsRolesFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run type violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'roles',
+            attributeValue:   '0',
+            expectedTypeName: 'array',
+        );
+    }
+
+    public function testCreateUserWithPositiveIntAsRolesFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run type violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'roles',
+            attributeValue:   1,
+            expectedTypeName: 'array',
+        );
+    }
+
+    public function testCreateUserWithPositiveIntStringAsRolesFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run type violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'roles',
+            attributeValue:   '1',
+            expectedTypeName: 'array',
+        );
+    }
+
+    public function testCreateUserWithNegativeIntAsRolesFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run type violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'roles',
+            attributeValue:   -1,
+            expectedTypeName: 'array',
+        );
+    }
+
+    public function testCreateUserWithNegativeIntStringAsRolesFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run type violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'roles',
+            attributeValue:   '-1',
+            expectedTypeName: 'array',
+        );
+    }
+
+    public function testCreateUserWithZeroDoubleAsRolesFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run type violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'roles',
+            attributeValue:   0.0,
+            expectedTypeName: 'array',
+        );
+    }
+
+    public function testCreateUserWithZeroDoubleStringAsRolesFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run type violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'roles',
+            attributeValue:   '0.0',
+            expectedTypeName: 'array',
+        );
+    }
+
+    public function testCreateUserWithPositiveDoubleAsRolesFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run type violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'roles',
+            attributeValue:   1.0,
+            expectedTypeName: 'array',
+        );
+    }
+
+    public function testCreateUserWithPositiveDoubleStringAsRolesFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run type violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'roles',
+            attributeValue:   '1.0',
+            expectedTypeName: 'array',
+        );
+    }
+
+    public function testCreateUserWithNegativeDoubleAsRolesFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run type violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'roles',
+            attributeValue:   -1.0,
+            expectedTypeName: 'array',
+        );
+    }
+
+    public function testCreateUserWithNegativeDoubleStringAsRolesFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run type violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'roles',
+            attributeValue:   '-1.0',
+            expectedTypeName: 'array',
+        );
+    }
+
+    public function testCreateUserWithArrayAsRolesFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run type violation test body
+        $this->_testConstraintViolationForAttributeValue(
+            attributeName:        'roles',
+            attributeValue:       [],
+            constraintViolations: [
+                ['propertyPath' => 'roles', 'message' => 'This collection should contain 1 element or more.'],
+            ],
+        );
+    }
+
+    public function testCreateUserWithObjectAsRolesFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run type violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:        'roles',
+            attributeValue:       ["attributeX" => "valueX"],
+            expectedTypeName:     'string',
+            expectedErrorMessage: 'The data must belong to a backed enumeration of type App\\Entity\\Role',
+        );
+    }
+
+    public function testCreateUserWithDuplicatedRolesFieldValues(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run type violation test body
+        $this->_testConstraintViolationForAttributeValue(
+            attributeName:        'roles',
+            attributeValue:       [
+                Role::USER, 
+                Role::ADMIN, 
+                Role::USER
+            ],
+            constraintViolations: [
+                ['propertyPath' => 'roles', 'message' => 'The collection contains duplicate values.'],
+            ]
+        );
+    }
+
+    /**
+     * @dataProvider \App\Tests\DataProvider\RoleDataProvider::getCaseMismatchingRoleEnumValues()
+     */
+    public function testCreateUserWithCaseSensitivityMalformedRolesFieldValues(string $invalidRoleValue): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run type violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:        'roles',
+            attributeValue:       [$invalidRoleValue],
+            expectedTypeName:     'string',
+            expectedErrorMessage: 'The data must belong to a backed enumeration of type App\\Entity\\Role',
+        );
+    }
+
+
+    // ======================= ROLES ATTRIBUTE FOCUSED TESTS ======================== //
     // ============================================================================== //
 
 
@@ -2514,9 +2711,10 @@ class UserCreateApiTest extends ApiTestCase
      * for given missing attribute
      *
      * @param string $attributeName
+     * @param string $expectedErrorMessage
      * @return void
      */
-    protected function _testConstraintViolationForMissingAttribute(string $attributeName): void
+    protected function _testConstraintViolationForMissingAttribute(string $attributeName, ?string $expectedErrorMessage = null): void
     {
         // remove an attribute from default user data
         $testUserData = self::DEFAULT_USER_DATA;
@@ -2531,6 +2729,9 @@ class UserCreateApiTest extends ApiTestCase
             ]
         ]);
 
+        // calculate expected error message unless provided explicitly
+        $expectedErrorMessage ??= 'This value should not be blank.';
+
         static::assertResponseIsUnprocessable(); // expecting HTTP reponse code 422 - Unprocessable
         static::assertResponseHeaderSame(
             'content-type',
@@ -2541,7 +2742,7 @@ class UserCreateApiTest extends ApiTestCase
             '@type'      => 'ConstraintViolationList',
             'status'     => 422,
             'violations' => [
-                ['propertyPath' => $attributeName, 'message' => 'This value should not be blank.'],
+                ['propertyPath' => $attributeName, 'message' => $expectedErrorMessage],
             ],
         ]);
         // check overall amount of expected constraint violations
@@ -2562,7 +2763,7 @@ class UserCreateApiTest extends ApiTestCase
         string $attributeName, 
         mixed $attributeValue, 
         string $expectedTypeName,
-        string $expectedErrorMessage = null): void 
+        ?string $expectedErrorMessage = null): void 
     {
         // call the list users API endpoint
         $response = static::createClient()->request('POST', '/api/users', [
@@ -2580,7 +2781,7 @@ class UserCreateApiTest extends ApiTestCase
 
         // calculate expected detailed error message
         // unless provided explicitly
-        $expectedErrorMessage = $expectedErrorMessage ?? sprintf(
+        $expectedErrorMessage ??= sprintf(
             'The type of the "%s" attribute must be "%s", "%s" given.',
             $attributeName,
             $expectedTypeName,
