@@ -153,7 +153,7 @@ class UserCreateApiTest extends ApiTestCase
                 ['propertyPath' => 'email', 'message' => 'This value should not be blank.'],
                 ['propertyPath' => 'gender', 'message' => 'This value should not be blank.'],
                 ['propertyPath' => 'roles', 'message' => 'This collection should contain 1 element or more.'],
-                ['propertyPath' => 'active', 'message' => 'This value should not be blank.']
+                ['propertyPath' => 'active', 'message' => 'This value should not be null.']
             ],
         ]);
         // check overall amount of expected constraint violations
@@ -3195,6 +3195,301 @@ class UserCreateApiTest extends ApiTestCase
     // ======================== NOTE ATTRIBUTE FOCUSED TESTS ======================== //
     // ============================================================================== //
 
+
+
+    // ============================================================================== //
+    // ====================== ACTIVE ATTRIBUTE FOCUSED TESTS ======================== //
+
+
+    public function testCreateUserWithMissingActiveFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        $this->_testConstraintViolationForMissingAttribute(
+            attributeName:        'active',
+            expectedErrorMessage: 'This value should not be null.'
+        );
+    }
+
+    public function testCreateUserWithNullAsActiveFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'active',
+            attributeValue:   null,
+            expectedTypeName: 'bool'
+        );
+    }
+
+    public function testCreateUserWithEmptyAsActiveFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'active',
+            attributeValue:   '',
+            expectedTypeName: 'bool'
+        );
+    }
+
+    public function testCreateUserWithWhitespaceAsActiveFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'active',
+            attributeValue:   "\u{0009}\u{000A}\u{000B}\u{000C}\u{000D}\u{0020}\u{0085}\u{00A0}\u{1680}",
+            expectedTypeName: 'bool'
+        );
+    }
+
+    public function testCreateUserWithFalseBoolAsActiveFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run the user creation test body
+        $this->_testSuccessfullCreationOfUser(array_merge(
+            self::DEFAULT_USER_DATA,
+            [
+                'active' => false
+            ]
+        ));
+    }
+
+    public function testCreateUserWithFalseStringAsActiveFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'active',
+            attributeValue:   'false',
+            expectedTypeName: 'bool'
+        );
+    }
+
+    public function testCreateUserWithTrueBoolAsActiveFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run the user creation test body
+        $this->_testSuccessfullCreationOfUser(array_merge(
+            self::DEFAULT_USER_DATA,
+            [
+                'active' => true
+            ]
+        ));
+    }
+
+    public function testCreateUserWithTrueStringAsActiveFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'active',
+            attributeValue:   'true',
+            expectedTypeName: 'bool'
+        );
+    }
+
+    public function testCreateUserWithZeroIntAsActiveFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'active',
+            attributeValue:   0,
+            expectedTypeName: 'bool'
+        );
+    }
+
+    public function testCreateUserWithZeroIntStringAsActiveFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'active',
+            attributeValue:   '0',
+            expectedTypeName: 'bool'
+        );
+    }
+
+    public function testCreateUserWithPositiveIntAsActiveFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'active',
+            attributeValue:   1,
+            expectedTypeName: 'bool'
+        );
+    }
+
+    public function testCreateUserWithPositiveIntStringAsActiveFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'active',
+            attributeValue:   '1',
+            expectedTypeName: 'bool'
+        );
+    }
+
+    public function testCreateUserWithNegativeIntAsActiveFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'active',
+            attributeValue:   -1,
+            expectedTypeName: 'bool'
+        );
+    }
+
+    public function testCreateUserWithNegativeIntStringAsActiveFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'active',
+            attributeValue:   '-1',
+            expectedTypeName: 'bool'
+        );
+    }
+
+    public function testCreateUserWithZeroDoubleAsActiveFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'active',
+            attributeValue:   0.0,
+            expectedTypeName: 'bool'
+        );
+    }
+
+    public function testCreateUserWithZeroDoubleStringAsActiveFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'active',
+            attributeValue:   '0.0',
+            expectedTypeName: 'bool'
+        );
+    }
+
+    public function testCreateUserWithPositiveDoubleAsActiveFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'active',
+            attributeValue:   1.0,
+            expectedTypeName: 'bool'
+        );
+    }
+
+    public function testCreateUserWithPositiveDoubleStringAsActiveFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'active',
+            attributeValue:   '1.0',
+            expectedTypeName: 'bool'
+        );
+    }
+
+    public function testCreateUserWithNegativeDoubleAsActiveFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'active',
+            attributeValue:   -1.0,
+            expectedTypeName: 'bool'
+        );
+    }
+
+    public function testCreateUserWithNegativeDoubleStringAsActiveFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'active',
+            attributeValue:   '-1.0',
+            expectedTypeName: 'bool'
+        );
+    }
+
+    public function testCreateUserWithArrayAsActiveFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'active',
+            attributeValue:   [],
+            expectedTypeName: 'bool'
+        );
+    }
+
+    public function testCreateUserWithObjectAsActiveFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'active',
+            attributeValue:   ["attributeX" => "valueX"],
+            expectedTypeName: 'bool'
+        );
+    }
+
+
+    // ======================= ACTIVE ATTRIBUTE FOCUSED TESTS ======================== //
+    // ============================================================================== //
 
 
     // TODO - create user with invalid surname set to <missing attribute at all> | null | '' | '   ' | false | "false" | true | "true" | true | 0 | "0" | 0.0 | "0.0" | array | object | binary data | too long value
