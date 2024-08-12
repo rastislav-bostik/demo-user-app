@@ -3550,7 +3550,6 @@ class UserCreateApiTest extends ApiTestCase
     }
 
 
-    
     // ==================== COMMON COMPLEX USER CREATION TESTS ====================== //
     // ============================================================================== //
 
@@ -3611,49 +3610,6 @@ class UserCreateApiTest extends ApiTestCase
             // provided by calling test method
             $additionalAssertsCallback($response);   
         }
-     }
-
-    /**
-     * Test expected constraint violations scenario
-     * for given missing attribute
-     *
-     * @param string $attributeName
-     * @param string $expectedErrorMessage
-     * @return void
-     */
-    protected function _testConstraintViolationForMissingAttribute(string $attributeName, ?string $expectedErrorMessage = null): void
-    {
-        // remove an attribute from default user data
-        $testUserData = self::DEFAULT_USER_DATA;
-        unset($testUserData[$attributeName]);
-
-        // call the list users API endpoint
-        $response = static::createClient()->request('POST', '/api/users', [
-            'json'    => $testUserData,
-            'headers' => [
-                'Content-Type' => 'application/json',
-                'Accept' => 'application/ld+json'
-            ]
-        ]);
-
-        // calculate expected error message unless provided explicitly
-        $expectedErrorMessage ??= 'This value should not be blank.';
-
-        static::assertResponseIsUnprocessable(); // expecting HTTP reponse code 422 - Unprocessable
-        static::assertResponseHeaderSame(
-            'content-type',
-            'application/problem+json; charset=utf-8'
-        );
-        static::assertStringContainsString('/api/validation_errors', $response->toArray(throw: false)['@id']);
-        static::assertJsonContains([
-            '@type'      => 'ConstraintViolationList',
-            'status'     => 422,
-            'violations' => [
-                ['propertyPath' => $attributeName, 'message' => $expectedErrorMessage],
-            ],
-        ]);
-        // check overall amount of expected constraint violations
-        static::assertCount(1, $response->toArray(throw: false)['violations']);
     }
 
     /**
@@ -3751,6 +3707,49 @@ class UserCreateApiTest extends ApiTestCase
         ]);
         // check overall amount of expected constraint violations
         static::assertCount(count($constraintViolations), $response->toArray(throw: false)['violations']);
+    }
+
+    /**
+     * Test expected constraint violations scenario
+     * for given missing attribute
+     *
+     * @param string $attributeName
+     * @param string $expectedErrorMessage
+     * @return void
+     */
+    protected function _testConstraintViolationForMissingAttribute(string $attributeName, ?string $expectedErrorMessage = null): void
+    {
+        // remove an attribute from default user data
+        $testUserData = self::DEFAULT_USER_DATA;
+        unset($testUserData[$attributeName]);
+
+        // call the list users API endpoint
+        $response = static::createClient()->request('POST', '/api/users', [
+            'json'    => $testUserData,
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/ld+json'
+            ]
+        ]);
+
+        // calculate expected error message unless provided explicitly
+        $expectedErrorMessage ??= 'This value should not be blank.';
+
+        static::assertResponseIsUnprocessable(); // expecting HTTP reponse code 422 - Unprocessable
+        static::assertResponseHeaderSame(
+            'content-type',
+            'application/problem+json; charset=utf-8'
+        );
+        static::assertStringContainsString('/api/validation_errors', $response->toArray(throw: false)['@id']);
+        static::assertJsonContains([
+            '@type'      => 'ConstraintViolationList',
+            'status'     => 422,
+            'violations' => [
+                ['propertyPath' => $attributeName, 'message' => $expectedErrorMessage],
+            ],
+        ]);
+        // check overall amount of expected constraint violations
+        static::assertCount(1, $response->toArray(throw: false)['violations']);
     }
 
     protected function tearDown(): void
