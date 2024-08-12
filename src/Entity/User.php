@@ -24,6 +24,9 @@ use Symfony\Polyfill\Mbstring\Mbstring;
 )]
 #[ApiFilter(OrderFilter::class)]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ORM\Table(name: 'users')]
+#[ORM\Index(name: 'i_users_gender', columns: ['gender'])]
+#[ORM\Index(name: 'i_users_active', columns: ['active'])]
 class User
 {
     /** 
