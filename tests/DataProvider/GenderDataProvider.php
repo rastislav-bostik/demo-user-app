@@ -13,7 +13,7 @@ class GenderDataProvider
      * Set of of basic uppercased, lowercased and capilatalized first letter
      * differing from original value of each gender enum case
      * 
-     * @return array
+     * @return string[][]
      */
     public static function getCaseMismatchingGenderEnumValues(): array
     {

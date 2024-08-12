@@ -128,6 +128,8 @@ class EmailDataProvider
      * 
      * @link https://github.com/symfony/validator/blob/7.1/Tests/Constraints/EmailValidatorTest.php
      * @link https://datatracker.ietf.org/doc/html/rfc5322
+     * 
+     * @return string[][]
      */
     public static function getInvalidRfc5322EmailsForStrictChecks(): array
     {

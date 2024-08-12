@@ -14,7 +14,7 @@ class RoleDataProvider
      * differing from original value of each role enum case
      * (e.g. male, Male, female, Female - avoiding enum case values MALE, FEMALE)
      * 
-     * @return array
+     * @return string[][]
      */
     public static function getCaseMismatchingRoleEnumValues(): array
     {
