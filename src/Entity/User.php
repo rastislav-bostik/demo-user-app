@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use App\State\Processor\UserProcessor;
 use App\Validator\ContainsUniqueValues;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Bridge\Doctrine\Types\UuidType;
@@ -21,6 +22,7 @@ use Symfony\Polyfill\Mbstring\Mbstring;
  */
 #[ApiResource(
     paginationItemsPerPage: 5,
+    processor: UserProcessor::class
 )]
 #[ApiFilter(OrderFilter::class)]
 #[ORM\Entity(repositoryClass: UserRepository::class)]

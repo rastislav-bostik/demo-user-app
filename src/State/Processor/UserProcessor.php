@@ -1,0 +1,101 @@
+<?php
+
+namespace App\State\Processor;
+
+use App\Entity\User;
+use ApiPlatform\Metadata\DeleteOperationInterface;
+use ApiPlatform\Metadata\Operation;
+use ApiPlatform\State\ProcessorInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Polyfill\Mbstring\Mbstring;
+
+/**
+ * Processor class providing customized handling
+ * of User entity CRUD operations hooked on top 
+ * of built-in Doctrine persistance logic.
+ * 
+ * @implements ProcessorInterface<User, User|void>
+ */
+final class UserProcessor implements ProcessorInterface
+{
+    public function __construct(
+        #[Autowire(service: 'api_platform.doctrine.orm.state.persist_processor')]
+        private ProcessorInterface $persistProcessor,
+        #[Autowire(service: 'api_platform.doctrine.orm.state.remove_processor')]
+        private ProcessorInterface $removeProcessor
+    ) {
+    }
+
+    /**
+     * Customized User entity processing logic extending 
+     * built-in Doctrine's CRUD perstistance logic
+     * via Processor interface process() method
+     * 
+     * @return User|void
+     */
+    public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []): mixed
+    {
+        if ($operation instanceof DeleteOperationInterface) {
+            // deleting the entity
+            return $this->removeProcessor->process($data, $operation, $uriVariables, $context);
+        }
+
+    
+        // ================================================= //
+        // ================== PRE-PERSIST ================== //
+
+        // perform multibyte trim above all string-typed
+        // user entity attributes values
+        $this->_trimTextualAttributes($data);
+
+        // ================== PRE-PERSIST ================== //
+        // ================================================= //
+
+
+        // persisting the entity
+        $result = $this->persistProcessor->process($data, $operation, $uriVariables, $context);
+
+
+        // ================================================= //
+        // ================= POST-PERSIST ================== //
+
+
+        // ================= POST-PERSIST ================== //
+        // ================================================= //
+
+    
+        return $result;
+    }
+
+    /**
+     * Perform multibyte trim above textual attributes of User entity
+     * 
+     * @param \App\Entity\User $user
+     * @return void
+     */
+    private function _trimTextualAttributes(User $user): void
+    {
+        // get the list of string-typed
+        // user entity attributes
+        // TODO - pick this info from entity manager
+        // @link https://stackoverflow.com/questions/27293233/how-to-get-the-type-of-a-doctrine-entity-property
+        // @link https://stackoverflow.com/questions/44809739/is-there-a-way-to-inject-entitymanager-into-a-service
+        $textualFields = [
+            'name',
+            'surname',
+            'email',
+            'note'
+        ];
+
+        // run multibyte trim above non-NULL valued
+        // textual fields of provided user entity instance
+        foreach ($textualFields as $textualFieldName) {
+            $getterName = 'get' . ucfirst($textualFieldName);
+            $fieldValue = $user->$getterName();
+            if (!is_null($fieldValue)) {
+                $setterName = 'set' . ucfirst($textualFieldName);
+                $user->$setterName(Mbstring::mb_trim($fieldValue));
+            }
+        }
+    }
+}
