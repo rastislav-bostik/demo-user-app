@@ -172,8 +172,8 @@ class User
      */
     #[ORM\Column]
     #[ApiFilter(BooleanFilter::class)]
-    #[Assert\NotBlank]
-    #[Assert\Type('bool')]
+    #[Assert\NotNull]
+    #[Assert\Type(type: 'bool')]
     private bool $active;
 
     // public function __construct(string $name, string $surname, string $email, Gender $gender, ?string $note = null, bool $active, array $roles) {
