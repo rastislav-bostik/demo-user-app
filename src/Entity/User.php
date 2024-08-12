@@ -7,6 +7,7 @@ use App\State\Processor\UserProcessor;
 use App\Validator\ContainsUniqueValues;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Bridge\Doctrine\Types\UuidType;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiFilter;
@@ -29,6 +30,12 @@ use Symfony\Polyfill\Mbstring\Mbstring;
 #[ORM\Table(name: 'users')]
 #[ORM\Index(name: 'i_users_gender', columns: ['gender'])]
 #[ORM\Index(name: 'i_users_active', columns: ['active'])]
+#[UniqueEntity(
+    fields: ['email'], 
+    errorPath: 'email', 
+    ignoreNull: false, 
+    entityClass: self::class
+)]
 class User
 {
     /** 
