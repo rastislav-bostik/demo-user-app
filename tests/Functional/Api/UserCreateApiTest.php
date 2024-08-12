@@ -2643,6 +2643,560 @@ class UserCreateApiTest extends ApiTestCase
     // ============================================================================== //
 
 
+
+    // ============================================================================== //
+    // ======================== NOTE ATTRIBUTE FOCUSED TESTS ======================== //
+
+
+    public function testCreateUserWithMissingNoteFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // get rid of 'note' attribute from
+        // default user data if it exists there
+        $userData = self::DEFAULT_USER_DATA;
+        if(array_key_exists('note', $userData)) {
+            unset($userData['note']);
+        }
+    
+        // run the create user procedure
+        // with the 'note' attribute missing
+        // expecting user entity being successfully
+        // created
+        $this->_testSuccessfullCreationOfUser(
+            userData: $userData,
+            additionalAssertsCallback: 
+                function($response) {
+                    // expecting the 'note' attribute to be missing in the response
+                    static::assertArrayNotHasKey('note', $response->toArray(throw: false));
+                }
+        );
+    }
+
+    public function testCreateUserWithNullAsNoteFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+    
+        // run the create user procedure
+        // with the 'note' attribute set
+        // to NULL
+        $this->_testSuccessfullCreationOfUser(
+            userData: array_merge(
+                self::DEFAULT_USER_DATA,
+                [
+                    'note' => null
+                ]
+            ),
+            expectedResponseUserData: array_diff_assoc(
+                self::DEFAULT_USER_DATA,
+                [
+                    'note' => null
+                ]
+            ),
+            additionalAssertsCallback: 
+                function($response) {
+                    // expecting the 'note' attribute to be missing in the response
+                    static::assertArrayNotHasKey('note', $response->toArray(throw: false));
+                }
+        );
+    }
+
+    public function testCreateUserWithEmptyAsNoteFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+    
+        // run the create user procedure
+        // with the 'note' attribute set
+        $this->_testSuccessfullCreationOfUser(
+            userData: array_merge(
+                self::DEFAULT_USER_DATA,
+                [
+                    'note' => ''
+                ]
+            ),
+        );
+    }
+
+    public function testCreateUserWithWhitespaceAsNoteFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run the create user procedure
+        // with the 'note' attribute set
+        // to values consisting of whitespaces
+        // only expecting it being trimmed
+        // to the empty string
+        $this->_testSuccessfullCreationOfUser(
+            userData: array_merge(
+                self::DEFAULT_USER_DATA,
+                [
+                    'note' => "\u{0009}\u{000A}\u{000B}\u{000C}\u{000D}\u{0020}\u{0085}\u{00A0}\u{1680}"
+                ]
+            ),
+            expectedResponseUserData: array_merge(
+                self::DEFAULT_USER_DATA,
+                [
+                    'note' => ''
+                ]
+            ),
+            additionalAssertsCallback: 
+                function($response) {
+                    // expecting the 'note' attribute is present in the response
+                    static::assertArrayHasKey('note', $response->toArray(throw: false));
+                    // and expeting it to be multibyte-trimmed into empty string
+                    static::assertSame('', $response->toArray(throw: false)['note']);
+                }
+        );
+    }
+
+    public function testCreateUserWithFalseBoolAsNoteFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'note',
+            attributeValue:   false,
+            expectedTypeName: 'string'
+        );
+    }
+
+    public function testCreateUserWithFalseStringAsNoteFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run the create user procedure
+        // with the 'note' attribute set
+        // to string 'false'
+        $this->_testSuccessfullCreationOfUser(
+            userData: array_merge(
+                self::DEFAULT_USER_DATA,
+                [
+                    'note' => 'false'
+                ]
+            )
+        );
+    }
+
+    public function testCreateUserWithTrueBoolAsNoteFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'note',
+            attributeValue:   true,
+            expectedTypeName: 'string'
+        );
+    }
+
+    public function testCreateUserWithTrueStringAsNoteFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run the create user procedure
+        // with the 'note' attribute set
+        // to string 'true'
+        $this->_testSuccessfullCreationOfUser(
+            userData: array_merge(
+                self::DEFAULT_USER_DATA,
+                [
+                    'note' => 'true'
+                ]
+            )
+        );
+    }
+
+    public function testCreateUserWithZeroIntAsNoteFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'note',
+            attributeValue:   0,
+            expectedTypeName: 'string'
+        );
+    }
+
+    public function testCreateUserWithZeroIntStringAsNoteFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run the create user procedure
+        // with the 'note' attribute set
+        $this->_testSuccessfullCreationOfUser(
+            userData: array_merge(
+                self::DEFAULT_USER_DATA,
+                [
+                    'note' => '0'
+                ]
+            )
+        );
+    }
+
+    public function testCreateUserWithPositiveIntAsNoteFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'note',
+            attributeValue:   1,
+            expectedTypeName: 'string'
+        );
+    }
+
+    public function testCreateUserWithPositiveIntStringAsNoteFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run the create user procedure
+        // with the 'note' attribute set
+        $this->_testSuccessfullCreationOfUser(
+            userData: array_merge(
+                self::DEFAULT_USER_DATA,
+                [
+                    'note' => '1'
+                ]
+            )
+        );
+    }
+
+    public function testCreateUserWithNegativeIntAsNoteFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'note',
+            attributeValue:   -1,
+            expectedTypeName: 'string'
+        );
+    }
+
+    public function testCreateUserWithNegativeIntStringAsNoteFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run the create user procedure
+        // with the 'note' attribute set
+        $this->_testSuccessfullCreationOfUser(
+            userData: array_merge(
+                self::DEFAULT_USER_DATA,
+                [
+                    'note' => '-1'
+                ]
+            )
+        );
+    }
+
+    public function testCreateUserWithZeroDoubleAsNoteFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'note',
+            attributeValue:   0.0,
+            expectedTypeName: 'string'
+        );
+    }
+
+    public function testCreateUserWithZeroDoubleStringAsNoteFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run the create user procedure
+        // with the 'note' attribute set
+        $this->_testSuccessfullCreationOfUser(
+            userData: array_merge(
+                self::DEFAULT_USER_DATA,
+                [
+                    'note' => '0.0'
+                ]
+            )
+        );
+    }
+
+    public function testCreateUserWithPositiveDoubleAsNoteFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'note',
+            attributeValue:   1.0,
+            expectedTypeName: 'string'
+        );
+    }
+
+    public function testCreateUserWithPositiveDoubleStringAsNoteFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run the create user procedure
+        // with the 'note' attribute set
+        $this->_testSuccessfullCreationOfUser(
+            userData: array_merge(
+                self::DEFAULT_USER_DATA,
+                [
+                    'note' => '1.0'
+                ]
+            )
+        );
+    }
+
+    public function testCreateUserWithNegativeDoubleAsNoteFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'note',
+            attributeValue:   -1.0,
+            expectedTypeName: 'string'
+        );
+    }
+
+    public function testCreateUserWithNegativeDoubleStringAsNoteFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run the create user procedure
+        // with the 'note' attribute set
+        $this->_testSuccessfullCreationOfUser(
+            userData: array_merge(
+                self::DEFAULT_USER_DATA,
+                [
+                    'note' => '-1.0'
+                ]
+            )
+        );
+    }
+
+    public function testCreateUserWithArrayAsNoteFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'note',
+            attributeValue:   [],
+            expectedTypeName: 'string'
+        );
+    }
+
+    public function testCreateUserWithObjectAsNoteFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testTypeViolationForAttributeValue(
+            attributeName:    'note',
+            attributeValue:   ["attributeX" => "valueX"],
+            expectedTypeName: 'string'
+        );
+    }
+
+    // public function testCreateUserWithBinaryAsNoteFieldValue(): void
+    // {
+    //     // remove all data from database
+    //     $this->cleanDatabase();
+
+    //     // call the list users API endpoint
+    //     $response = static::createClient()->request('POST', '/api/users', [
+    //         'json'    => [
+    //             'note'    => "\x04\x00\xa0\x00",// \u001A\u001B\u0005\u001B
+    //             'note' => 'User X',
+    //             'email'   => 'test.user.X@foo.local',
+    //             'gender'  => Gender::MALE,
+    //             'roles'   =>  [
+    //                 Role::USER,
+    //                 Role::ADMIN,
+    //             ],
+    //             'active'   => true 
+
+    //         ],
+    //         'headers' => [
+    //             'Accept' => 'application/ld+json'
+    //         ]
+    //     ]);
+
+    //     static::assertResponseStatusCodeSame(400);
+    //     static::assertResponseHeaderSame(
+    //         'content-type',
+    //         'application/problem+json; charset=utf-8'
+    //     );
+    //     static::assertStringContainsString('/api/errors', $response->toArray(throw: false)['@id']);
+    //     static::assertJsonContains([
+    //         '@type'  => 'hydra:Error',
+    //         'status' => 400,
+    //         'title'  => 'An error occurred',
+    //         'detail' => 'The type of the "note" attribute must be "string", "object" given.'
+    //     ]);
+    // }
+
+    public function testCreateUserWithTooLongStringAsNoteFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run constraint violation test body
+        $this->_testConstraintViolationForAttributeValue(
+            attributeName:  'note',
+            attributeValue: str_repeat('x',4097),
+            constraintViolations: [
+                ['propertyPath' => 'note', 'message' => 'This value is too long. It should have 4096 characters or less.'],
+            ]
+        );
+    }
+
+    public function testCreateUserWithLowercaseOnlyStringAsNoteFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        
+        // run the create user procedure
+        // with the 'note' attribute set
+        $this->_testSuccessfullCreationOfUser(
+            userData: array_merge(
+                self::DEFAULT_USER_DATA,
+                [
+                    'note' => 'lorem ipsum dolor sit amet consectetur adipiscing elit'
+                ]
+            )
+        );
+    }
+
+    public function testCreateUserWithUpperCaseOnlyStringAsNoteFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run the user creation test body
+        $this->_testSuccessfullCreationOfUser(array_merge(
+            self::DEFAULT_USER_DATA,
+            [
+                'note' => 'LOREM IPSUM DOLOR SIT'
+            ]
+        ));
+    }
+
+    public function testCreateUserWithValidLatinNoteFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run the user creation test body
+        $this->_testSuccessfullCreationOfUser(array_merge(
+            self::DEFAULT_USER_DATA,
+            [
+                'note' => 'Lorem ipsum dolor sit amet consectetur adipiscing elit.'
+            ]
+        ));
+    }
+
+    public function testCreateUserContainingWithValidCyrilicNoteFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run the user creation test body
+        $this->_testSuccessfullCreationOfUser(array_merge(
+            self::DEFAULT_USER_DATA,
+            [
+                'note' => 'Лорем ипсум долор сит амет, но партиендо перицулис иус, ат еам аугуе реформиданс.'
+            ]
+        ));
+    }
+    
+    public function testCreateUserContainingWithValidArabicNoteFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run the user creation test body
+        $this->_testSuccessfullCreationOfUser(array_merge(
+            self::DEFAULT_USER_DATA,
+            [
+                'note' => 'كُلفة استعملت المتاخمة من مكن, بحشد الأهداف التغييرات شيء ما. أن وفي بداية وانهاء الشتوية. عسكرياً الأوروبيّون جعل بل, إحكام الباهضة بالولايات دول أن, حقول والديون الواقعة مما قد. صفحة انتصارهم أخذ ان, عدم حاملات والنفيس ان.'
+            ]
+        ));
+    }
+
+    public function testCreateUserContainingWithValidHebrewNoteFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run the user creation test body
+        $this->_testSuccessfullCreationOfUser(array_merge(
+            self::DEFAULT_USER_DATA,
+            [
+                'note' => 'החלל ערכים מה כלל. או דפים ספורט המלחמה לוח. שמו דת רביעי המזנון בהיסטוריה, קסאם למחיקה אם מדע. ברוכים צרפתית תבניות ויש או.'
+            ]
+        ));
+    }
+    
+    public function testCreateUserContainingWithValidHindiNoteFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run the user creation test body
+        $this->_testSuccessfullCreationOfUser(array_merge(
+            self::DEFAULT_USER_DATA,
+            [
+                'note' => 'अधिकार पत्रिका वहहर सादगि सादगि कम्प्युटर यन्त्रालय उशकी बढाता दिये जागरुक वेबजाल एसेएवं मुश्किल मुख्यतह देते विश्व हमेहो। पहोचाना निरपेक्ष सीमित भाषा मजबुत स्थिति वैश्विक पुष्टिकर्ता आपको मुक्त लगती प्रव्रुति विचारशिलता'
+            ]
+        ));
+    }
+
+    
+    public function testCreateUserContainingWithValidChineseNoteFieldValue(): void
+    {
+        // remove all data from database
+        $this->cleanDatabase();
+
+        // run the user creation test body
+        $this->_testSuccessfullCreationOfUser(array_merge(
+            self::DEFAULT_USER_DATA,
+            [
+                'note' => '面転仏領齢祝刈念演幸川月覧乗新革者。整鹿寝冷前題俊激新郵識報打秀岸認政。面裕関宇少男断注逃覧究良雪暴文新載。'
+            ]
+        ));
+    }
+
+    
+    // ======================== NOTE ATTRIBUTE FOCUSED TESTS ======================== //
+    // ============================================================================== //
+
+
+
     // TODO - create user with invalid surname set to <missing attribute at all> | null | '' | '   ' | false | "false" | true | "true" | true | 0 | "0" | 0.0 | "0.0" | array | object | binary data | too long value
     // TODO - create user with invalid email <missing attribute at all> | null | '' | '   ' | ... | too long value | invalid email pattern | already existing email
     // TODO - create user with invalid gender <missing attribute at all> | null | '' | '   ' | ... | too long value | value other than supported gender value
@@ -2667,9 +3221,11 @@ class UserCreateApiTest extends ApiTestCase
      * data
      * 
      * @param array $userData
+     * @param array $expectedResponseUserData
+     * @param callable $additionalAssertsCallback
      * @return void
      */
-    public function _testSuccessfullCreationOfUser(array $userData): void
+    public function _testSuccessfullCreationOfUser(array $userData, ?array $expectedResponseUserData = null, ?callable $additionalAssertsCallback = null): void
     {
         // call the list users API endpoint
         $response = static::createClient()->request('POST', '/api/users', [
@@ -2679,6 +3235,11 @@ class UserCreateApiTest extends ApiTestCase
                 'Accept' => 'application/ld+json'
             ]
         ]);
+
+        // compile expected response user data
+        // from input user data unless provided
+        // explicitly
+        $expectedResponseUserData ??= $userData;
 
         static::assertResponseStatusCodeSame(201); // expecting HTTP reponse code 201 - Created
         static::assertResponseHeaderSame(
@@ -2693,7 +3254,7 @@ class UserCreateApiTest extends ApiTestCase
             ],
             // converting backend enums contained within
             // default user data array into strings
-            json_decode(json_encode($userData),true)
+            json_decode(json_encode($expectedResponseUserData),true)
         ));
 
         // check that user ID is valid UUID
@@ -2704,7 +3265,13 @@ class UserCreateApiTest extends ApiTestCase
             $response->toArray(throw: false)['@id'],
             '/api/users/' . $response->toArray(throw: false)['id']
         );
-    }
+
+        if(!is_null($additionalAssertsCallback)) {
+            // invoke additional assertions
+            // provided by calling test method
+            $additionalAssertsCallback($response);   
+        }
+     }
 
     /**
      * Test expected constraint violations scenario
