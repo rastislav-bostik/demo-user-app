@@ -19,9 +19,10 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
-    App\Tests\Data\:
-        resource: '../tests/Data/'
-        exclude:
-            - '../tests/Data/Providers/'
+    # making LiipTestFixturesBundle moved from src/DataFixtures to tests/Data/Fixtures
+    # available as services again from new location
+    App\Tests\Data\Fixtures\:
+        resource: '../tests/Data/Fixtures/'
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
