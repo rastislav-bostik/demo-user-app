@@ -1,6 +1,6 @@
 <?php
 
-namespace App\DataFixtures\Doctrine;
+namespace App\Tests\Data\Fixtures;
 
 use App\Entity\User;
 use App\Entity\Role;

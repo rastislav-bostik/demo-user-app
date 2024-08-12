@@ -8,7 +8,7 @@ use App\Entity\Role;
 use App\Entity\User;
 use App\Tests\DatabasePrimer;
 use Doctrine\ORM\EntityManager;
-use App\DataFixtures\Doctrine\UserFixtures;
+use App\Tests\Data\Fixtures\UserFixtures;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 

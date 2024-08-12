@@ -3,7 +3,7 @@
 namespace App\Tests\Functional\Api;
 
 use App\Tests\DatabasePrimer;
-use App\DataFixtures\Doctrine\UserFixtures;
+use App\Tests\Data\Fixtures\UserFixtures;
 use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
 use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 

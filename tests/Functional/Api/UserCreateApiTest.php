@@ -5,7 +5,7 @@ namespace App\Tests\Functional\Api;
 use App\Entity\Role;
 use App\Entity\Gender;
 use App\Tests\DatabasePrimer;
-use App\DataFixtures\Doctrine\UserFixtures;
+use App\Tests\Data\Fixtures\UserFixtures;
 use Symfony\Component\Uid\Uuid;
 use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
 use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
