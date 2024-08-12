@@ -158,9 +158,9 @@ class User
      * Notes related to the user
      * @var string
      */
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 4096, nullable: true)]
     #[ApiFilter(SearchFilter::class)]
-    #[Assert\Length(max: 255)]
+    #[Assert\Length(max: 4096)]
     private ?string $note = null;
 
     /**
