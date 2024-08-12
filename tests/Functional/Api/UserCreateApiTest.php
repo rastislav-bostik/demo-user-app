@@ -3492,16 +3492,12 @@ class UserCreateApiTest extends ApiTestCase
     // ============================================================================== //
 
 
-    // TODO - create user with invalid surname set to <missing attribute at all> | null | '' | '   ' | false | "false" | true | "true" | true | 0 | "0" | 0.0 | "0.0" | array | object | binary data | too long value
-    // TODO - create user with invalid email <missing attribute at all> | null | '' | '   ' | ... | too long value | invalid email pattern | already existing email
-    // TODO - create user with invalid gender <missing attribute at all> | null | '' | '   ' | ... | too long value | value other than supported gender value
-    // TODO - create user with invalid roles <missing attribute at all> | null | '' | '   ' | ... | empty array | too long value | value(s) other than support role value
-    // TODO - create user with invalid note flag <missing attribute at all> | null | '' | '   ' | ... | too long value
-    // TODO - create user with invalid active flag <missing attribute at all> | null | '' | '   ' | false | "false" | true | "true" | true | 0 | "0" | 1 | "1" | -1 | "-1" | 0.0 | "0.0" | 1.0 | "1.0" | -1.0 | "-1.0"
 
-    // TODO - try to create already existing user entity resource
+    // ==================== COMMON COMPLEX USER CREATION TESTS ====================== //
+    // ============================================================================== //
 
-    public function testCreateUserSuccess(): void
+
+    public function testCreateNewUserSuccess(): void
     {
         // remove all data from database
         $this->cleanDatabase();
@@ -3509,6 +3505,55 @@ class UserCreateApiTest extends ApiTestCase
         // run the user creation test body
         $this->_testSuccessfullCreationOfUser(self::DEFAULT_USER_DATA);
     }
+
+    public function testCreateExistingUserSuccess(): void
+    {
+        // remove all data from database
+        $this->loadFixtures([
+            UserFixtures::class
+        ]);
+
+        // definition of expected constraint violations
+        $expectedContraintViolations = [
+            ['propertyPath' => 'email', 'message' => 'This value is already used.'],
+        ];
+
+        // call the list users API endpoint
+        $response = static::createClient()->request('POST', '/api/users', [
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/ld+json'
+            ],
+            'json'    => array_merge(
+                self::DEFAULT_USER_DATA,
+                [
+                    'surname' => 'User A',
+                    'email'   => 'test.user.A@foo.local'
+                ]
+            ),
+        ]);
+
+        static::assertResponseIsUnprocessable(); // expecting HTTP reponse code 422 - Unprocessable
+        static::assertResponseHeaderSame(
+            'content-type',
+            'application/problem+json; charset=utf-8'
+        );
+        
+        static::assertStringContainsString('/api/validation_errors', $response->toArray(throw: false)['@id']);
+        static::assertJsonContains([
+            '@type'      => 'ConstraintViolationList',
+            'status'     => 422,
+            'violations' => $expectedContraintViolations,
+        ]);
+        // check overall amount of expected constraint violations
+        static::assertCount(count($expectedContraintViolations), $response->toArray(throw: false)['violations']);
+    }
+
+
+    
+    // ==================== COMMON COMPLEX USER CREATION TESTS ====================== //
+    // ============================================================================== //
+
 
     /**
      * Test expected successfull user entity 
