@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use App\Validator\ContainsUniqueValues;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Bridge\Doctrine\Types\UuidType;
 use Doctrine\DBAL\Types\Types;
@@ -147,6 +148,7 @@ class User
     #[ApiFilter(SearchFilter::class)]
     #[Assert\NotNull]
     #[Assert\Count(min: 1)]
+    #[ContainsUniqueValues(mode: ContainsUniqueValues::MODE_STRICT)]
     private array $roles = [];
 
     /**
