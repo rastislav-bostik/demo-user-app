@@ -145,6 +145,7 @@ class User
      */
     #[ORM\Column(type: Types::SIMPLE_ARRAY, enumType: Role::class)]
     #[ApiFilter(SearchFilter::class)]
+    #[Assert\NotNull]
     #[Assert\Count(min: 1)]
     private array $roles = [];
 
