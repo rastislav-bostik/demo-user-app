@@ -3,15 +3,17 @@
 namespace App\Tests\Functional\Api;
 
 use App\Tests\DatabasePrimer;
+use App\Tests\FixturesLoadingTrait;
 use App\Tests\Data\Fixtures\UserFixtures;
 use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
-use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 
 /**
  * Tests of user API backend functionality
  */
 class UserGetListApiTest extends ApiTestCase
 {
+    use FixturesLoadingTrait;
+    
     protected function setUp(): void
     {
         // boot & pick kernel instance
@@ -27,7 +29,7 @@ class UserGetListApiTest extends ApiTestCase
     public function testGetEmptyList(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // call the list users API endpoint
         $response = static::createClient()->request('GET', '/api/users', [
@@ -54,7 +56,7 @@ class UserGetListApiTest extends ApiTestCase
     public function testGetPopulatedList(): void
     {
         // load fixture cotaining tiny basic set of 5 users
-        $this->loadFixtures([
+        static::loadFixtures([
             UserFixtures::class
         ]);
 
@@ -84,7 +86,7 @@ class UserGetListApiTest extends ApiTestCase
     public function testGetPopulatedPaginatedList(): void
     {
         // load fixture cotaining tiny basic set of 5 users
-        $this->loadFixtures([
+        static::loadFixtures([
             UserFixtures::class
         ]);
 
@@ -137,7 +139,7 @@ class UserGetListApiTest extends ApiTestCase
     public function testGetFirstPageOfPopulatedPaginatedList(): void
     {
         // load fixture cotaining tiny basic set of 5 users
-        $this->loadFixtures([
+        static::loadFixtures([
             UserFixtures::class
         ]);
 
@@ -176,7 +178,7 @@ class UserGetListApiTest extends ApiTestCase
     public function testGetLastPageOfPopulatedPaginatedList(): void
     {
         // load fixture cotaining tiny basic set of 5 users
-        $this->loadFixtures([
+        static::loadFixtures([
             UserFixtures::class
         ]);
 
@@ -214,7 +216,7 @@ class UserGetListApiTest extends ApiTestCase
     public function testGetOutOfRangePageOfPopulatedPaginatedList(): void
     {
         // load fixture cotaining tiny basic set of 5 users
-        $this->loadFixtures([
+        static::loadFixtures([
             UserFixtures::class
         ]);
 
@@ -253,7 +255,7 @@ class UserGetListApiTest extends ApiTestCase
     public function testMissingPageSizeAttributeOfPaginationSetup(): void
     {
         // load fixture cotaining tiny basic set of 5 users
-        $this->loadFixtures([
+        static::loadFixtures([
             UserFixtures::class
         ]);
 
@@ -298,7 +300,7 @@ class UserGetListApiTest extends ApiTestCase
     public function testMissingPageNumberAttributeOfPaginationSetup(): void
     {
         // load fixture cotaining tiny basic set of 5 users
-        $this->loadFixtures([
+        static::loadFixtures([
             UserFixtures::class
         ]);
 
@@ -344,7 +346,7 @@ class UserGetListApiTest extends ApiTestCase
     public function testAsNegativeIntMalformedPageSizeAttributeOfPaginationSetup(): void
     {
         // load fixture cotaining tiny basic set of 5 users
-        $this->loadFixtures([
+        static::loadFixtures([
             UserFixtures::class
         ]);
 
@@ -371,7 +373,7 @@ class UserGetListApiTest extends ApiTestCase
     public function testAsNegativeIntMalformedPageNumberAttributeOfPaginationSetup(): void
     {
         // load fixture cotaining tiny basic set of 5 users
-        $this->loadFixtures([
+        static::loadFixtures([
             UserFixtures::class
         ]);
 
@@ -398,7 +400,7 @@ class UserGetListApiTest extends ApiTestCase
     public function testAsZeroIntMalformedPageSizeAttributeOfPaginationSetup(): void
     {
         // load fixture cotaining tiny basic set of 5 users
-        $this->loadFixtures([
+        static::loadFixtures([
             UserFixtures::class
         ]);
 
@@ -425,7 +427,7 @@ class UserGetListApiTest extends ApiTestCase
     public function testAsZeroIntMalformedPageNumberAttributeOfPaginationSetup(): void
     {
         // load fixture cotaining tiny basic set of 5 users
-        $this->loadFixtures([
+        static::loadFixtures([
             UserFixtures::class
         ]);
 
@@ -453,7 +455,7 @@ class UserGetListApiTest extends ApiTestCase
     public function testAsFloatMalformedPageSizeAttributeOfPaginationSetup(): void
     {
         // load fixture cotaining tiny basic set of 5 users
-        $this->loadFixtures([
+        static::loadFixtures([
             UserFixtures::class
         ]);
 
@@ -480,7 +482,7 @@ class UserGetListApiTest extends ApiTestCase
     public function testAsFloatMalformedPageNumberAttributeOfPaginationSetup(): void
     {
         // load fixture cotaining tiny basic set of 5 users
-        $this->loadFixtures([
+        static::loadFixtures([
             UserFixtures::class
         ]);
 
@@ -507,7 +509,7 @@ class UserGetListApiTest extends ApiTestCase
     public function testAsStringMalformedPageSizeAttributeOfPaginationSetup(): void
     {
         // load fixture cotaining tiny basic set of 5 users
-        $this->loadFixtures([
+        static::loadFixtures([
             UserFixtures::class
         ]);
 
@@ -534,7 +536,7 @@ class UserGetListApiTest extends ApiTestCase
     public function testAsStringMalformedPageNumberAttributeOfPaginationSetup(): void
     {
         // load fixture cotaining tiny basic set of 5 users
-        $this->loadFixtures([
+        static::loadFixtures([
             UserFixtures::class
         ]);
 
@@ -561,7 +563,7 @@ class UserGetListApiTest extends ApiTestCase
     public function testGetPopulatedPaginatedListOrderedBySurnameAscending(): void
     {
         // load fixture cotaining tiny basic set of 5 users
-        $this->loadFixtures([
+        static::loadFixtures([
             UserFixtures::class
         ]);
 
@@ -626,7 +628,7 @@ class UserGetListApiTest extends ApiTestCase
     public function testGetPopulatedPaginatedListOrderedBySurnameDescending(): void
     {
         // load fixture cotaining tiny basic set of 5 users
-        $this->loadFixtures([
+        static::loadFixtures([
             UserFixtures::class
         ]);
 
@@ -695,7 +697,7 @@ class UserGetListApiTest extends ApiTestCase
     public function testGetPopulatedListFilteredByGenderOrderedBySurnameAscending(): void 
     {
         // load fixture cotaining tiny basic set of 5 users
-        $this->loadFixtures([
+        static::loadFixtures([
             UserFixtures::class
         ]);
 
@@ -755,7 +757,7 @@ class UserGetListApiTest extends ApiTestCase
     public function testGetPopulatedPaginatedListFilteredByGenderOrderedBySurnameAscending(): void 
     {
         // load fixture cotaining tiny basic set of 5 users
-        $this->loadFixtures([
+        static::loadFixtures([
             UserFixtures::class
         ]);
 
@@ -809,7 +811,7 @@ class UserGetListApiTest extends ApiTestCase
     public function testGetPopulatedPaginatedListFilteredByGenderOrderedBySurnameDescending(): void 
     {
         // load fixture cotaining tiny basic set of 5 users
-        $this->loadFixtures([
+        static::loadFixtures([
             UserFixtures::class
         ]);
 
@@ -863,32 +865,5 @@ class UserGetListApiTest extends ApiTestCase
     protected function tearDown(): void
     {
         parent::tearDown();
-    }
-
-    /**
-     * Load set of basic testing fixtures
-     * usefull mostly for listing, filtering,
-     * sorting and pagination testing purposes.
-     * 
-     * @param string[] $fixtureClassNames
-     * @return void
-     */
-    protected function loadFixtures(array $fixturesClassNames): void
-    {
-        // load set of basic fixtures
-        $databaseTool = static::getContainer()->get(DatabaseToolCollection::class)->get();
-        $databaseTool->loadFixtures($fixturesClassNames);
-    }
-
-    /**
-     * Clean the testing database
-     * 
-     * @return void
-     */
-    protected function cleanDatabase(): void
-    {
-        // load set of basic fixtures
-        $databaseTool = static::getContainer()->get(DatabaseToolCollection::class)->get();
-        $databaseTool->loadFixtures([]);
     }
 }

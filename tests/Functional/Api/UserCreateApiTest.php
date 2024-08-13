@@ -5,16 +5,18 @@ namespace App\Tests\Functional\Api;
 use App\Entity\Role;
 use App\Entity\Gender;
 use App\Tests\DatabasePrimer;
+use App\Tests\FixturesLoadingTrait;
 use App\Tests\Data\Fixtures\UserFixtures;
-use Symfony\Component\Uid\Uuid;
 use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
-use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
+use Symfony\Component\Uid\Uuid;
 
 /**
  * Tests of create user backend API functionality
  */
 class UserCreateApiTest extends ApiTestCase
 {
+    use FixturesLoadingTrait;
+
     /** @var array Default craete user data set */
     protected const DEFAULT_USER_DATA = [
         'name'    => 'Test',
@@ -43,7 +45,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithMissingJsonData(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // call the list users API endpoint
         $response = static::createClient()->request('POST', '/api/users', [
@@ -70,7 +72,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithMissingJsonDataAndMissingContentType(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // call the list users API endpoint
         $response = static::createClient()->request('POST', '/api/users', [
@@ -97,7 +99,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithMissingJsonDataAndWrongContentType(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // call the list users API endpoint
         $response = static::createClient()->request('POST', '/api/users', [
@@ -127,7 +129,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithEmptyJsonData(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // call the list users API endpoint
         $response = static::createClient()->request('POST', '/api/users', [
@@ -168,7 +170,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithMissingNameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         $this->_testConstraintViolationForMissingAttribute(
             attributeName: 'name'
@@ -178,7 +180,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithNullAsNameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -191,7 +193,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithEmptyAsNameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -206,7 +208,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithWhitespaceAsNameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -222,7 +224,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithFalseBoolAsNameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -235,7 +237,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithFalseStringAsNameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -250,7 +252,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithTrueBoolAsNameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -263,7 +265,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithTrueStringAsNameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -278,7 +280,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithZeroIntAsNameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -291,7 +293,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithZeroIntStringAsNameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -306,7 +308,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithPositiveIntAsNameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -319,7 +321,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithPositiveIntStringAsNameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -334,7 +336,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithNegativeIntAsNameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -347,7 +349,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithNegativeIntStringAsNameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -362,7 +364,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithZeroDoubleAsNameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -375,7 +377,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithZeroDoubleStringAsNameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -390,7 +392,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithPositiveDoubleAsNameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -403,7 +405,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithPositiveDoubleStringAsNameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -418,7 +420,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithNegativeDoubleAsNameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -431,7 +433,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithNegativeDoubleStringAsNameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -446,7 +448,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithArrayAsNameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -459,7 +461,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithObjectAsNameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -472,7 +474,7 @@ class UserCreateApiTest extends ApiTestCase
     // public function testCreateUserWithBinaryAsNameFieldValue(): void
     // {
     //     // remove all data from database
-    //     $this->cleanDatabase();
+    //     static::cleanDatabase();
 
     //     // call the list users API endpoint
     //     $response = static::createClient()->request('POST', '/api/users', [
@@ -510,7 +512,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithTooLongStringAsNameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -525,7 +527,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithLowercaseOnlyStringAsNameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -540,7 +542,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithUpperCaseOnlyStringAsNameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run the user creation test body
         $this->_testSuccessfullCreationOfUser(array_merge(
@@ -554,7 +556,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserContainingWordStartingWithApostropheInNameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -569,7 +571,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserContainingWordWithApostropheInNameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run the user creation test body
         $this->_testSuccessfullCreationOfUser(array_merge(
@@ -583,7 +585,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserContainingWordEndingWithApostropheInNameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -598,7 +600,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserContainingWordWithDoubleApostropheInNameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -613,7 +615,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserContainingWordStartingWithHyphenInNameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -628,7 +630,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserContainingWordWithHyphenInNameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run the user creation test body
         $this->_testSuccessfullCreationOfUser(array_merge(
@@ -642,7 +644,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserContainingWordEndingWithHyphenInNameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -657,7 +659,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserContainingWordWithDoubleHyphenInNameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -672,7 +674,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserContainingWordWithApostropheFollowedByHyphenInNameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -687,7 +689,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserContainingWordWithApostropheAndHyphenInNameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run the user creation test body
         $this->_testSuccessfullCreationOfUser(array_merge(
@@ -701,7 +703,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserContainingSingleSpaceBeforeNameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -716,7 +718,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserContainingSingleSpaceBeforeAndAfterNameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -731,7 +733,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserContainingSingleSpaceAfterNameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -746,7 +748,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserContainingDoubleSpaceBeforeNameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -761,7 +763,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserContainingDoubleSpaceBeforeAndAfterNameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -776,7 +778,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserContainingDoubleSpaceAfterNameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -791,7 +793,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserContainingDoubleSpaceInTheMiddleOfNameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -806,7 +808,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserContainingWithValidLatinNameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run the user creation test body
         $this->_testSuccessfullCreationOfUser(array_merge(
@@ -820,7 +822,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserContainingWithValidCyrilicNameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run the user creation test body
         $this->_testSuccessfullCreationOfUser(array_merge(
@@ -844,7 +846,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithMissingSurnameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         $this->_testConstraintViolationForMissingAttribute(
             attributeName: 'surname'
@@ -854,7 +856,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithNullAsSurnameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -867,7 +869,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithEmptyAsSurnameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -882,7 +884,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithWhitespaceAsSurnameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -898,7 +900,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithFalseBoolAsSurnameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -911,7 +913,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithFalseStringAsSurnameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -926,7 +928,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithTrueBoolAsSurnameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -939,7 +941,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithTrueStringAsSurnameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -954,7 +956,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithZeroIntAsSurnameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -967,7 +969,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithZeroIntStringAsSurnameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -982,7 +984,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithPositiveIntAsSurnameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -995,7 +997,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithPositiveIntStringAsSurnameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -1010,7 +1012,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithNegativeIntAsSurnameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -1023,7 +1025,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithNegativeIntStringAsSurnameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -1038,7 +1040,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithZeroDoubleAsSurnameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -1051,7 +1053,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithZeroDoubleStringAsSurnameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -1066,7 +1068,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithPositiveDoubleAsSurnameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -1079,7 +1081,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithPositiveDoubleStringAsSurnameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -1094,7 +1096,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithNegativeDoubleAsSurnameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -1107,7 +1109,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithNegativeDoubleStringAsSurnameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -1122,7 +1124,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithArrayAsSurnameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -1135,7 +1137,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithObjectAsSurnameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -1148,7 +1150,7 @@ class UserCreateApiTest extends ApiTestCase
     // public function testCreateUserWithBinaryAsSurnameFieldValue(): void
     // {
     //     // remove all data from database
-    //     $this->cleanDatabase();
+    //     static::cleanDatabase();
 
     //     // call the list users API endpoint
     //     $response = static::createClient()->request('POST', '/api/users', [
@@ -1186,7 +1188,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithTooLongStringAsSurnameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -1205,7 +1207,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithLowercaseOnlyStringAsSurnameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -1220,7 +1222,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithUpperCaseOnlyStringAsSurnameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run the user creation test body
         $this->_testSuccessfullCreationOfUser(array_merge(
@@ -1234,7 +1236,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserContainingWordStartingWithApostropheInSurnameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -1249,7 +1251,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserContainingWordWithApostropheInSurnameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run the user creation test body
         $this->_testSuccessfullCreationOfUser(array_merge(
@@ -1263,7 +1265,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserContainingWordEndingWithApostropheInSurnameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -1278,7 +1280,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserContainingWordWithDoubleApostropheInSurnameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -1293,7 +1295,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserContainingWordStartingWithHyphenInSurnameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -1308,7 +1310,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserContainingWordWithHyphenInSurnameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run the user creation test body
         $this->_testSuccessfullCreationOfUser(array_merge(
@@ -1322,7 +1324,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserContainingWordEndingWithHyphenInSurnameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -1337,7 +1339,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserContainingWordWithDoubleHyphenInSurnameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -1352,7 +1354,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserContainingWordWithApostropheFollowedByHyphenInSurnameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -1367,7 +1369,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserContainingWordWithApostropheAndHyphenInSurnameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run the user creation test body
         $this->_testSuccessfullCreationOfUser(array_merge(
@@ -1381,7 +1383,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserContainingSingleSpaceBeforeSurnameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -1396,7 +1398,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserContainingSingleSpaceBeforeAndAfterSurnameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -1411,7 +1413,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserContainingSingleSpaceAfterSurnameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -1427,7 +1429,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserContainingDoubleSpaceBeforeSurnameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -1442,7 +1444,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserContainingDoubleSpaceBeforeAndAfterSurnameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -1457,7 +1459,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserContainingDoubleSpaceAfterSurnameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -1472,7 +1474,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserContainingDoubleSpaceInTheMiddleOfSurnameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -1487,7 +1489,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserContainingWithValidLatinSurnameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run the user creation test body
         $this->_testSuccessfullCreationOfUser(array_merge(
@@ -1501,7 +1503,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserContainingWithValidCyrilicSurnameFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run the user creation test body
         $this->_testSuccessfullCreationOfUser(array_merge(
@@ -1525,7 +1527,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithMissingEmailFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         $this->_testConstraintViolationForMissingAttribute(
             attributeName: 'email'
@@ -1535,7 +1537,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithNullAsEmailFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -1548,7 +1550,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithEmptyAsEmailFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -1563,7 +1565,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithWhitespaceAsEmailFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -1579,7 +1581,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithFalseBoolAsEmailFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -1592,7 +1594,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithFalseStringAsEmailFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -1607,7 +1609,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithTrueBoolAsEmailFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -1620,7 +1622,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithTrueStringAsEmailFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -1635,7 +1637,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithZeroIntAsEmailFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -1648,7 +1650,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithZeroIntStringAsEmailFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -1663,7 +1665,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithPositiveIntAsEmailFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -1676,7 +1678,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithPositiveIntStringAsEmailFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -1691,7 +1693,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithNegativeIntAsEmailFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -1704,7 +1706,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithNegativeIntStringAsEmailFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -1719,7 +1721,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithZeroDoubleAsEmailFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -1732,7 +1734,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithZeroDoubleStringAsEmailFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -1747,7 +1749,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithPositiveDoubleAsEmailFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -1760,7 +1762,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithPositiveDoubleStringAsEmailFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -1775,7 +1777,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithNegativeDoubleAsEmailFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -1788,7 +1790,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithNegativeDoubleStringAsEmailFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -1803,7 +1805,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithArrayAsEmailFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -1816,7 +1818,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithObjectAsEmailFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -1829,7 +1831,7 @@ class UserCreateApiTest extends ApiTestCase
     // public function testCreateUserWithBinaryAsEmailFieldValue(): void
     // {
     //     // remove all data from database
-    //     $this->cleanDatabase();
+    //     static::cleanDatabase();
 
     //     // call the list users API endpoint
     //     $response = static::createClient()->request('POST', '/api/users', [
@@ -1867,7 +1869,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithTooLongStringAsEmailFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
             $this->_testConstraintViolationForAttributeValue(
@@ -1891,7 +1893,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithInvalidEmailFieldValue(string $email): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -1909,7 +1911,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithInvalidHtml5EmailFieldValue(string $email): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -1927,7 +1929,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithByWhitespacesWrappedValidEmailFieldValue(string $email): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -1945,7 +1947,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithValidEmailFieldValue(string $email): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run the user creation test body
         $this->_testSuccessfullCreationOfUser(array_merge(
@@ -1963,7 +1965,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithValidHtml5EmailFieldValue(string $email): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run the user creation test body
         $this->_testSuccessfullCreationOfUser(array_merge(
@@ -1987,7 +1989,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithMissingGenderFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         $this->_testConstraintViolationForMissingAttribute(
             attributeName: 'gender'
@@ -1997,7 +1999,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithNullAsGenderFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run type violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -2011,7 +2013,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithEmptyAsGenderFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run type violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -2025,7 +2027,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithWhitespaceAsGenderFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run type violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -2039,7 +2041,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithFalseBoolAsGenderFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run type violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -2053,7 +2055,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithFalseStringAsGenderFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run type violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -2067,7 +2069,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithTrueBoolAsGenderFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run type violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -2081,7 +2083,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithTrueStringAsGenderFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run type violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -2095,7 +2097,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithZeroIntAsGenderFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run type violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -2109,7 +2111,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithZeroIntStringAsGenderFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run type violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -2123,7 +2125,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithPositiveIntAsGenderFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run type violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -2137,7 +2139,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithPositiveIntStringAsGenderFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run type violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -2151,7 +2153,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithNegativeIntAsGenderFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run type violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -2165,7 +2167,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithNegativeIntStringAsGenderFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run type violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -2179,7 +2181,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithZeroDoubleAsGenderFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run type violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -2193,7 +2195,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithZeroDoubleStringAsGenderFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run type violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -2207,7 +2209,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithPositiveDoubleAsGenderFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run type violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -2221,7 +2223,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithPositiveDoubleStringAsGenderFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run type violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -2235,7 +2237,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithNegativeDoubleAsGenderFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run type violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -2249,7 +2251,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithNegativeDoubleStringAsGenderFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run type violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -2263,7 +2265,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithArrayAsGenderFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run type violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -2277,7 +2279,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithObjectAsGenderFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run type violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -2294,7 +2296,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithCaseSensitivityMalformedGenderFieldValue(string $invalidGenderValue): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run type violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -2318,7 +2320,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithMissingRolesFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         $this->_testConstraintViolationForMissingAttribute(
             attributeName:        'roles',
@@ -2329,7 +2331,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithNullAsRolesFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run type violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -2342,7 +2344,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithEmptyAsRolesFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run type violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -2355,7 +2357,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithWhitespaceAsRolesFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run type violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -2368,7 +2370,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithFalseBoolAsRolesFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run type violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -2381,7 +2383,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithFalseStringAsRolesFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run type violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -2394,7 +2396,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithTrueBoolAsRolesFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run type violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -2407,7 +2409,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithTrueStringAsRolesFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run type violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -2420,7 +2422,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithZeroIntAsRolesFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run type violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -2433,7 +2435,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithZeroIntStringAsRolesFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run type violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -2446,7 +2448,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithPositiveIntAsRolesFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run type violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -2459,7 +2461,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithPositiveIntStringAsRolesFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run type violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -2472,7 +2474,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithNegativeIntAsRolesFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run type violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -2485,7 +2487,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithNegativeIntStringAsRolesFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run type violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -2498,7 +2500,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithZeroDoubleAsRolesFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run type violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -2511,7 +2513,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithZeroDoubleStringAsRolesFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run type violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -2524,7 +2526,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithPositiveDoubleAsRolesFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run type violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -2537,7 +2539,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithPositiveDoubleStringAsRolesFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run type violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -2550,7 +2552,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithNegativeDoubleAsRolesFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run type violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -2563,7 +2565,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithNegativeDoubleStringAsRolesFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run type violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -2576,7 +2578,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithArrayAsRolesFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run type violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -2591,7 +2593,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithObjectAsRolesFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run type violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -2605,7 +2607,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithDuplicatedRolesFieldValues(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run type violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -2627,7 +2629,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithCaseSensitivityMalformedRolesFieldValues(string $invalidRoleValue): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run type violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -2651,7 +2653,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithMissingNoteFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // get rid of 'note' attribute from
         // default user data if it exists there
@@ -2677,7 +2679,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithNullAsNoteFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
     
         // run the create user procedure
         // with the 'note' attribute set
@@ -2706,7 +2708,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithEmptyAsNoteFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
     
         // run the create user procedure
         // with the 'note' attribute set
@@ -2723,7 +2725,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithWhitespaceAsNoteFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run the create user procedure
         // with the 'note' attribute set
@@ -2756,7 +2758,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithFalseBoolAsNoteFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -2769,7 +2771,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithFalseStringAsNoteFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run the create user procedure
         // with the 'note' attribute set
@@ -2787,7 +2789,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithTrueBoolAsNoteFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -2800,7 +2802,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithTrueStringAsNoteFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run the create user procedure
         // with the 'note' attribute set
@@ -2818,7 +2820,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithZeroIntAsNoteFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -2831,7 +2833,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithZeroIntStringAsNoteFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run the create user procedure
         // with the 'note' attribute set
@@ -2848,7 +2850,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithPositiveIntAsNoteFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -2861,7 +2863,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithPositiveIntStringAsNoteFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run the create user procedure
         // with the 'note' attribute set
@@ -2878,7 +2880,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithNegativeIntAsNoteFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -2891,7 +2893,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithNegativeIntStringAsNoteFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run the create user procedure
         // with the 'note' attribute set
@@ -2908,7 +2910,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithZeroDoubleAsNoteFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -2921,7 +2923,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithZeroDoubleStringAsNoteFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run the create user procedure
         // with the 'note' attribute set
@@ -2938,7 +2940,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithPositiveDoubleAsNoteFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -2951,7 +2953,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithPositiveDoubleStringAsNoteFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run the create user procedure
         // with the 'note' attribute set
@@ -2968,7 +2970,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithNegativeDoubleAsNoteFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -2981,7 +2983,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithNegativeDoubleStringAsNoteFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run the create user procedure
         // with the 'note' attribute set
@@ -2998,7 +3000,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithArrayAsNoteFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -3011,7 +3013,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithObjectAsNoteFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -3024,7 +3026,7 @@ class UserCreateApiTest extends ApiTestCase
     // public function testCreateUserWithBinaryAsNoteFieldValue(): void
     // {
     //     // remove all data from database
-    //     $this->cleanDatabase();
+    //     static::cleanDatabase();
 
     //     // call the list users API endpoint
     //     $response = static::createClient()->request('POST', '/api/users', [
@@ -3062,7 +3064,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithTooLongStringAsNoteFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testConstraintViolationForAttributeValue(
@@ -3077,7 +3079,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithLowercaseOnlyStringAsNoteFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         
         // run the create user procedure
@@ -3095,7 +3097,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithUpperCaseOnlyStringAsNoteFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run the user creation test body
         $this->_testSuccessfullCreationOfUser(array_merge(
@@ -3109,7 +3111,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithValidLatinNoteFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run the user creation test body
         $this->_testSuccessfullCreationOfUser(array_merge(
@@ -3123,7 +3125,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserContainingWithValidCyrilicNoteFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run the user creation test body
         $this->_testSuccessfullCreationOfUser(array_merge(
@@ -3137,7 +3139,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserContainingWithValidArabicNoteFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run the user creation test body
         $this->_testSuccessfullCreationOfUser(array_merge(
@@ -3151,7 +3153,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserContainingWithValidHebrewNoteFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run the user creation test body
         $this->_testSuccessfullCreationOfUser(array_merge(
@@ -3165,7 +3167,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserContainingWithValidHindiNoteFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run the user creation test body
         $this->_testSuccessfullCreationOfUser(array_merge(
@@ -3180,7 +3182,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserContainingWithValidChineseNoteFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run the user creation test body
         $this->_testSuccessfullCreationOfUser(array_merge(
@@ -3204,7 +3206,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithMissingActiveFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         $this->_testConstraintViolationForMissingAttribute(
             attributeName:        'active',
@@ -3215,7 +3217,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithNullAsActiveFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -3228,7 +3230,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithEmptyAsActiveFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -3241,7 +3243,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithWhitespaceAsActiveFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -3254,7 +3256,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithFalseBoolAsActiveFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run the user creation test body
         $this->_testSuccessfullCreationOfUser(array_merge(
@@ -3268,7 +3270,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithFalseStringAsActiveFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -3281,7 +3283,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithTrueBoolAsActiveFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run the user creation test body
         $this->_testSuccessfullCreationOfUser(array_merge(
@@ -3295,7 +3297,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithTrueStringAsActiveFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -3308,7 +3310,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithZeroIntAsActiveFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -3321,7 +3323,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithZeroIntStringAsActiveFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -3334,7 +3336,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithPositiveIntAsActiveFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -3347,7 +3349,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithPositiveIntStringAsActiveFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -3360,7 +3362,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithNegativeIntAsActiveFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -3373,7 +3375,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithNegativeIntStringAsActiveFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -3386,7 +3388,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithZeroDoubleAsActiveFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -3399,7 +3401,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithZeroDoubleStringAsActiveFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -3412,7 +3414,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithPositiveDoubleAsActiveFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -3425,7 +3427,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithPositiveDoubleStringAsActiveFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -3438,7 +3440,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithNegativeDoubleAsActiveFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -3451,7 +3453,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithNegativeDoubleStringAsActiveFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -3464,7 +3466,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithArrayAsActiveFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -3477,7 +3479,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateUserWithObjectAsActiveFieldValue(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run constraint violation test body
         $this->_testTypeViolationForAttributeValue(
@@ -3500,7 +3502,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateNewUserSuccess(): void
     {
         // remove all data from database
-        $this->cleanDatabase();
+        static::cleanDatabase();
 
         // run the user creation test body
         $this->_testSuccessfullCreationOfUser(self::DEFAULT_USER_DATA);
@@ -3509,7 +3511,7 @@ class UserCreateApiTest extends ApiTestCase
     public function testCreateExistingUserSuccess(): void
     {
         // remove all data from database
-        $this->loadFixtures([
+        static::loadFixtures([
             UserFixtures::class
         ]);
 
@@ -3756,32 +3758,4 @@ class UserCreateApiTest extends ApiTestCase
     {
         parent::tearDown();
     }
-
-    /**
-     * Load set of basic testing fixtures
-     * usefull mostly for listing, filtering,
-     * sorting and pagination testing purposes.
-     * 
-     * @param string[] $fixtureClassNames
-     * @return void
-     */
-    protected function loadFixtures(array $fixturesClassNames): void
-    {
-        // load set of basic fixtures
-        $databaseTool = static::getContainer()->get(DatabaseToolCollection::class)->get();
-        $databaseTool->loadFixtures($fixturesClassNames);
-    }
-
-    /**
-     * Clean the testing database
-     * 
-     * @return void
-     */
-    protected function cleanDatabase(): void
-    {
-        // load set of basic fixtures
-        $databaseTool = static::getContainer()->get(DatabaseToolCollection::class)->get();
-        $databaseTool->loadFixtures([]);
-    }
-
 }

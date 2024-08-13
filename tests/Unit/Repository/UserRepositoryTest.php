@@ -3,20 +3,20 @@
 // tests/Unit/Repository/UserRepositoryTest.php
 namespace App\Tests\Unit\Repository;
 
-use App\Entity\Gender;
-use App\Entity\Role;
 use App\Entity\User;
 use App\Tests\DatabasePrimer;
-use Doctrine\ORM\EntityManager;
+use App\Tests\FixturesLoadingTrait;
 use App\Tests\Data\Fixtures\UserFixtures;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
+use Doctrine\ORM\EntityManager;
 
 /**
  * Tests of basic user repository functionality
  */
 class UserRepositoryTest extends KernelTestCase
 {
+    use FixturesLoadingTrait;
+
     /**
      * ORM entity manager
      * @var \Doctrine\ORM\EntityManager
@@ -41,7 +41,7 @@ class UserRepositoryTest extends KernelTestCase
     public function testSearchAllRecordsOverEmptyDataset(): void
     {
         // make sure there are no user records
-        $this->cleanDatabase();
+        self::cleanDatabase();
 
         // and try to fetch it
         $users = $this->entityManager
@@ -54,7 +54,7 @@ class UserRepositoryTest extends KernelTestCase
     public function testSearchAllRecordsOverPopulatedDataset(): void
     {
         // load basic users set fixture
-        $this->loadFixtures([
+        self::loadFixtures([
             UserFixtures::class,
         ]);
 
@@ -74,32 +74,5 @@ class UserRepositoryTest extends KernelTestCase
         // doing this is recommended to avoid memory leaks
         $this->entityManager->close();
         $this->entityManager = null;
-    }
-
-    /**
-     * Load set of basic testing fixtures
-     * usefull mostly for listing, filtering,
-     * sorting and pagination testing purposes.
-     * 
-     * @param string[] $fixtureClassNames
-     * @return void
-     */
-    protected function loadFixtures(array $fixturesClassNames): void
-    {
-        // load set of basic fixtures
-        $databaseTool = static::getContainer()->get(DatabaseToolCollection::class)->get();
-        $databaseTool->loadFixtures($fixturesClassNames);
-    }
-
-    /**
-     * Clean the testing database
-     * 
-     * @return void
-     */
-    protected function cleanDatabase(): void
-    {
-        // load set of basic fixtures
-        $databaseTool = static::getContainer()->get(DatabaseToolCollection::class)->get();
-        $databaseTool->loadFixtures([]);
     }
 }
