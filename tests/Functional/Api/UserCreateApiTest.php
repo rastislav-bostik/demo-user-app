@@ -3607,6 +3607,13 @@ class UserCreateApiTest extends ApiTestCase
             '/api/users/' . $response->toArray(throw: false)['id']
         );
 
+        // check that location header is set in the response
+        // and that it points to the newly created resource
+        static::assertResponseHasHeader('location');
+        static::assertResponseHeaderSame('location', '/api/users/' . $response->toArray(throw: false)['id']);
+
+        // execute additional external assertions
+        // delivered as input parameter of this method
         if(!is_null($additionalAssertsCallback)) {
             // invoke additional assertions
             // provided by calling test method
