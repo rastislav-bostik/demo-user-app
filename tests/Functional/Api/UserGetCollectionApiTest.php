@@ -8,9 +8,9 @@ use App\Tests\Data\Fixtures\UserFixtures;
 use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
 
 /**
- * Tests of user API backend functionality
+ * Tests of get user collection backend API endopoint
  */
-class UserGetListApiTest extends ApiTestCase
+class UserGetCollectionApiTest extends ApiTestCase
 {
     use FixturesLoadingTrait;
     
