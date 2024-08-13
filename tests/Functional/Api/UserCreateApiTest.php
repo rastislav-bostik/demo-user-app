@@ -2,6 +2,7 @@
 
 namespace App\Tests\Functional\Api;
 
+use App\Entity\User;
 use App\Entity\Role;
 use App\Entity\Gender;
 use App\Tests\DatabasePrimer;
@@ -3619,6 +3620,15 @@ class UserCreateApiTest extends ApiTestCase
             // provided by calling test method
             $additionalAssertsCallback($response);   
         }
+
+        // check that entity has been created in database 
+        // successfully
+        static::assertNotNull(
+            static::getContainer()
+                ->get('doctrine')
+                ->getRepository(User::class)
+                ->findOneBy(['email' => $userData['email']])
+        );
     }
 
     /**
