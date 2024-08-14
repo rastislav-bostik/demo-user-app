@@ -12,6 +12,11 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
@@ -23,7 +28,14 @@ use Symfony\Polyfill\Mbstring\Mbstring;
  */
 #[ApiResource(
     paginationItemsPerPage: 5,
-    processor: UserProcessor::class
+    processor: UserProcessor::class,
+    operations: [
+        new Get(),
+        new GetCollection(),
+        new Post(),
+        new Patch(),
+        new Delete(),
+    ]
 )]
 #[ApiFilter(OrderFilter::class)]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
