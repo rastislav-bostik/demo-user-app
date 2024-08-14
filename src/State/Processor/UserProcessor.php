@@ -49,20 +49,7 @@ final class UserProcessor implements ProcessorInterface
 
         // make sure that ID of the resource CAN NOT be changed
         // through the update calls via PUT or PATCH requests
-        if ($operation instanceof Put || $operation instanceof Patch) {
-            // possibly modified user entity ID from PATCH/PUT JSON body
-            $newUserId = (string) $data->getId();
-            // original user ID identifying of user resource
-            // passed over via called API URI
-            // (e.g. /api/users/<UUID-of-modified-user>)
-            $oldUserId = (string) $uriVariables['id'];
-
-            // raise BAD REQUEST exception if attempt to modify the user ID
-            // via the PUT/PATCH methods JSON body content has been detected
-            if($oldUserId !== $newUserId) {
-                throw new BadRequestHttpException('Modification of resource identifier value refused.');
-            }
-        }
+        $this->_preventUserIdModificationOnUpdate($data, $operation, $uriVariables);
 
         // perform multibyte trim above all string-typed
         // user entity attributes values
@@ -85,6 +72,35 @@ final class UserProcessor implements ProcessorInterface
 
     
         return $result;
+    }
+
+    /**
+     * Method preventing modification of user ID
+     * during the PATCH/PUT API update requests.
+     * 
+     * @param \App\Entity\User $user
+     * @param \ApiPlatform\Metadata\Operation $operation
+     * @param array $uriVariables
+     * @return void
+     * @throws BadRequestHttpException
+     */
+    private function _preventUserIdModificationOnUpdate(User $user, Operation $operation, array $uriVariables = []): void {
+        // make sure that ID of the resource CAN NOT be changed
+        // through the update calls via PUT or PATCH requests
+        if ($operation instanceof Put || $operation instanceof Patch) {
+            // original user ID identifying of user resource
+            // passed over via called API URI
+            // (e.g. /api/users/<UUID-of-modified-user>)
+            $userIdFromUri       = (string) $uriVariables['id'];
+            // possibly modified user entity ID from PATCH/PUT JSON body
+            $userIdFromJsonBody  = (string) $user->getId();
+
+            // raise BAD REQUEST exception if attempt to modify the user ID
+            // via the PUT/PATCH methods JSON body content has been detected
+            if($userIdFromUri !== $userIdFromJsonBody) {
+                throw new BadRequestHttpException('Modification of resource identifier value refused.');
+            }
+        }
     }
 
     /**
