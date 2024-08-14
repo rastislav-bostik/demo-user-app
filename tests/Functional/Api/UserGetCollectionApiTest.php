@@ -343,7 +343,7 @@ class UserGetCollectionApiTest extends ApiTestCase
         static::assertArrayNotHasKey('hydra:view', $response->toArray(throw: false)['hydra:member']);
     }
 
-    public function testAsNegativeIntMalformedPageSizeAttributeOfPaginationSetup(): void
+    public function testMalformedPaginationSetupWithNegativeIntPageSizeAttributeOf(): void
     {
         // load fixture cotaining tiny basic set of 5 users
         static::loadFixtures([
@@ -370,7 +370,7 @@ class UserGetCollectionApiTest extends ApiTestCase
         static::assertArrayHasKey('hydra:description', $response->toArray(throw: false));
     }
 
-    public function testAsNegativeIntMalformedPageNumberAttributeOfPaginationSetup(): void
+    public function testMalformedPaginationWithNegativeIntPageNumberAttribute(): void
     {
         // load fixture cotaining tiny basic set of 5 users
         static::loadFixtures([
@@ -397,7 +397,7 @@ class UserGetCollectionApiTest extends ApiTestCase
         static::assertArrayHasKey('hydra:description', $response->toArray(throw: false));
     }
 
-    public function testAsZeroIntMalformedPageSizeAttributeOfPaginationSetup(): void
+    public function testMalformedPaginationWithZeroIntMalformedPageSizeAttribute(): void
     {
         // load fixture cotaining tiny basic set of 5 users
         static::loadFixtures([
@@ -424,7 +424,7 @@ class UserGetCollectionApiTest extends ApiTestCase
         static::assertArrayHasKey('hydra:description', $response->toArray(throw: false));
     }
 
-    public function testAsZeroIntMalformedPageNumberAttributeOfPaginationSetup(): void
+    public function testMalformedPaginationWithZeroIntMalformedPageNumberAttribute(): void
     {
         // load fixture cotaining tiny basic set of 5 users
         static::loadFixtures([
@@ -452,7 +452,7 @@ class UserGetCollectionApiTest extends ApiTestCase
     }
 
     
-    public function testAsFloatMalformedPageSizeAttributeOfPaginationSetup(): void
+    public function testMalformedPaginationWithFloatMalformedPageSizeAttribute(): void
     {
         // load fixture cotaining tiny basic set of 5 users
         static::loadFixtures([
@@ -479,7 +479,7 @@ class UserGetCollectionApiTest extends ApiTestCase
         static::assertArrayHasKey('hydra:description', $response->toArray(throw: false));
     }
 
-    public function testAsFloatMalformedPageNumberAttributeOfPaginationSetup(): void
+    public function testMalformedPaginationWithFloatMalformedPageNumberAttribute(): void
     {
         // load fixture cotaining tiny basic set of 5 users
         static::loadFixtures([
@@ -506,7 +506,7 @@ class UserGetCollectionApiTest extends ApiTestCase
         static::assertArrayHasKey('hydra:description', $response->toArray(throw: false));
     }
 
-    public function testAsStringMalformedPageSizeAttributeOfPaginationSetup(): void
+    public function testMalformedPaginationWithStringMalformedPageSizeAttribute(): void
     {
         // load fixture cotaining tiny basic set of 5 users
         static::loadFixtures([
@@ -533,7 +533,7 @@ class UserGetCollectionApiTest extends ApiTestCase
         static::assertArrayHasKey('hydra:description', $response->toArray(throw: false));
     }
 
-    public function testAsStringMalformedPageNumberAttributeOfPaginationSetup(): void
+    public function testMalformedPaginationWithStringMalformedPageNumberAttribute(): void
     {
         // load fixture cotaining tiny basic set of 5 users
         static::loadFixtures([
