@@ -18,7 +18,10 @@ class UserCreateApiTest extends ApiTestCase
 {
     use FixturesLoadingTrait;
 
-    /** @var array Default craete user data set */
+    /**
+     * Default craete user data set 
+     * @var array  
+     */
     protected const DEFAULT_USER_DATA = [
         'name'    => 'Test',
         'surname' => 'User X',
@@ -137,7 +140,7 @@ class UserCreateApiTest extends ApiTestCase
             'json'    => [],
             'headers' => [
                 'Content-Type' => 'application/json',
-                'Accept' => 'application/ld+json'
+                'Accept'       => 'application/ld+json'
             ]
         ]);
 
@@ -3525,7 +3528,7 @@ class UserCreateApiTest extends ApiTestCase
         $response = static::createClient()->request('POST', '/api/users', [
             'headers' => [
                 'Content-Type' => 'application/json',
-                'Accept' => 'application/ld+json'
+                'Accept'       => 'application/ld+json'
             ],
             'json'    => array_merge(
                 self::DEFAULT_USER_DATA,
@@ -3574,7 +3577,7 @@ class UserCreateApiTest extends ApiTestCase
             'json'    => $userData,
             'headers' => [
                 'Content-Type' => 'application/json',
-                'Accept' => 'application/ld+json'
+                'Accept'       => 'application/ld+json'
             ]
         ]);
 
@@ -3651,7 +3654,7 @@ class UserCreateApiTest extends ApiTestCase
         $response = static::createClient()->request('POST', '/api/users', [
             'headers' => [
                 'Content-Type' => 'application/json',
-                'Accept' => 'application/ld+json'
+                'Accept'       => 'application/ld+json'
             ],
             'json'    => array_merge(
                 self::DEFAULT_USER_DATA,
@@ -3703,7 +3706,7 @@ class UserCreateApiTest extends ApiTestCase
         $response = static::createClient()->request('POST', '/api/users', [
             'headers' => [
                 'Content-Type' => 'application/json',
-                'Accept' => 'application/ld+json'
+                'Accept'       => 'application/ld+json'
             ],
             'json'    => array_merge(
                 self::DEFAULT_USER_DATA,
@@ -3747,7 +3750,7 @@ class UserCreateApiTest extends ApiTestCase
             'json'    => $testUserData,
             'headers' => [
                 'Content-Type' => 'application/json',
-                'Accept' => 'application/ld+json'
+                'Accept'       => 'application/ld+json'
             ]
         ]);
 
