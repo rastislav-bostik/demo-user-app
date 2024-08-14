@@ -234,11 +234,164 @@ class UserPatchApiTest extends ApiTestCase
             'detail' => 'Modification of resource identifier value refused.'
         ]);
     }
-
+    
     // TODO - test updating of non-existing attributes
 
-    // TODO - test passing invalid values for each attribute
+    /**
+     * @dataProvider \App\Tests\Data\Providers\UserDataProvider::getInvalidNameValues()
+     */
+    public function testInvalidNameUpdateOnExistingUser(mixed $value, int $expectedResponseCode): void
+    {
+        // remove all data from database
+        static::loadFixtures([
+            UserFixtures::class,
+        ]);
 
+        // getting user to be updated directly from used fixtures set
+        $updatedUser = UserFixtures::get()[UserFixtures::EMAIL_USER_A];
+
+        $this->_testUpdateUserResponse(
+            user: $updatedUser, 
+            updateData: [
+                'name'=> $value,
+            ],
+            expectedResponseCode: $expectedResponseCode,
+        );
+    }
+
+    
+    /**
+     * @dataProvider \App\Tests\Data\Providers\UserDataProvider::getInvalidSurnameValues()
+     */
+    public function testInvalidSurnameUpdateOnExistingUser(mixed $value, int $expectedResponseCode): void
+    {
+        // remove all data from database
+        static::loadFixtures([
+            UserFixtures::class,
+        ]);
+
+        // getting user to be updated directly from used fixtures set
+        $updatedUser = UserFixtures::get()[UserFixtures::EMAIL_USER_A];
+
+        $this->_testUpdateUserResponse(
+            user: $updatedUser, 
+            updateData: [
+                'name'=> $value,
+            ],
+            expectedResponseCode: $expectedResponseCode,
+        );
+    }
+
+    /**
+     * @dataProvider \App\Tests\Data\Providers\UserDataProvider::getInvalidEmailValues()
+     */
+    public function testInvalidEmailUpdateOnExistingUser(mixed $value, int $expectedResponseCode): void
+    {
+        // remove all data from database
+        static::loadFixtures([
+            UserFixtures::class,
+        ]);
+
+        // getting user to be updated directly from used fixtures set
+        $updatedUser = UserFixtures::get()[UserFixtures::EMAIL_USER_A];
+
+        $this->_testUpdateUserResponse(
+            user: $updatedUser, 
+            updateData: [
+                'email'=> $value,
+            ],
+            expectedResponseCode: $expectedResponseCode,
+        );
+    }
+
+    /**
+     * @dataProvider \App\Tests\Data\Providers\UserDataProvider::getInvalidGenderValues()
+     */
+    public function testInvalidGenderUpdateOnExistingUser(mixed $value, int $expectedResponseCode): void
+    {
+        // remove all data from database
+        static::loadFixtures([
+            UserFixtures::class,
+        ]);
+
+        // getting user to be updated directly from used fixtures set
+        $updatedUser = UserFixtures::get()[UserFixtures::EMAIL_USER_A];
+
+        $this->_testUpdateUserResponse(
+            user: $updatedUser, 
+            updateData: [
+                'gender'=> $value,
+            ],
+            expectedResponseCode: $expectedResponseCode,
+        );
+    }
+
+    /**
+     * @dataProvider \App\Tests\Data\Providers\UserDataProvider::getInvalidRolesValues()
+     */
+    public function testInvalidRolesUpdateOnExistingUser(mixed $value, int $expectedResponseCode): void
+    {
+        // remove all data from database
+        static::loadFixtures([
+            UserFixtures::class,
+        ]);
+
+        // getting user to be updated directly from used fixtures set
+        $updatedUser = UserFixtures::get()[UserFixtures::EMAIL_USER_A];
+
+        $this->_testUpdateUserResponse(
+            user: $updatedUser, 
+            updateData: [
+                'roles'=> $value,
+            ],
+            expectedResponseCode: $expectedResponseCode,
+        );
+    }
+
+    /**
+     * @dataProvider \App\Tests\Data\Providers\UserDataProvider::getInvalidNoteValues()
+     */
+    public function testInvalidNoteUpdateOnExistingUser(mixed $value, int $expectedResponseCode): void
+    {
+        // remove all data from database
+        static::loadFixtures([
+            UserFixtures::class,
+        ]);
+
+        // getting user to be updated directly from used fixtures set
+        $updatedUser = UserFixtures::get()[UserFixtures::EMAIL_USER_A];
+
+        $this->_testUpdateUserResponse(
+            user: $updatedUser, 
+            updateData: [
+                'note'=> $value,
+            ],
+            expectedResponseCode: $expectedResponseCode,
+        );
+    }
+
+    /**
+     * @dataProvider \App\Tests\Data\Providers\UserDataProvider::getInvalidActiveValues()
+     */
+    public function testInvalidActiveUpdateOnExistingUser(mixed $value, int $expectedResponseCode): void
+    {
+        // remove all data from database
+        static::loadFixtures([
+            UserFixtures::class,
+        ]);
+
+        // getting user to be updated directly from used fixtures set
+        $updatedUser = UserFixtures::get()[UserFixtures::EMAIL_USER_A];
+
+        $this->_testUpdateUserResponse(
+            user: $updatedUser, 
+            updateData: [
+                'active'=> $value,
+            ],
+            expectedResponseCode: $expectedResponseCode,
+        );
+    }
+            
     // TODO - test same value partial upadate setting new for each attribute
 
     // TODO - test different than current attribute value partial upadate setting new for each attribute
@@ -466,6 +619,87 @@ class UserPatchApiTest extends ApiTestCase
     }
  
     /**
+     * Simplified update user test body
+     * designed to be used with PHPUnit
+     * data providers easily
+     * 
+     * @param \App\Entity\User $user
+     * @param array $updateData
+     * @param int $expectedResponseCode
+     * @return void
+     */
+    protected function _testUpdateUserResponse(User $user, array $updateData, int $expectedResponseCode) {
+        // get IRI address for tested resource
+        $iri = self::findIriBy(User::class, ['email' => $user->getEmail()]);
+
+        // call the PATCH partial user update API endpoint
+        $response = static::createClient()->request('PATCH', $iri, [
+            'headers' => [
+                'Content-Type' => 'application/merge-patch+json',
+                'Accept'       => 'application/ld+json',
+            ],
+            'json'    => $updateData,
+        ]);
+
+        // calculate expected content type based on expected response code
+        $expectedContentType = $expectedResponseCode >= 200 && $expectedResponseCode <= 299
+            ? 'application/ld+json'
+            : 'application/problem+json';
+        
+        static::assertResponseStatusCodeSame($expectedResponseCode);
+        static::assertResponseHeaderSame(
+            'content-type', $expectedContentType . '; charset=utf-8'
+        );
+
+        // simplified asserts for various typical response codes
+        switch($expectedResponseCode) {
+            case Response::HTTP_BAD_REQUEST:
+                
+                static::assertStringContainsString('/api/errors', $response->toArray(throw: false)['@id']);
+                static::assertJsonContains([
+                    '@type'  => 'hydra:Error',
+                    'status' => 400,
+                    'title'  => 'An error occurred',
+                ]);                
+                
+                break;
+            case Response::HTTP_NOT_FOUND:
+                
+                break;
+            case Response::HTTP_UNPROCESSABLE_ENTITY:
+
+                static::assertStringContainsString('/api/validation_errors', $response->toArray(throw: false)['@id']);
+                static::assertJsonContains([
+                    '@type'      => 'ConstraintViolationList',
+                    'status'     => Response::HTTP_UNPROCESSABLE_ENTITY,
+                ]);
+                // check overall amount of expected constraint violations
+                static::assertArrayHasKey('violations', $response->toArray(throw: false));
+                
+                break;
+            case Response::HTTP_OK:
+                static::assertStringContainsString('/api/users', $response->toArray(throw: false)['@id']);
+                static::assertJsonContains(array_merge(
+                    [
+                        '@context' => '/api/contexts/User', 
+                        '@type'    => 'User'
+                    ],
+                ));
+        
+                // check that user ID is valid UUID
+                static::assertTrue(Uuid::isValid($response->toArray(throw: false)['id']));
+                // check that JSON-LD @id is pointing
+                // to the just created resource
+                static::assertSame(
+                    $response->toArray(throw: false)['@id'],
+                    '/api/users/' . $response->toArray(throw: false)['id']
+                );
+
+                break;
+        }
+    }
+
+    /**
      * Method turning backend enums within provided array data
      * into strings
      * 
@@ -476,5 +710,20 @@ class UserPatchApiTest extends ApiTestCase
     {
         return json_decode(json_encode($rawData),true);
     }
+
+    // private function _testGenericUserUpdateUseCase(
+    //     User    $user, 
+    //     array   $updateData, 
+    //     ?string $expectedInputType = null,
+    //     // ----------------- //
+    //     ?array  $expectedResponseData = null,
+    //     int     $expectedResponseStatusCode,
+    //     string  $expectedResponseContentType,
+    //     ?string $expectedResponseErrorMessage = null,
+    //     ?array  $expectedResponseContraintViolations = null
+    // )
+    // {
+    //     // TODO
+    // }
 
 }
