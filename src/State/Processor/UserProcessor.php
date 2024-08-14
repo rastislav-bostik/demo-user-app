@@ -3,10 +3,13 @@
 namespace App\State\Processor;
 
 use App\Entity\User;
-use ApiPlatform\Metadata\DeleteOperationInterface;
+use ApiPlatform\Metadata\Put;
+use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Operation;
+use ApiPlatform\Metadata\DeleteOperationInterface;
 use ApiPlatform\State\ProcessorInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Polyfill\Mbstring\Mbstring;
 
 /**
@@ -43,6 +46,23 @@ final class UserProcessor implements ProcessorInterface
     
         // ================================================= //
         // ================== PRE-PERSIST ================== //
+
+        // make sure that ID of the resource CAN NOT be changed
+        // through the update calls via PUT or PATCH requests
+        if ($operation instanceof Put || $operation instanceof Patch) {
+            // possibly modified user entity ID from PATCH/PUT JSON body
+            $newUserId = (string) $data->getId();
+            // original user ID identifying of user resource
+            // passed over via called API URI
+            // (e.g. /api/users/<UUID-of-modified-user>)
+            $oldUserId = (string) $uriVariables['id'];
+
+            // raise BAD REQUEST exception if attempt to modify the user ID
+            // via the PUT/PATCH methods JSON body content has been detected
+            if($oldUserId !== $newUserId) {
+                throw new BadRequestHttpException('Modification of resource identifier value refused.');
+            }
+        }
 
         // perform multibyte trim above all string-typed
         // user entity attributes values
