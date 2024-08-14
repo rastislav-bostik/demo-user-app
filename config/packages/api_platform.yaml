@@ -5,10 +5,10 @@ api_platform:
 
     formats:
         jsonld:   ['application/ld+json']
-        jsonhal:  ['application/hal+json']
-        jsonapi:  ['application/vnd.api+json']
         json:     ['application/json']
-        xml:      ['application/xml', 'text/xml']
+#        jsonhal:  ['application/hal+json']
+        jsonapi:  ['application/vnd.api+json']
+#        xml:      ['application/xml', 'text/xml']
 
     docs_formats:
         jsonld:      ['application/ld+json']
@@ -26,7 +26,7 @@ api_platform:
         # limiting maximal size of items per page globally
         pagination_maximum_items_per_page: 50
         # limiting default items count per page
-        pagination_items_per_page: 30
+        pagination_items_per_page: 10
         # pagination can NOT be disabled by client
         pagination_client_enabled: false
         # amount of record per page CAN be changed by client
