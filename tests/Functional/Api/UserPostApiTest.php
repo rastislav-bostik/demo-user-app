@@ -14,7 +14,7 @@ use Symfony\Component\Uid\Uuid;
 /**
  * Tests of create user backend API functionality
  */
-class UserCreateApiTest extends ApiTestCase
+class UserPostApiTest extends ApiTestCase
 {
     use FixturesLoadingTrait;
 
