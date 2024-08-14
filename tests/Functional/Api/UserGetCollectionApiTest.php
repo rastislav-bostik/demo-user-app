@@ -53,7 +53,7 @@ class UserGetCollectionApiTest extends ApiTestCase
         static::assertCount(0, $response->toArray(throw: false)['hydra:member']);
     }
 
-    public function testGetPopulatedList(): void
+    public function testGetList(): void
     {
         // load fixture cotaining tiny basic set of 5 users
         static::loadFixtures([
@@ -83,7 +83,7 @@ class UserGetCollectionApiTest extends ApiTestCase
         static::assertCount(5, $response->toArray(throw: false)['hydra:member']);
     }
 
-    public function testGetPopulatedPaginatedList(): void
+    public function testGetPaginatedList(): void
     {
         // load fixture cotaining tiny basic set of 5 users
         static::loadFixtures([
@@ -136,7 +136,7 @@ class UserGetCollectionApiTest extends ApiTestCase
         static::assertCount(1, $response->toArray(throw: false)['hydra:member']);
     }
 
-    public function testGetFirstPageOfPopulatedPaginatedList(): void
+    public function testGetFirstPageOfPaginatedList(): void
     {
         // load fixture cotaining tiny basic set of 5 users
         static::loadFixtures([
@@ -175,7 +175,7 @@ class UserGetCollectionApiTest extends ApiTestCase
         static::assertCount(2, $response->toArray(throw: false)['hydra:member']);
     }
 
-    public function testGetLastPageOfPopulatedPaginatedList(): void
+    public function testGetLastPageOfPaginatedList(): void
     {
         // load fixture cotaining tiny basic set of 5 users
         static::loadFixtures([
@@ -213,7 +213,7 @@ class UserGetCollectionApiTest extends ApiTestCase
         static::assertCount(1, $response->toArray(throw: false)['hydra:member']);
     }
 
-    public function testGetOutOfRangePageOfPopulatedPaginatedList(): void
+    public function testGetOutOfRangePageOfPaginatedList(): void
     {
         // load fixture cotaining tiny basic set of 5 users
         static::loadFixtures([
@@ -560,7 +560,7 @@ class UserGetCollectionApiTest extends ApiTestCase
         static::assertArrayHasKey('hydra:description', $response->toArray(throw: false));
     }
 
-    public function testGetPopulatedPaginatedListOrderedBySurnameAscending(): void
+    public function testGetPaginatedListOrderedBySurnameAscending(): void
     {
         // load fixture cotaining tiny basic set of 5 users
         static::loadFixtures([
@@ -625,7 +625,7 @@ class UserGetCollectionApiTest extends ApiTestCase
         static::assertCount(2, $response->toArray(throw: false)['hydra:member']);
     }
 
-    public function testGetPopulatedPaginatedListOrderedBySurnameDescending(): void
+    public function testGetPaginatedListOrderedBySurnameDescending(): void
     {
         // load fixture cotaining tiny basic set of 5 users
         static::loadFixtures([
@@ -694,7 +694,7 @@ class UserGetCollectionApiTest extends ApiTestCase
         static::assertCount(2, $response->toArray(throw: false)['hydra:member']);
     }
 
-    public function testGetPopulatedListFilteredByGenderOrderedBySurnameAscending(): void 
+    public function testGetListFilteredByGenderOrderedBySurnameAscending(): void 
     {
         // load fixture cotaining tiny basic set of 5 users
         static::loadFixtures([
@@ -754,7 +754,7 @@ class UserGetCollectionApiTest extends ApiTestCase
         static::assertCount(2, $response->toArray(throw: false)['hydra:member']);
     }
 
-    public function testGetPopulatedPaginatedListFilteredByGenderOrderedBySurnameAscending(): void 
+    public function testGetPaginatedListFilteredByGenderOrderedBySurnameAscending(): void 
     {
         // load fixture cotaining tiny basic set of 5 users
         static::loadFixtures([
@@ -808,7 +808,7 @@ class UserGetCollectionApiTest extends ApiTestCase
         static::assertCount(1, $response->toArray(throw: false)['hydra:member']);
     }
     
-    public function testGetPopulatedPaginatedListFilteredByGenderOrderedBySurnameDescending(): void 
+    public function testGetPaginatedListFilteredByGenderOrderedBySurnameDescending(): void 
     {
         // load fixture cotaining tiny basic set of 5 users
         static::loadFixtures([
