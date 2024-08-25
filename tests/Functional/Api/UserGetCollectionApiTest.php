@@ -694,6 +694,81 @@ class UserGetCollectionApiTest extends ApiTestCase
         static::assertCount(2, $response->toArray(throw: false)['hydra:member']);
     }
 
+    public function testGetListFilteredByRoleOrderedByEmailAscending(): void 
+    {
+        // load fixture cotaining tiny basic set of 5 users
+        static::loadFixtures([
+            UserFixtures::class
+        ]);
+
+        // call the list users API endpoint
+        $response = static::createClient()->request('GET', '/api/users', [
+            'headers' => [
+                'Accept' => 'application/ld+json'
+            ],
+            'query' => [
+                'roles'           => 'WORKER',
+                'order-by[email]' => 'asc'
+            ],
+        ]);
+
+        static::assertResponseStatusCodeSame(200);
+        static::assertResponseHeaderSame(
+            'content-type', 'application/ld+json; charset=utf-8'
+        );
+        static::assertJsonContains([
+            '@context'         => '/api/contexts/User',
+            '@id'              => '/api/users',
+            '@type'            => 'hydra:Collection',
+            'hydra:totalItems' => 3,
+            'hydra:member'     => [
+                [
+                    '@type'   => 'User',
+                    'name'    => 'Test',
+                    'surname' => 'User A',
+                    'email'   => 'test.user.A@foo.local',
+                    'gender'  => 'FEMALE',
+                    'roles'   => [
+                        'ADMIN',
+                        'WORKER'
+                    ],
+                    'active'  => true
+                ],
+                [
+                    '@type'   => 'User',
+                    'name'    => 'Test',
+                    'surname' => 'User C',
+                    'email'   => 'test.user.C@foo.local',
+                    'gender'  => 'FEMALE',
+                    'roles'   => [
+                        'USER',
+                        'WORKER'
+                    ],
+                    'active'  => true
+                ],
+                [
+                    '@type'   => 'User',
+                    'name'    => 'Test',
+                    'surname' => 'User E',
+                    'email'   => 'test.user.E@foo.local',
+                    'gender'  => 'FEMALE',
+                    'roles'   => [
+                        'USER',
+                        'ADMIN',
+                        'WORKER'
+                    ],
+                    'active'  => false
+                ],
+            ],
+            'hydra:view'        =>  [
+                '@id'         => '/api/users?'.urlencode('order-by[email]').'=asc&roles=WORKER',
+                '@type'       => 'hydra:PartialCollectionView'
+            ],
+        ]);
+        // three user records should be returned
+        static::assertCount(3, $response->toArray(throw: false)['hydra:member']);
+    }
+
     public function testGetListFilteredByGenderOrderedBySurnameAscending(): void 
     {
         // load fixture cotaining tiny basic set of 5 users

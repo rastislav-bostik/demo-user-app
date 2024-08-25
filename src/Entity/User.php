@@ -169,7 +169,7 @@ class User
      * @var Role[]
      */
     #[ORM\Column(type: Types::SIMPLE_ARRAY, enumType: Role::class)]
-    #[ApiFilter(SearchFilter::class)]
+    #[ApiFilter(SearchFilter::class, strategy: SearchFilter::STRATEGY_PARTIAL)]
     #[Assert\NotNull]
     #[Assert\Count(min: 1)]
     #[ContainsUniqueValues(mode: ContainsUniqueValues::MODE_STRICT)]
